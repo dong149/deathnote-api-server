@@ -2,6 +2,7 @@ package com.rest.api.controller;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rest.api.dto.LeagueEntryDto;
 import com.rest.api.dto.MatchDto;
 import com.rest.api.dto.MatchListDto;
 import com.rest.api.dto.SummonerDto;
@@ -61,7 +62,6 @@ public class RiotAPIController {
         SummonerName = SummonerName.replaceAll(" ", "%20");
 
         String requestURL = "https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + SummonerName + "?api_key=" + API_KEY;
-        System.out.print(requestURL);
         SummonerDto summoner = new SummonerDto();
 
         try {
@@ -131,7 +131,6 @@ public class RiotAPIController {
         ObjectMapper objectMapper = new ObjectMapper();
 
         String requestURL = "https://kr.api.riotgames.com/lol/match/v4/matches/" + Id + "?api_key=" + API_KEY;
-        System.out.print(requestURL);
         MatchDto matchDto = new MatchDto();
 
         try {
@@ -158,4 +157,39 @@ public class RiotAPIController {
         return matchDto;
     }
 
+
+    @ApiOperation(value = "소환사 정보", notes = "id 를 이용하여, 리그 정보를 알아냅니다.")
+    @GetMapping(value = "/league")
+    public LeagueEntryDto getLeagueInfo(@ApiParam(value = "EncryptedSummonerId", required = true) @RequestParam String Id) {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        String requestURL = "https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/" + Id + "?api_key=" + API_KEY;
+        LeagueEntryDto leagueEntryDto = new LeagueEntryDto();
+
+        try {
+            HttpClient client = HttpClientBuilder.create().build(); // HttpClient 생성
+            HttpGet getRequest = new HttpGet(requestURL); //GET 메소드 URL 생성
+            HttpResponse response = client.execute(getRequest);
+
+            //Response 출력
+            if (response.getStatusLine().getStatusCode() == 200) {
+                ResponseHandler<String> handler = new BasicResponseHandler();
+                String body = handler.handleResponse(response);
+                //set type으로 반환되어서, 양 끝 괄호를 없앤다.
+                body = body.replace("[","");
+                body = body.replace("]","");
+                leagueEntryDto = objectMapper.readValue(body, LeagueEntryDto.class);   // String to Object로 변환
+
+            } else {
+                System.out.println("response is error : " + response.getStatusLine().getStatusCode());
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        logger.debug(String.valueOf(leagueEntryDto));
+
+        return leagueEntryDto;
+    }
 }
