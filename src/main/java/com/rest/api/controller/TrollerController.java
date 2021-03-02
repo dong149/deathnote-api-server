@@ -80,10 +80,13 @@ public class TrollerController {
         matchFinalScore = (int)(11-(matchScoreSum/matchCnt)*1.0) *10;
 
         // summonerInfoDto에 값을 입력합니다.
+        summonerInfoDto.setSummonerName(summonerDto.getName());
         summonerInfoDto.setTrollerScore(matchFinalScore);
         summonerInfoDto.setMatchCount(matchCnt);
+        summonerInfoDto.setMatchWinningRate((int)(1.0)*matchWin/matchCnt*100);
         summonerInfoDto.setMatchWin(matchWin);
         summonerInfoDto.setMatchLose(matchLose);
+        summonerInfoDto.setSummonerLevel(summonerDto.getSummonerLevel());
         summonerInfoDto.setSummonerMatch(summonerMatchDtoList);
         summonerInfoDto.setSummonerIcon(summonerDto.getProfileIconId());
         summonerInfoDto.setSummonerTier(leagueEntryDto.getTier());

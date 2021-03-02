@@ -23,10 +23,13 @@ public class SummonerInfoDto {
         4. 매게임 정보 (랭크 게임만 해당)
         ( 매 판 등수, 어떤 챔피언을 선택했는지, kda 정보 )
      **/
+    private String summonerName;
     private int trollerScore;
     private int matchCount;
+    private int matchWinningRate;
     private int matchWin;
     private int matchLose;
+    private long summonerLevel;
     private int summonerIcon;
     private String summonerTier;
     private String summonerRank;
