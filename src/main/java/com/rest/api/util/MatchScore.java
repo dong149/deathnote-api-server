@@ -64,7 +64,6 @@ public class MatchScore {
 
             ParticipantStatDto participantStatDto = match.getParticipants().get(i).getStats();
             ParticipantDto participantDto = match.getParticipants().get(i);
-            System.out.println(participantDto.getParticipantId());
             int participantId = participantDto.getParticipantId();
 
             // kda score를 계산합니다.
@@ -115,6 +114,37 @@ public class MatchScore {
         for (int i = 0; i < 10; i++) {
             if (deathNoteStat.get(i).getParticipantId() == mainParticipantId) {
                 deathNoteRank = 10 - i;
+                break;
+            }
+            if(dealRank.get(i).getParticipantId() == mainParticipantId){
+                summonerMatchDto.setMatchDealRank(dealRank.get(i).getRank());
+            }
+            if(dealRank.get(i).getParticipantId() == mainParticipantId){
+                summonerMatchDto.setMatchDealRank(dealRank.get(i).getRank());
+            }
+        }
+        // 각각의 StatRankList 에 대하여, mainParticipantId와 동일한 유저의 랭크를 Set합니다.
+        for (int i = 0; i < 10; i++) {
+            if(dealRank.get(i).getParticipantId() == mainParticipantId) {
+                summonerMatchDto.setMatchDealRank(dealRank.get(i).getRank());
+                break;
+            }
+        }
+        for (int i = 0; i < 10; i++) {
+            if(tankRank.get(i).getParticipantId() == mainParticipantId) {
+                summonerMatchDto.setMatchTankRank(tankRank.get(i).getRank());
+                break;
+            }
+        }
+        for (int i = 0; i < 10; i++) {
+            if(kdaScoreRank.get(i).getParticipantId() == mainParticipantId) {
+                summonerMatchDto.setMatchKdaScoreRank(kdaScoreRank.get(i).getRank());
+                break;
+            }
+        }
+        for (int i = 0; i < 10; i++) {
+            if(towerDealRank.get(i).getParticipantId() == mainParticipantId) {
+                summonerMatchDto.setMatchTowerDealRank(towerDealRank.get(i).getRank());
                 break;
             }
         }

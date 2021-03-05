@@ -35,7 +35,7 @@ public class TrollerController {
     private MatchScore matchScore = new MatchScore();
 
     @GetMapping(value = "/summoner/info")
-    public SummonerInfoDto getSummonerInfo(@RequestParam String name){
+    public SummonerInfoDto getSummonerInfo(@RequestParam String name) {
         int matchCnt = 0;
         int matchScoreSum = 0;
         int matchFinalScore = 0;
@@ -44,46 +44,50 @@ public class TrollerController {
         SummonerInfoDto summonerInfoDto = new SummonerInfoDto();
         LeagueEntryDto leagueEntryDto = new LeagueEntryDto();
         SummonerMatchDto summonerMatchDto = new SummonerMatchDto();
-        List<SummonerMatchDto> summonerMatchDtoList= new ArrayList<SummonerMatchDto>();
+        List<SummonerMatchDto> summonerMatchDtoList = new ArrayList<SummonerMatchDto>();
         summonerDto = riotAPIController.getSummoner(name);
 
-        if(!summonerDto.equals(null)){
+
+        if (!summonerDto.equals(null)) {
             String accountId = summonerDto.getAccountId();
             String Id = summonerDto.getId();
             matchListDto = riotAPIController.getMatchList(accountId);
             leagueEntryDto = riotAPIController.getLeagueInfo(Id);
+
+            // matchWin, matchLoss , matchCnt 값을 저장합니다.
+            matchWin = leagueEntryDto.getWins();
+            matchLose = leagueEntryDto.getLosses();
+
             List<MatchReferenceDto> matchReferenceDtoList = matchListDto.getMatches();
             //TODO 제약사항 더 추가하기
-            for(int i=0;i<matchReferenceDtoList.size();i++){
-                if(matchReferenceDtoList.get(i).getSeason()<13||i>20){
+            for (int i = 0; i < matchReferenceDtoList.size(); i++) {
+                if (matchReferenceDtoList.get(i).getSeason() < 13 || i > 20) {
                     continue;
                 }
                 long gameId = matchReferenceDtoList.get(i).getGameId();
                 matchDto = riotAPIController.getMatchInfo(gameId);
-                if(!matchDto.getGameMode().equals("CLASSIC"))
+                if (!matchDto.getGameMode().equals("CLASSIC"))
                     continue;
-                summonerMatchDto = matchScore.getMatchScore(matchDto,accountId);
+                summonerMatchDto = matchScore.getMatchScore(matchDto, accountId);
                 summonerMatchDtoList.add(summonerMatchDto);
                 matchCnt++;
-                if(summonerMatchDto.isMatchWin()){
+                if (summonerMatchDto.isMatchWin()) {
                     matchScoreSum += summonerMatchDto.getMatchRank();
-                    matchWin++;
-                }else{
-                    matchScoreSum += summonerMatchDto.getMatchRank()-1;
-                    matchLose++;
+                } else {
+                    matchScoreSum += summonerMatchDto.getMatchRank() - 1;
                 }
 
             }
 
 
         }
-        matchFinalScore = (int)(11-(matchScoreSum/matchCnt)*1.0) *10;
+        matchFinalScore = (int) (11 - (matchScoreSum / matchCnt) * 1.0) * 10;
 
         // summonerInfoDto에 값을 입력합니다.
         summonerInfoDto.setSummonerName(summonerDto.getName());
         summonerInfoDto.setTrollerScore(matchFinalScore);
         summonerInfoDto.setMatchCount(matchCnt);
-        summonerInfoDto.setMatchWinningRate((int)(1.0)*matchWin/matchCnt*100);
+        summonerInfoDto.setMatchWinningRate((int) ((1.0) * matchWin / (matchWin + matchLose) * 100));
         summonerInfoDto.setMatchWin(matchWin);
         summonerInfoDto.setMatchLose(matchLose);
         summonerInfoDto.setSummonerLevel(summonerDto.getSummonerLevel());

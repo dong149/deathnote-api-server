@@ -24,7 +24,10 @@ public class SummonerMatchDto {
     private int matchKills;
     private int matchDeaths;
     private int matchAssists;
-
+    private int matchDealRank;
+    private int matchTankRank;
+    private int matchKdaScoreRank;
+    private int matchTowerDealRank;
 
 
 }
