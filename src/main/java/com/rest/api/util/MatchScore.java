@@ -2,6 +2,7 @@ package com.rest.api.util;
 
 
 import com.rest.api.dto.*;
+import com.rest.api.dto.result.SummonerMatchDto;
 import com.rest.api.entity.StatInfo;
 import com.rest.api.entity.StatRank;
 import org.slf4j.Logger;
@@ -10,30 +11,27 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collector;
 
-// 하나의 매치에 대해서 점수를 계산해 return 합니다.
 public class MatchScore {
+    /**
+     * 매치에 대한 정보를 바탕으로 하여 트롤러 점수를 계산합니다.
+     **/
+
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
-    //트롤러 점수를 반환합니다.
-    public void getTrollerScore(MatchListDto matchList) {
-        List<MatchReferenceDto> matchReferenceDtoList = matchList.getMatches();
-        for (MatchReferenceDto temp : matchReferenceDtoList) {
-        }
-    }
 
-    private int compareRank(List<StatRank> statRankList,int participantId){
+    private int compareRank(List<StatRank> statRankList, int participantId) {
 
-        for(int i=0;i<statRankList.size();i++){
-            if(statRankList.get(i).getParticipantId()==participantId)
+        for (int i = 0; i < statRankList.size(); i++) {
+            if (statRankList.get(i).getParticipantId() == participantId)
                 return statRankList.get(i).getRank();
         }
         return 0;
     }
 
 
-    public int getMatchScore(MatchDto match, String accountId) {
+    public SummonerMatchDto getMatchScore(MatchDto match, String accountId) {
+        SummonerMatchDto summonerMatchDto = new SummonerMatchDto();
         List<StatInfo> deathNoteStat = new ArrayList<StatInfo>();
 
         List<StatInfo> deal = new ArrayList<StatInfo>();
@@ -57,18 +55,15 @@ public class MatchScore {
         for (ParticipantIdentityDto temp : match.getParticipantIdentities()) {
             if (temp.getPlayer().getAccountId().equals(accountId)) {
                 mainParticipantId = temp.getParticipantId();
+
             }
         }
-
-
-
 
 
         for (int i = 0; i < 10; i++) {
 
             ParticipantStatDto participantStatDto = match.getParticipants().get(i).getStats();
             ParticipantDto participantDto = match.getParticipants().get(i);
-            System.out.println(participantDto.getParticipantId());
             int participantId = participantDto.getParticipantId();
 
             // kda score를 계산합니다.
@@ -109,27 +104,64 @@ public class MatchScore {
         }
 
 
-        for( int i=1;i<=10;i++){
-            sum =0;
-            sum =(11-compareRank(dealRank,i))*3 +(11-compareRank(tankRank,i))*1 + (11-compareRank(visionRank,i))*1 + (11-compareRank(towerDealRank,i))*2 + (11-compareRank(kdaScoreRank,i))*3;
-            deathNoteStat.add(new StatInfo(i,"deathNoteScore",sum));
+        for (int i = 1; i <= 10; i++) {
+            sum = 0;
+            sum = (11 - compareRank(dealRank, i)) * 3 + (11 - compareRank(tankRank, i)) * 1 + (11 - compareRank(visionRank, i)) * 1 + (11 - compareRank(towerDealRank, i)) * 2 + (11 - compareRank(kdaScoreRank, i)) * 3;
+            deathNoteStat.add(new StatInfo(i, "deathNoteScore", sum));
         }
 
         Collections.sort(deathNoteStat, new ParticipantsComparator());
-        for(int i=0;i<10;i++){
-            if(deathNoteStat.get(i).getParticipantId() == mainParticipantId){
-                deathNoteRank = 10-i;
+        for (int i = 0; i < 10; i++) {
+            if (deathNoteStat.get(i).getParticipantId() == mainParticipantId) {
+                deathNoteRank = 10 - i;
+                break;
+            }
+            if(dealRank.get(i).getParticipantId() == mainParticipantId){
+                summonerMatchDto.setMatchDealRank(dealRank.get(i).getRank());
+            }
+            if(dealRank.get(i).getParticipantId() == mainParticipantId){
+                summonerMatchDto.setMatchDealRank(dealRank.get(i).getRank());
+            }
+        }
+        // 각각의 StatRankList 에 대하여, mainParticipantId와 동일한 유저의 랭크를 Set합니다.
+        for (int i = 0; i < 10; i++) {
+            if(dealRank.get(i).getParticipantId() == mainParticipantId) {
+                summonerMatchDto.setMatchDealRank(dealRank.get(i).getRank());
+                break;
+            }
+        }
+        for (int i = 0; i < 10; i++) {
+            if(tankRank.get(i).getParticipantId() == mainParticipantId) {
+                summonerMatchDto.setMatchTankRank(tankRank.get(i).getRank());
+                break;
+            }
+        }
+        for (int i = 0; i < 10; i++) {
+            if(kdaScoreRank.get(i).getParticipantId() == mainParticipantId) {
+                summonerMatchDto.setMatchKdaScoreRank(kdaScoreRank.get(i).getRank());
+                break;
+            }
+        }
+        for (int i = 0; i < 10; i++) {
+            if(towerDealRank.get(i).getParticipantId() == mainParticipantId) {
+                summonerMatchDto.setMatchTowerDealRank(towerDealRank.get(i).getRank());
                 break;
             }
         }
 
 
+        // 결과 생성 SummonerMatchDto
+        summonerMatchDto.setMatchRank(deathNoteRank);
+        summonerMatchDto.setMatchChampion(match.getParticipants().get(mainParticipantId-1).getChampionId());
+        summonerMatchDto.setMatchWin(match.getParticipants().get(mainParticipantId-1).getStats().isWin());
+        summonerMatchDto.setMatchKills(match.getParticipants().get(mainParticipantId-1).getStats().getKills());
+        summonerMatchDto.setMatchAssists(match.getParticipants().get(mainParticipantId-1).getStats().getAssists());
+        summonerMatchDto.setMatchDeaths(match.getParticipants().get(mainParticipantId-1).getStats().getDeaths());
 
 
 
 
-
-        return deathNoteRank;
+        return summonerMatchDto;
     }
 
 }
