@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * 매치에 대한 정보를 바탕으로 하여 트롤러 점수를 계산합니다.
+ **/
 public class MatchScore {
-    /**
-     * 매치에 대한 정보를 바탕으로 하여 트롤러 점수를 계산합니다.
-     **/
 
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -116,34 +116,34 @@ public class MatchScore {
                 deathNoteRank = 10 - i;
                 break;
             }
-            if(dealRank.get(i).getParticipantId() == mainParticipantId){
+            if (dealRank.get(i).getParticipantId() == mainParticipantId) {
                 summonerMatchDto.setMatchDealRank(dealRank.get(i).getRank());
             }
-            if(dealRank.get(i).getParticipantId() == mainParticipantId){
+            if (dealRank.get(i).getParticipantId() == mainParticipantId) {
                 summonerMatchDto.setMatchDealRank(dealRank.get(i).getRank());
             }
         }
         // 각각의 StatRankList 에 대하여, mainParticipantId와 동일한 유저의 랭크를 Set합니다.
         for (int i = 0; i < 10; i++) {
-            if(dealRank.get(i).getParticipantId() == mainParticipantId) {
+            if (dealRank.get(i).getParticipantId() == mainParticipantId) {
                 summonerMatchDto.setMatchDealRank(dealRank.get(i).getRank());
                 break;
             }
         }
         for (int i = 0; i < 10; i++) {
-            if(tankRank.get(i).getParticipantId() == mainParticipantId) {
+            if (tankRank.get(i).getParticipantId() == mainParticipantId) {
                 summonerMatchDto.setMatchTankRank(tankRank.get(i).getRank());
                 break;
             }
         }
         for (int i = 0; i < 10; i++) {
-            if(kdaScoreRank.get(i).getParticipantId() == mainParticipantId) {
+            if (kdaScoreRank.get(i).getParticipantId() == mainParticipantId) {
                 summonerMatchDto.setMatchKdaScoreRank(kdaScoreRank.get(i).getRank());
                 break;
             }
         }
         for (int i = 0; i < 10; i++) {
-            if(towerDealRank.get(i).getParticipantId() == mainParticipantId) {
+            if (towerDealRank.get(i).getParticipantId() == mainParticipantId) {
                 summonerMatchDto.setMatchTowerDealRank(towerDealRank.get(i).getRank());
                 break;
             }
@@ -152,13 +152,11 @@ public class MatchScore {
 
         // 결과 생성 SummonerMatchDto
         summonerMatchDto.setMatchRank(deathNoteRank);
-        summonerMatchDto.setMatchChampion(match.getParticipants().get(mainParticipantId-1).getChampionId());
-        summonerMatchDto.setMatchWin(match.getParticipants().get(mainParticipantId-1).getStats().isWin());
-        summonerMatchDto.setMatchKills(match.getParticipants().get(mainParticipantId-1).getStats().getKills());
-        summonerMatchDto.setMatchAssists(match.getParticipants().get(mainParticipantId-1).getStats().getAssists());
-        summonerMatchDto.setMatchDeaths(match.getParticipants().get(mainParticipantId-1).getStats().getDeaths());
-
-
+        summonerMatchDto.setMatchChampion(match.getParticipants().get(mainParticipantId - 1).getChampionId());
+        summonerMatchDto.setMatchWin(match.getParticipants().get(mainParticipantId - 1).getStats().isWin());
+        summonerMatchDto.setMatchKills(match.getParticipants().get(mainParticipantId - 1).getStats().getKills());
+        summonerMatchDto.setMatchAssists(match.getParticipants().get(mainParticipantId - 1).getStats().getAssists());
+        summonerMatchDto.setMatchDeaths(match.getParticipants().get(mainParticipantId - 1).getStats().getDeaths());
 
 
         return summonerMatchDto;

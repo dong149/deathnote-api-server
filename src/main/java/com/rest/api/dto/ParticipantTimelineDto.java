@@ -13,12 +13,7 @@ import lombok.*;
 @AllArgsConstructor
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ParticipantDto {
-    private int participantId;
-    private int championId;
-    private ParticipantTimelineDto timeline;
-    private String highestAchievedSeasonTier;
-    private ParticipantStatDto stats;
-
-
+public class ParticipantTimelineDto {
+//    private int participantId;
+    private String lane;
 }
