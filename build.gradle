@@ -36,4 +36,5 @@ dependencies {
     implementation 'io.springfox:springfox-swagger-ui:2.6.1'
     implementation 'org.apache.httpcomponents:httpclient'
     annotationProcessor 'org.projectlombok:lombok'
+    implementation 'com.opencsv:opencsv:4.5'
 }

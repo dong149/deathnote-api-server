@@ -14,6 +14,10 @@ import lombok.*;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ParticipantStatDto {
+
+    private int totalUnitsHealed;
+    private int goldEarned;
+
     private boolean firstInhibitorKill;
     private long physicalDamageTaken;
     private int nodeNeutralizeAssist;
@@ -24,16 +28,42 @@ public class ParticipantStatDto {
     private long neutralMinionsKilled;
     private int deaths;
     private int tripleKills;
+
+    private long magicDamageDealtToChampions;
+
+
     private int wardsKilled;
     private int pentaKills;
+    private long damageSelfMitigated;
+    private int largestCriticalStrike;
+    private int nodeNeutralize;
+
+    private int totalTimeCrowdControlDealt;
+
     private boolean firstTowerKill;
     private int totalScoreRank;
+
+    private int nodeCapture;
+    private int wardsPlaced;
+
     private long totalDamageDealt;
+
+    private long timeCCingOthers;
+    private long magicalDamageTaken;
+
+
     private long totalDamageDealtToChampions;
+    private long physicalDamageDealtToChampions;
+    private int neutralMinionsKilledTeamJungle;
+
     private int totalMinionsKilled;
     private boolean firstInhibitorAssist;
+    private int visionWardsBoughtInGame;
+    private int objectivePlayerScore;
+
     private int kills;
     private boolean firstTowerAssist;
+    private int combatPlayerScore;
     private int inhibitorKills;
     private int turretKills;
     private int participantId;
@@ -44,9 +74,19 @@ public class ParticipantStatDto {
     private long damageDealtToTurrets;
     private boolean win;
     private long totalHeal;
+    private int unrealKills;
     private long visionScore;
     private boolean firstBloodKill;
+
+    private int longestTimeSpentLiving;
+
+    private int killingSprees;
+
+    private int sightWardsBoughtInGame;
+
     private long trueDamageDealtToChampions;
+    private int neutralMinionsKilledEnemyJungle;
+
     private int doubleKills;
     private long trueDamageDealt;
     private int quadraKills;
@@ -60,4 +100,5 @@ public class ParticipantStatDto {
     private int playerScore7;
     private int playerScore8;
     private int playerScore9;
+
 }

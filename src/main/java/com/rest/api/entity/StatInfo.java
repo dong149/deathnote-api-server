@@ -8,10 +8,14 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 public class StatInfo {
     public int participantId;
     public String type;
     public long stat;
+
+    public StatInfo(int participantId,long stat){
+        this.participantId = participantId;
+        this.stat = stat;
+    }
 }
