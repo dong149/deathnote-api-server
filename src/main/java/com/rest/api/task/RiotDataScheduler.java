@@ -63,11 +63,14 @@ public class RiotDataScheduler {
     public static void main(String[] args) throws Exception {
         Scanner sc = new Scanner(System.in);
         List<DataRankDto> resList = new ArrayList<>();
+        int cnt=0;
         while(true){
             String gameId = sc.nextLine();
             if(gameId.equals("0"))
                 break;
             List<DataRankDto> tempList = riotAPIController.getMatchInfoForML(gameId);
+            System.out.println("현재 cnt : "+cnt);
+            cnt++;
             Thread.sleep(10000);
             resList.addAll(tempList);
         }

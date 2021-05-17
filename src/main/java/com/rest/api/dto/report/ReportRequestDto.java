@@ -18,9 +18,13 @@ import lombok.ToString;
 public class ReportRequestDto {
     private boolean isReport;
     private String summonerName;
-    private String description;
+    private String content;
 
-    public Report toEntity(){
-        return new Report(this.isReport,this.summonerName,this.description);
+    public Report toEntity() {
+        return Report.builder()
+                .isReport(isReport)
+                .summonerName(summonerName)
+                .content(content)
+                .build();
     }
 }
