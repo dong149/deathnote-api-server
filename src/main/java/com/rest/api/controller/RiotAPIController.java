@@ -43,12 +43,12 @@ public class RiotAPIController {
 //    private static String API_KEY = "RGAPI-e5fc0066-50ea-486a-8133-50cf8eff1aad";
 
     @Value("${riot.API_KEY}")
-    private static String API_KEY;
+    private String API_KEY;
 
 
     @ApiOperation(value = "소환자 정보", notes = "이름을 통해 소환사 정보를 return한다.")
     @GetMapping(value = "/summoner")
-    public static SummonerDto getSummoner(@ApiParam(value = "소환사 이름", required = true) @RequestParam String name) {
+    public SummonerDto getSummoner(@ApiParam(value = "소환사 이름", required = true) @RequestParam String name) {
 
         ObjectMapper objectMapper = new ObjectMapper();
 
