@@ -2,7 +2,7 @@
 deathnote.gg ver2.0 API 서버
 
 ## Application screenshots
-![deathnote](deathnote.png)
+![deathnote](/images/deathnote.png)
 
 
 
@@ -28,18 +28,18 @@ Match API - Get MatchInfo
 ## Feature
 ### Troller 점수 확인 기능
 100점 만점으로 환산한 결과값을 사용자에게 보여줍니다.
-![deathnote](trollerscore.png)
+![deathnote](/images/trollerscore.png)
 ### 특정 유저에게 리뷰 작성 기능
 작성된 리뷰는 트롤러 점수 환산 시에 반영됩니다.
-![deathnote](review.png)
-![deathnote](review2.png)
+![deathnote](/images/review.png)
+![deathnote](/images/review2.png)
 ### 최근 20게임 분석
 매 게임마다의 자신이 트롤 등수를 확인합니다.
-![deathnote](match.png)
+![deathnote](/images/match.png)
 
 
 ## Swagger 정리
-![deathnote](swagger.png)
+![deathnote](/images/swagger.png)
 
 
 
