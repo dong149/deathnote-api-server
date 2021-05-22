@@ -8,8 +8,6 @@ import com.rest.api.dto.result.SummonerMatchDto;
 import com.rest.api.service.summonerInfo.SummonerInfoService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +22,6 @@ import java.util.List;
 public class TrollerController {
 
 
-    private final Logger logger = LoggerFactory.getLogger(getClass());
     private SummonerDto summonerDto;
     private MatchListDto matchListDto;
     private MatchDto matchDto;

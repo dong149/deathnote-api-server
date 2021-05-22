@@ -35,7 +35,6 @@ import java.util.List;
 @RequestMapping(value = "/api/v1")
 public class RiotAPIController {
 
-    private final static Logger logger = LoggerFactory.getLogger(RiotAPIController.class);
     @Autowired
     RestTemplate restTemplate;
 
@@ -48,8 +47,6 @@ public class RiotAPIController {
     public SummonerDto getSummoner(@ApiParam(value = "소환사 이름", required = true) @RequestParam String name) {
 
         ObjectMapper objectMapper = new ObjectMapper();
-
-
         //한글 인코딩 처리
         String SummonerName = "";
         try {
@@ -83,7 +80,6 @@ public class RiotAPIController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        logger.debug(String.valueOf(summoner));
 
         return summoner;
     }
@@ -119,7 +115,6 @@ public class RiotAPIController {
             e.printStackTrace();
         }
 
-        logger.debug(String.valueOf(matchList));
 
         return matchList;
     }
@@ -152,7 +147,6 @@ public class RiotAPIController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        logger.debug(String.valueOf(matchDto));
 
         return matchDto;
     }
@@ -188,7 +182,6 @@ public class RiotAPIController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        logger.debug(String.valueOf(leagueEntryDto));
 
         return leagueEntryDto;
     }
@@ -223,7 +216,6 @@ public class RiotAPIController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        logger.debug(String.valueOf(matchDto));
 
         return resList;
     }
