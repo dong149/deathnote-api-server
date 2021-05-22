@@ -10,6 +10,10 @@ import com.rest.api.entity.StatInfo;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/*
+한 게임에서 10명의 여러 지표들의 Rank를 구하여, 반환합니다.
+ */
 public class DataRank {
 
 

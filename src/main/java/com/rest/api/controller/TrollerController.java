@@ -4,7 +4,7 @@ package com.rest.api.controller;
 import com.rest.api.dto.*;
 import com.rest.api.dto.result.SummonerInfoDto;
 import com.rest.api.dto.result.SummonerMatchDto;
-import com.rest.api.util.MatchScore;
+import com.rest.api.service.summonerInfo.SummonerInfoService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -30,7 +30,7 @@ public class TrollerController {
     @Autowired
     private RiotAPIController riotAPIController;
 
-    private MatchScore matchScore = new MatchScore();
+    private SummonerInfoService matchScore = new SummonerInfoService();
 
     @GetMapping(value = "/summoner/info")
     public SummonerInfoDto getSummonerInfo(@RequestParam String name) {

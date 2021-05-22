@@ -13,7 +13,7 @@ import java.net.http.HttpClient;
 
 
 /**
- * 다른 서버에 Rest요청을 할 때 필요한 설정을 해주는 클래스
+ * RIOT API 호출을 위한 설정을 진행합니다.
  */
 @Configuration
 public class HttpConnectionConfig {
@@ -30,10 +30,19 @@ public class HttpConnectionConfig {
     @Value("${restTemplate.httpClient.maxConnPerRoute}")
     private int MAX_CONN_PER_ROUTE;
 
+    @Value("${http.host}")
+    private String HOST_NAME;
+
+    @Value("${http.port}")
+    private int PORT;
+
+    @Value("${http.scheme}")
+    private String SCHEME;
+
 
     @Bean
     public RestTemplate restTemplate() {
-        HttpHost proxy = new HttpHost("donghoon.tk", 80, "http");
+        HttpHost proxy = new HttpHost(HOST_NAME, PORT, SCHEME);
         HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
         factory.setReadTimeout(READ_TIMEOUT);
         factory.setConnectTimeout(CONNECT_TIMEOUT);

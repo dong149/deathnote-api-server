@@ -196,17 +196,8 @@ public class RiotAPIController {
         return leagueEntryDto;
     }
 
-
-    /*
-     ML 모델을 구축하기 위해서 Match 각각의 정보를 가져온 이후에, 10명의 유저에 대해서 각각의 지표들의 Rank( 1~10 )를 연산한 이후에
-     DB에 저장해줘야 한다.
-     queue : 420 -> RANK게임을 의미한다.
-
-
-     각 지표에 대한 랭킹 정보를 담은 DTO를 하나 만들고 그 값을 DB에 저장해주어야한다.
-     */
-//    @ApiOperation(value = "소환자 정보", notes = "MatchId를 이용하여, Match 정보를 가져옵니다.")
-//    @GetMapping(value = "/match/data")
+    @ApiOperation(value = "소환자 정보", notes = "MatchId를 이용하여, Match 정보를 가져옵니다.")
+    @GetMapping(value = "/match/data")
     public List<DataRankDto> getMatchInfoForML(String Id) {
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -240,13 +231,14 @@ public class RiotAPIController {
         return resList;
     }
 
-    /*
-    솔로랭크인 게임( queue : 420 )의 정보를 리스트에 담아 Return 합니다.
-     */
+
+    @ApiOperation(value = "소환자 정보", notes = "summonerName을 통해 솔로 랭크 게임 리스트를 가져옵니디")
+    @GetMapping(value = "/matchlist/solo")
     public List<Long> getMatchListForML(String summonerName) {
         List<MatchReferenceDto> matchList = getMatchList(getSummoner(summonerName).getAccountId()).getMatches();
         List<Long> matchIdList = new ArrayList<>();
         for (int i = 0; i < matchList.size(); i++) {
+            //솔로랭크인 게임( queue : 420 )의 정보를 리스트에 담아 Return 합니다.
             if (matchList.get(i).getQueue() == 420) {
                 matchIdList.add(matchList.get(i).getGameId());
             }

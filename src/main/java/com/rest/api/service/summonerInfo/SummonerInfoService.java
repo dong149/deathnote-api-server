@@ -1,10 +1,11 @@
-package com.rest.api.util;
+package com.rest.api.service.summonerInfo;
 
 
 import com.rest.api.dto.*;
 import com.rest.api.dto.result.SummonerMatchDto;
 import com.rest.api.entity.StatInfo;
 import com.rest.api.entity.StatRank;
+import com.rest.api.util.ParticipantsComparator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +16,7 @@ import java.util.List;
 /**
  * 매치에 대한 정보를 바탕으로 하여 트롤러 점수를 계산합니다.
  **/
-public class MatchScore {
+public class SummonerInfoService {
 
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
