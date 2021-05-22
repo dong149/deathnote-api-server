@@ -1,6 +1,7 @@
-package com.rest.api.controller;
+package com.rest.api.controller.troller;
 
 
+import com.rest.api.controller.riot.RiotAPIController;
 import com.rest.api.dto.*;
 import com.rest.api.dto.result.SummonerInfoDto;
 import com.rest.api.dto.result.SummonerMatchDto;
@@ -19,7 +20,7 @@ import java.util.List;
 @Api(tags = {"2. Deathnote"})
 @RequiredArgsConstructor //final이나 @NonNull인 필드 값만 파라미터로 받는 생성자를 만듭니다.
 @RestController
-@RequestMapping(value = "/v1")
+@RequestMapping(value = "api/v1")
 public class TrollerController {
 
 

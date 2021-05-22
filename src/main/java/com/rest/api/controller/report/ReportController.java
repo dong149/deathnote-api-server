@@ -1,4 +1,4 @@
-package com.rest.api.controller;
+package com.rest.api.controller.report;
 
 
 import com.rest.api.dto.report.ReportRequestDto;
@@ -7,7 +7,7 @@ import com.rest.api.model.response.CommonResult;
 import com.rest.api.model.response.ListResult;
 import com.rest.api.model.response.SingleResult;
 import com.rest.api.repository.ReportJpaRepo;
-import com.rest.api.service.ResponseService;
+import com.rest.api.service.response.ResponseService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = {"3. Report"})
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/v1")
+@RequestMapping(value = "/api/v1")
 public class ReportController {
 
 

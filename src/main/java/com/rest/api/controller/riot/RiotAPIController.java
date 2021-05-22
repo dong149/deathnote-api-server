@@ -1,4 +1,4 @@
-package com.rest.api.controller;
+package com.rest.api.controller.riot;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,15 +32,12 @@ import java.util.List;
 @Api(tags = {"1. Summoner"})
 @RequiredArgsConstructor //final이나 @NonNull인 필드 값만 파라미터로 받는 생성자를 만듭니다.
 @RestController
-@RequestMapping(value = "/v1")
+@RequestMapping(value = "/api/v1")
 public class RiotAPIController {
 
     private final static Logger logger = LoggerFactory.getLogger(RiotAPIController.class);
     @Autowired
     RestTemplate restTemplate;
-
-
-//    private static String API_KEY = "RGAPI-e5fc0066-50ea-486a-8133-50cf8eff1aad";
 
     @Value("${riot.API_KEY}")
     private String API_KEY;

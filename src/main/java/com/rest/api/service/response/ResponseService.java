@@ -1,4 +1,4 @@
-package com.rest.api.service;
+package com.rest.api.service.response;
 
 
 import com.rest.api.model.response.CommonResult;
