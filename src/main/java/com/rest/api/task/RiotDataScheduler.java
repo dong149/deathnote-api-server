@@ -6,6 +6,7 @@ import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.rest.api.controller.riot.RiotAPIController;
 import com.rest.api.dto.mldata.DataRankDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
@@ -16,11 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+@RequiredArgsConstructor
 @Component
 public class RiotDataScheduler {
 
-    private static final RiotAPIController riotAPIController = new RiotAPIController();
-
+    private static RiotAPIController riotAPIController;
     /*
     * 유저의 닉네임을 입력하여, gameId를 얻습니다.
      */

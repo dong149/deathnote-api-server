@@ -18,9 +18,6 @@ import java.util.List;
  **/
 public class SummonerInfoService {
 
-
-    private final Logger logger = LoggerFactory.getLogger(getClass());
-
     private int compareRank(List<StatRank> statRankList, int participantId) {
 
         for (int i = 0; i < statRankList.size(); i++) {

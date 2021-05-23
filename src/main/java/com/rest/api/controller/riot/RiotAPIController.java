@@ -4,6 +4,7 @@ package com.rest.api.controller.riot;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rest.api.dto.*;
 import com.rest.api.dto.mldata.DataRankDto;
+import com.rest.api.service.riot.RiotService;
 import com.rest.api.util.DataRank;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -15,8 +16,6 @@ import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,13 +29,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Api(tags = {"1. Summoner"})
-@RequiredArgsConstructor //final이나 @NonNull인 필드 값만 파라미터로 받는 생성자를 만듭니다.
+@RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/api/v1")
 public class RiotAPIController {
 
-    @Autowired
-    RestTemplate restTemplate;
+
+    private final RestTemplate restTemplate;
+    private final RiotService riotApi;
+    private final RiotService riotService;
 
     @Value("${riot.API_KEY}")
     private String API_KEY;
