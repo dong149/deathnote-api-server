@@ -44,6 +44,8 @@ public class ReportController {
         List<ReportResponseDto> reportResponseDtos =  reportService.getReportResponsesWithSummonerName(name);
         return new ResponseEntity(reportResponseDtos,HttpStatus.OK);
     }
+
+    // TODO : 나머지 UPDATE, DELETE 등 구현하기
 //
 //
 //    @ApiOperation(value = "리폿", notes = "리폿/칭찬 내용을 작성합니다.")

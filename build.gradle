@@ -8,6 +8,11 @@ group 'gg.deathnote'
 version '1.0-SNAPSHOT'
 
 
+//test {
+//    useJUnitPlatform()
+//}
+
+
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
@@ -19,6 +24,10 @@ repositories {
 }
 
 dependencies {
+//    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.6.2'
+//    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.6.2'
+//    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.1.0'
+//    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.1.0'
     testCompile group: 'junit', name: 'junit', version: '4.12'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-freemarker'
