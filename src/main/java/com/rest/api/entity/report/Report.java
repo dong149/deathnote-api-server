@@ -20,7 +20,7 @@ public class Report {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column
     private boolean isReport;
