@@ -7,6 +7,7 @@ import com.rest.api.dto.MatchDto;
 import com.rest.api.dto.MatchListDto;
 import com.rest.api.dto.SummonerDto;
 import com.rest.api.dto.mldata.DataRankDto;
+import com.rest.api.enumerator.QueueType;
 import com.rest.api.util.DataRank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -52,6 +53,21 @@ public class RiotService {
         URI uri = new URI(requestUrl);
         return objectMapper.readValue(restTemplate.getForEntity(uri, String.class).getBody(), MatchListDto.class);
     }
+
+
+    public MatchListDto getMatchListDtoWithRiotAPIByEncryptedAccountIdAndQueueAndSeason(String encryptedAccountId, QueueType queueType, int season) throws URISyntaxException, IOException {
+        String requestUrl = UriComponentsBuilder
+                .fromUriString("https://kr.api.riotgames.com/lol/match/v4/matchlists/by-account/")
+                .path(encryptedAccountId)
+                .queryParam("queue",queueType.getQueue())
+                .queryParam("season",season)
+                .queryParam("api_key", API_KEY)
+                .toUriString();
+        System.out.println(requestUrl);
+        URI uri = new URI(requestUrl);
+        return objectMapper.readValue(restTemplate.getForEntity(uri, String.class).getBody(), MatchListDto.class);
+    }
+
 
 
     public MatchDto getMatchDtoWithRiotAPIByMatchId(long matchId) throws URISyntaxException, IOException {

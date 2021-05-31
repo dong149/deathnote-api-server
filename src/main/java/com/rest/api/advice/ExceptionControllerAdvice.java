@@ -3,6 +3,7 @@ package com.rest.api.advice;
 
 import com.rest.api.dto.response.ErrorResponseDto;
 import com.rest.api.enumerator.ErrorType;
+import com.rest.api.exception.riot.RiotAPIBadRequestException;
 import com.rest.api.exception.summoner.SummonerNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,14 @@ public class ExceptionControllerAdvice {
         log.error(e.getMessage(),e);
         return error(ErrorType.NOT_FOUND_ERROR,HttpStatus.NOT_FOUND);
     }
+
+
+    @ExceptionHandler(RiotAPIBadRequestException.class)
+    private ResponseEntity<ErrorResponseDto> BadRequestException(RiotAPIBadRequestException e) {
+        log.error(e.getMessage(), e);
+        return error(ErrorType.BAD_REQUEST_ERROR, HttpStatus.BAD_REQUEST);
+    }
+
     private ResponseEntity<ErrorResponseDto> error(final ErrorType errorType, final HttpStatus httpStatus) {
         return new ResponseEntity<>(new ErrorResponseDto(errorType.getErrorCode(), errorType.getErrorMessage()), httpStatus);
     }
@@ -25,7 +34,6 @@ public class ExceptionControllerAdvice {
     private ResponseEntity<ErrorResponseDto> error(final ErrorType errorType, final HttpStatus httpStatus, String customMessage) {
         return new ResponseEntity<>(new ErrorResponseDto(errorType.getErrorCode(), customMessage), httpStatus);
     }
-
     //TODO: Exception Handler 추가 설정해주기.
 }
 

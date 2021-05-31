@@ -2,6 +2,7 @@ package com.rest.api.controller.riot;
 
 import com.rest.api.dto.*;
 import com.rest.api.dto.mldata.DataRankDto;
+import com.rest.api.exception.riot.RiotAPIBadRequestException;
 import com.rest.api.service.riot.RiotService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

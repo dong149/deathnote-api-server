@@ -40,7 +40,6 @@ public class ReportController {
     })
     @GetMapping
     public ResponseEntity<ReportResponseDto> getReportByName(@ApiParam(value = "소환사 이름", required = true) @RequestParam String name) {
-
         List<ReportResponseDto> reportResponseDtos =  reportService.getReportResponsesWithSummonerName(name);
         return new ResponseEntity(reportResponseDtos,HttpStatus.OK);
     }
