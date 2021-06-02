@@ -29,9 +29,12 @@ Deathnote.gg 서비스에서는 이런 문제를 해결하기 위해서 노력�
 
 ### 1. Troller 점수 확인 기능
 
-![deathnote](/images/trollerscore.png)
+<br/>
+<p align="center"><img src="./images/trollerscore.png" width="70%"/></p>
+<br/>
 
-#### 해결 과정
+
+### Solution
 
 자체적으로 100점 만점으로 점수를 환산하여 보여주는 기능을 구현하여,
 사용자들이 직관적으로 트롤 여부를 판단할 수 있는 기준을 제공하려 합니다.
@@ -56,10 +59,12 @@ Deathnote.gg 서비스에서는 이런 문제를 해결하기 위해서 노력�
 
 ### 2. 특정 유저에게 리뷰 작성 기능
 
-![deathnote](/images/review.png)
-![deathnote](/images/review2.png)
+<br/>
+<p align="center"><img src="./images/review.png" width="70%"/></p>
+<p align="center"><img src="./images/review2.png" width="70%"/></p>
+<br/>
 
-#### 해결 과정
+### Solution
 
 자체적으로 Report 시스템을 구현하여, 유저들의 피드백을 모아 트롤러 점수에 반영하는
 기능을 제공하려 합니다.<br/>
@@ -79,10 +84,11 @@ Deathnote.gg 서비스에서는 이런 문제를 해결하기 위해서 노력�
 
 ### 3. 최근 20게임 분석
 
+<br/>
+<p align="center"><img src="./images/match.png" width="70%"/></p>
+<br/>
 
-![deathnote](/images/match.png)
-
-#### 해결 과정
+### Solution
 
 이 기능 또한, 결국은 Report 시스템의 사용성을 증가시키기 위한 과정입니다.
 보통의 전적 검색 사이트의 경우 모든 전적 그리고, 함께 플레이한 다른 유저의 정보까지 모두
@@ -144,7 +150,9 @@ Riot측에서 어느 정도의 Public함을 증명하기 전까지는 API의 요
 
 ## Swagger
 
-![deathnote](/images/swagger.png)
+<br/>
+<p align="center"><img src="./images/swagger.png" width="70%"/></p>
+<br/>
 
 
 ## Commit Convention
