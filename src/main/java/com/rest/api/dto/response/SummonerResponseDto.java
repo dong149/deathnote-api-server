@@ -1,7 +1,7 @@
 package com.rest.api.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.rest.api.entity.Summoner;
+import com.rest.api.entity.summoner.Summoner;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -35,7 +35,7 @@ public class SummonerResponseDto {
         this.createdAt = createdAt;
     }
     public static SummonerResponseDto of(Summoner summoner){
-        return new SummonerResponseDto(summoner.getName(),summoner.getCreatedAt());
+        return new SummonerResponseDto(summoner.getSummonerName(),summoner.getUpdatedAt());
     }
 
 

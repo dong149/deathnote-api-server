@@ -3,8 +3,8 @@ package com.rest.api.service.summonerInfo;
 
 import com.rest.api.dto.*;
 import com.rest.api.dto.result.SummonerMatchDto;
-import com.rest.api.entity.StatInfo;
-import com.rest.api.entity.StatRank;
+import com.rest.api.dto.StatInfoDto;
+import com.rest.api.dto.StatRankDto;
 import com.rest.api.util.ParticipantsComparator;
 
 import java.util.ArrayList;
@@ -18,17 +18,17 @@ public class SummonerInfoService {
 
     public SummonerMatchDto getMatchScore(MatchDto match, String accountId) {
         SummonerMatchDto summonerMatchDto = new SummonerMatchDto();
-        List<StatInfo> deathNoteStat = new ArrayList<StatInfo>();
-        List<StatInfo> deal = new ArrayList<StatInfo>();
-        List<StatInfo> tank = new ArrayList<StatInfo>();
-        List<StatInfo> vision = new ArrayList<StatInfo>();
-        List<StatInfo> towerDeal = new ArrayList<StatInfo>();
-        List<StatInfo> kdaScore = new ArrayList<StatInfo>();
-        List<StatRank> dealRank = new ArrayList<StatRank>();
-        List<StatRank> tankRank = new ArrayList<StatRank>();
-        List<StatRank> visionRank = new ArrayList<StatRank>();
-        List<StatRank> towerDealRank = new ArrayList<StatRank>();
-        List<StatRank> kdaScoreRank = new ArrayList<StatRank>();
+        List<StatInfoDto> deathNoteStat = new ArrayList<StatInfoDto>();
+        List<StatInfoDto> deal = new ArrayList<StatInfoDto>();
+        List<StatInfoDto> tank = new ArrayList<StatInfoDto>();
+        List<StatInfoDto> vision = new ArrayList<StatInfoDto>();
+        List<StatInfoDto> towerDeal = new ArrayList<StatInfoDto>();
+        List<StatInfoDto> kdaScore = new ArrayList<StatInfoDto>();
+        List<StatRankDto> dealRank = new ArrayList<StatRankDto>();
+        List<StatRankDto> tankRank = new ArrayList<StatRankDto>();
+        List<StatRankDto> visionRank = new ArrayList<StatRankDto>();
+        List<StatRankDto> towerDealRank = new ArrayList<StatRankDto>();
+        List<StatRankDto> kdaScoreRank = new ArrayList<StatRankDto>();
 
         int sum = 0;
         int deathNoteRank = 0;
@@ -56,11 +56,11 @@ public class SummonerInfoService {
             int kda = kills * 3 + assists * 2 - deaths * 2;
 
 
-            deal.add(new StatInfo(participantId, "deal", participantStatDto.getTotalDamageDealtToChampions()));
-            tank.add(new StatInfo(participantId, "tank", participantStatDto.getTotalDamageTaken()));
-            vision.add(new StatInfo(participantId, "vision", participantStatDto.getVisionScore()));
-            towerDeal.add(new StatInfo(participantId, "towerDeal", participantStatDto.getDamageDealtToTurrets()));
-            kdaScore.add(new StatInfo(participantId, "kdaScore", kda));
+            deal.add(new StatInfoDto(participantId, "deal", participantStatDto.getTotalDamageDealtToChampions()));
+            tank.add(new StatInfoDto(participantId, "tank", participantStatDto.getTotalDamageTaken()));
+            vision.add(new StatInfoDto(participantId, "vision", participantStatDto.getVisionScore()));
+            towerDeal.add(new StatInfoDto(participantId, "towerDeal", participantStatDto.getDamageDealtToTurrets()));
+            kdaScore.add(new StatInfoDto(participantId, "kdaScore", kda));
 
         }
         Collections.sort(deal, new ParticipantsComparator());
@@ -73,15 +73,15 @@ public class SummonerInfoService {
         for (int j = 1; j <= 10; j++) {
             for (int i = 0; i < 10; i++) {
                 if (deal.get(i).getParticipantId() == j)
-                    dealRank.add(new StatRank(j, 10 - i));
+                    dealRank.add(new StatRankDto(j, 10 - i));
                 if (tank.get(i).getParticipantId() == j)
-                    tankRank.add(new StatRank(j, 10 - i));
+                    tankRank.add(new StatRankDto(j, 10 - i));
                 if (vision.get(i).getParticipantId() == j)
-                    visionRank.add(new StatRank(j, 10 - i));
+                    visionRank.add(new StatRankDto(j, 10 - i));
                 if (towerDeal.get(i).getParticipantId() == j)
-                    towerDealRank.add(new StatRank(j, 10 - i));
+                    towerDealRank.add(new StatRankDto(j, 10 - i));
                 if (kdaScore.get(i).getParticipantId() == j)
-                    kdaScoreRank.add(new StatRank(j, 10 - i));
+                    kdaScoreRank.add(new StatRankDto(j, 10 - i));
 
             }
         }
@@ -90,7 +90,7 @@ public class SummonerInfoService {
         for (int i = 1; i <= 10; i++) {
             sum = 0;
             sum = (11 - compareRank(dealRank, i)) * 3 + (11 - compareRank(tankRank, i)) * 1 + (11 - compareRank(visionRank, i)) * 1 + (11 - compareRank(towerDealRank, i)) * 2 + (11 - compareRank(kdaScoreRank, i)) * 3;
-            deathNoteStat.add(new StatInfo(i, "deathNoteScore", sum));
+            deathNoteStat.add(new StatInfoDto(i, "deathNoteScore", sum));
         }
 
         Collections.sort(deathNoteStat, new ParticipantsComparator());
@@ -145,11 +145,11 @@ public class SummonerInfoService {
         return summonerMatchDto;
     }
 
-    private static int compareRank(List<StatRank> statRankList, int participantId) {
+    private static int compareRank(List<StatRankDto> statRankDtoList, int participantId) {
 
-        for (int i = 0; i < statRankList.size(); i++) {
-            if (statRankList.get(i).getParticipantId() == participantId)
-                return statRankList.get(i).getRank();
+        for (int i = 0; i < statRankDtoList.size(); i++) {
+            if (statRankDtoList.get(i).getParticipantId() == participantId)
+                return statRankDtoList.get(i).getRank();
         }
         return 0;
     }

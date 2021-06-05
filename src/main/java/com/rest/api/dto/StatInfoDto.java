@@ -1,4 +1,4 @@
-package com.rest.api.entity;
+package com.rest.api.dto;
 
 
 import lombok.AllArgsConstructor;
@@ -9,12 +9,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class StatInfo {
+public class StatInfoDto {
     public int participantId;
     public String type;
     public long stat;
 
-    public StatInfo(int participantId,long stat){
+    public StatInfoDto(int participantId, long stat){
         this.participantId = participantId;
         this.stat = stat;
     }

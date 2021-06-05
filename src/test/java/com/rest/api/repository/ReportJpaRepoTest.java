@@ -31,10 +31,10 @@ class ReportJpaRepoTest {
 
     @BeforeEach
     void beforeEach() {
-        Report report1 = new Report(null, true, "hideonbush", "이사람은 진짜입니다.", LocalDateTime.now(), LocalDateTime.now());
-        Report report2 = new Report(null, true, "hideonbush", "이사람은 진짜인가.", LocalDateTime.now(), LocalDateTime.now());
-        Report report3 = new Report(null, false, "hideonbush", "너무 좋아요.", LocalDateTime.now(), LocalDateTime.now());
-        Report report4 = new Report(null, false, "hideonbush", "너무 좋아요.", LocalDateTime.now(), LocalDateTime.now());
+        Report report1 = new Report(true, "hideonbush", "이사람은 진짜입니다.");
+        Report report2 = new Report(true, "hideonbush", "이사람은 진짜인가.");
+        Report report3 = new Report(false, "hideonbush", "너무 좋아요.");
+        Report report4 = new Report(false, "hideonbush", "너무 좋아요.");
 
         reportJpaRepo.save(report1);
         reportJpaRepo.save(report2);

@@ -7,6 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 
@@ -26,6 +27,7 @@ public class Report {
     private boolean isReport;
 
     @Column
+    @NotNull
     private String summonerName;
 
     @Column
@@ -37,5 +39,9 @@ public class Report {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-
+    public Report(boolean isReport, String summonerName, String content) {
+        this.isReport = isReport;
+        this.summonerName = summonerName;
+        this.content = content;
+    }
 }

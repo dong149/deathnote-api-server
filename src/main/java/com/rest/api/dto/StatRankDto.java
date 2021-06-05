@@ -1,4 +1,4 @@
-package com.rest.api.entity;
+package com.rest.api.dto;
 
 
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class StatRank {
+public class StatRankDto {
     public int participantId;
     public int rank;
 }
