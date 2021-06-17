@@ -1,5 +1,6 @@
 package com.rest.api.entity.summoner;
 
+import com.rest.api.entity.report.Report;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -57,7 +58,11 @@ public class Summoner {
 
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "MATCH_ID")
-    private List<Match> Matches;
+    private List<Match> matches;
+
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinColumn(name = "REPORT_ID")
+    private List<Report> reports;
 
     @CreationTimestamp
     private LocalDateTime updatedAt;

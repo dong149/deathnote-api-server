@@ -112,17 +112,11 @@ public class DeathnoteService {
                 .matchWin(matchWin)
                 .matchLose(matchLose)
                 .matchWinningRate(matchWinningRate)
-                .Matches(matches)
-                .build();
-
-        Report report =  Report.builder()
-                .isReport(true)
-                .content("감사합니다.")
-                .summonerName(summonerDto.getName())
+                .matches(matches)
                 .build();
 
 
-        AddSummonerAndDefaultReport(summoner,report);
+        summonerJpaRepo.save(summoner);
 
         return SummonerInfoDto.builder()
                 .trollerScore(matchFinalScore)
@@ -141,15 +135,6 @@ public class DeathnoteService {
 
 
     }
-
-
-    // TODO: 로직 추가 구현 필요
-    @Transactional
-    public void AddSummonerAndDefaultReport(Summoner summoner,Report report){
-        summonerJpaRepo.save(summoner);
-        reportJpaRepo.save(report);
-    }
-
 
 
 
