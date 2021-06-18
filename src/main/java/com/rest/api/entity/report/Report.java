@@ -16,12 +16,15 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "report")
+@Table(name = "reports")
 public class Report {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long reportId;
+
+    @Column
+    private String reportAccountId;
 
     @Column
     private boolean isReport;
@@ -39,7 +42,8 @@ public class Report {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    public Report(boolean isReport, String summonerName, String content) {
+    public Report(String reportAccountId, boolean isReport, String summonerName, String content) {
+        this.reportAccountId = reportAccountId;
         this.isReport = isReport;
         this.summonerName = summonerName;
         this.content = content;

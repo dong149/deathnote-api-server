@@ -14,6 +14,8 @@ import com.rest.api.repository.SummonerJpaRepo;
 import com.rest.api.service.riot.RiotService;
 import com.rest.api.util.ParticipantsComparator;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,10 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 
 @RequiredArgsConstructor
@@ -30,11 +36,16 @@ public class DeathnoteService {
 
     private final RiotService riotService;
     private final SummonerJpaRepo summonerJpaRepo;
-    private final ReportJpaRepo reportJpaRepo;
     private static final int TOTAL_SUMMONER = 10;
+
+    private static Logger logger = LoggerFactory.getLogger(DeathnoteService.class);
+    final ExecutorService executor = Executors.newFixedThreadPool(20);
 
     @Value("${lol.current.season}")
     private int CURRENT_SEASON;
+
+    @Value("${lol.game.size}")
+    private int GAME_MAX_SIZE;
 
     public SummonerInfoDto getSummonerInfoDtoWithSummonerName(String name) throws IOException, URISyntaxException {
 
@@ -43,23 +54,55 @@ public class DeathnoteService {
         int matchFinalScore = 0;
         int matchWin = 0;
         int matchLose = 0;
-        int matchWinningRate=0;
+        int matchWinningRate = 0;
 
 
-        SummonerDto summonerDto =  riotService.getSummonerDtoWithRiotAPIBySummonerName(name);
+        SummonerDto summonerDto = riotService.getSummonerDtoWithRiotAPIBySummonerName(name);
 
 
         // TODO: SummonerInfoDto와 매핑 필요
-        Optional<Summoner> summonerOptional =summonerJpaRepo.findById(summonerDto.getAccountId());
-        if(summonerOptional.isPresent()){
+        Optional<Summoner> summonerOptional = summonerJpaRepo.findById(summonerDto.getAccountId());
+        if (summonerOptional.isPresent()) {
+            Summoner summonerFromDB = summonerOptional.get();
+            List<SummonerMatchDto> summonerMatchDtoList = new ArrayList<>();
+            for(Match match : summonerFromDB.getMatches()){
+                // match -> summonerMatchDtoList
+                summonerMatchDtoList.add(SummonerMatchDto.builder()
+                .matchAssists(match.getMatchAssists())
+                        .matchChampion(match.getMatchChampion())
+                        .matchDealRank(match.getMatchDealRank())
+                        .matchDeaths(match.getMatchDeaths())
+                        .matchKdaScoreRank(match.getMatchKdaScoreRank())
+                        .matchKills(match.getMatchKills())
+                        .matchRank(match.getMatchRank())
+                        .matchTankRank(match.getMatchTankRank())
+                        .matchTowerDealRank(match.getMatchTowerDealRank())
+                        .matchWin(match.isMatchWin())
+                        .build()
+                );
+            }
+
+
+            logger.info(new StringBuilder()
+                    .append("DB에서 불러오기 성공")
+                    .toString()
+            );
             return SummonerInfoDto.builder()
-                    .summonerName(summonerDto.getName())
+                    .summonerName(summonerFromDB.getSummonerName())
+                    .trollerScore(summonerFromDB.getTrollerScore())
+                    .summonerTier(summonerFromDB.getSummonerTier())
+                    .summonerRank(summonerFromDB.getSummonerRank())
+                    .summonerMatch(summonerMatchDtoList)
+                    .summonerLevel(summonerFromDB.getSummonerLevel())
+                    .summonerIcon(summonerFromDB.getProfileIconId())
+                    .matchWinningRate(summonerFromDB.getMatchWinningRate())
+                    .matchLose(summonerFromDB.getMatchLose())
+                    .matchWin(summonerFromDB.getMatchWin())
+                    .matchCount(summonerFromDB.getMatchCount())
                     .build();
-
-
         }
 
-        MatchListDto matchListDto = riotService.getMatchListDtoWithRiotAPIByEncryptedAccountIdAndQueueAndSeason(summonerDto.getAccountId(),QueueType.SOLO_RANK_QUEUE,CURRENT_SEASON);
+        MatchListDto matchListDto = riotService.getMatchListDtoWithRiotAPIByEncryptedAccountIdAndQueueAndSeason(summonerDto.getAccountId(), QueueType.SOLO_RANK_QUEUE, CURRENT_SEASON);
         LeagueEntryDto leagueEntryDto = riotService.getLeagueEntryDtoWithRiotAPIByEncryptedId(summonerDto.getId());
         List<SummonerMatchDto> summonerMatchDtoList = new ArrayList<>();
         List<Match> matches = new ArrayList<>();
@@ -72,28 +115,59 @@ public class DeathnoteService {
         // MatchId를 gameIdList에 저장합니다.
         for (MatchReferenceDto curMatchReferenceDto : matchReferenceDtoList) {
             gameIdList.add(curMatchReferenceDto.getGameId());
-            if (gameIdList.size() >= 20) {
+            if (gameIdList.size() >= GAME_MAX_SIZE) {
                 break;
             }
         }
         matchCnt = gameIdList.size();
 
         /*
-        * TODO: gameIdList의 값들을 각각 API에 요청해야한다. 요청할 때, 동시에 여러번 호출하게끔 만들어야된다. 여기서 시간이 가장 많이 오바됨.
+         * TODO: gameIdList의 값들을 각각 API에 요청해야한다. 요청할 때, 동시에 여러번 호출하게끔 만들어야된다. 여기서 시간이 가장 많이 오바됨.
          */
         SummonerMatchDto summonerMatchDto;
-        for(Long gameId : gameIdList){
-            MatchDto matchDto = riotService.getMatchDtoWithRiotAPIByMatchId(gameId);
-            summonerMatchDto = getMatchScore(matchDto,encryptedAccountId);
-            summonerMatchDtoList.add(summonerMatchDto);
-            matches.add(summonerMatchDto.toEntity());
-            if(summonerMatchDto.isMatchWin()){
-                matchScoreSum += summonerMatchDto.getMatchRank();
-                matchWin++;
-            }else{
-                matchScoreSum += summonerMatchDto.getMatchRank()-1;
-                matchLose++;
+
+        final List<Future<SummonerMatchDto>> futures = new ArrayList<>();
+
+        for (Long gameId : gameIdList) {
+            Callable<SummonerMatchDto> callable = new Callable<SummonerMatchDto>() {
+                @Override
+                public SummonerMatchDto call() throws Exception {
+                    SummonerMatchDto result = getMatchScore(riotService.getMatchDtoWithRiotAPIByMatchId(gameId), encryptedAccountId);
+                    return result;
+                }
+            };
+            futures.add(executor.submit(callable));
+        }
+
+
+        try {
+            for (Future<SummonerMatchDto> item : futures) {
+
+                SummonerMatchDto summonerMatchDtoFuture = item.get();
+
+
+                summonerMatchDtoList.add(summonerMatchDtoFuture);
+                matches.add(summonerMatchDtoFuture.toEntity(summonerDto.getAccountId()));
+
+//                logger.info(
+//                        new StringBuilder()
+//                                .append('\n')
+//                                .append(summonerMatchDtoFuture.getMatchDeaths())
+//                                .append("테스트입니다.")
+//                                .toString()
+//                );
+
+
+                if (summonerMatchDtoFuture.isMatchWin()) {
+                    matchScoreSum += summonerMatchDtoFuture.getMatchRank();
+                    matchWin++;
+                } else {
+                    matchScoreSum += summonerMatchDtoFuture.getMatchRank() - 1;
+                    matchLose++;
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         matchFinalScore = (int) (11 - (matchScoreSum / matchCnt) * 1.0) * 10;
@@ -133,10 +207,7 @@ public class DeathnoteService {
                 .build();
 
 
-
     }
-
-
 
 
     public static SummonerMatchDto getMatchScore(MatchDto match, String accountId) {

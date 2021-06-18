@@ -30,11 +30,11 @@ public class ReportResponseDto {
 
 
     public ReportResponseDto(Report report) {
-        this(report.getId(),report.isReport(),report.getSummonerName(),report.getContent(),report.getCreatedAt(),report.getUpdatedAt());
+        this(report.getReportId(),report.isReport(),report.getSummonerName(),report.getContent(),report.getCreatedAt(),report.getUpdatedAt());
     }
     public static ReportResponseDto of(Report report){
         return ReportResponseDto.builder()
-                .reportId(report.getId())
+                .reportId(report.getReportId())
                 .isReport(report.isReport())
                 .summonerName(report.getSummonerName())
                 .content(report.getContent())

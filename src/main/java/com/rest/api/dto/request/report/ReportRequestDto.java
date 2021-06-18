@@ -18,6 +18,9 @@ public class ReportRequestDto {
     private boolean isReport;
 
     @NotBlank
+    private String accountId;
+
+    @NotBlank
     @Size(max = 50)
     private String summonerName;
 

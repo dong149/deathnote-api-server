@@ -13,7 +13,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "summoner")
+@Table(name = "summoners")
 public class Summoner {
 
     /**
@@ -57,11 +57,11 @@ public class Summoner {
     private String summonerRank;
 
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    @JoinColumn(name = "MATCH_ID")
+    @JoinColumn(name = "matchAccountId")
     private List<Match> matches;
 
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    @JoinColumn(name = "REPORT_ID")
+    @JoinColumn(name = "reportAccountId")
     private List<Report> reports;
 
     @CreationTimestamp

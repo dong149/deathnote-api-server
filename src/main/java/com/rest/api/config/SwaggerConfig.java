@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 @Configuration
 @EnableSwagger2
-@Profile({"local"})
+@Profile({"local","prod"})
 public class SwaggerConfig {
     private String version;
     private String title;

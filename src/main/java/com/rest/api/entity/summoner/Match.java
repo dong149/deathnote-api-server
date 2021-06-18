@@ -1,5 +1,6 @@
 package com.rest.api.entity.summoner;
 
+import com.rest.api.dto.result.SummonerMatchDto;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -8,7 +9,7 @@ import java.time.LocalDateTime;
 
 
 @Entity
-@Table(name = "match")
+@Table(name = "matches")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,8 +18,12 @@ public class Match {
 
 
     @Id
+    @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long matchId;
+
+    @Column
+    private String matchAccountId;
 
     @Column
     private int matchRank;
@@ -50,11 +55,14 @@ public class Match {
     @Column
     private int matchTowerDealRank;
 
+
+
     @CreationTimestamp
     private LocalDateTime createdAt;
 
 
-    public Match(int matchRank, boolean matchWin, int matchChampion, int matchKills, int matchDeaths, int matchAssists, int matchDealRank, int matchTankRank, int matchKdaScoreRank, int matchTowerDealRank) {
+    public Match(String matchAccountId,int matchRank, boolean matchWin, int matchChampion, int matchKills, int matchDeaths, int matchAssists, int matchDealRank, int matchTankRank, int matchKdaScoreRank, int matchTowerDealRank) {
+        this.matchAccountId = matchAccountId;
         this.matchRank = matchRank;
         this.matchWin = matchWin;
         this.matchChampion = matchChampion;
@@ -66,5 +74,7 @@ public class Match {
         this.matchKdaScoreRank = matchKdaScoreRank;
         this.matchTowerDealRank = matchTowerDealRank;
     }
+
+
 
 }

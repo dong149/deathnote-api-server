@@ -27,8 +27,8 @@ public class SummonerMatchDto {
     private int matchKdaScoreRank;
     private int matchTowerDealRank;
 
-    public Match toEntity() {
-        return new Match(this.matchRank,this.matchWin,this.matchChampion,this.matchKills,this.matchDeaths,this.matchAssists,this.matchDealRank,this.matchTankRank,this.matchKdaScoreRank,this.matchTowerDealRank);
+    public Match toEntity(String accountId) {
+        return new Match(accountId,this.matchRank,this.matchWin,this.matchChampion,this.matchKills,this.matchDeaths,this.matchAssists,this.matchDealRank,this.matchTankRank,this.matchKdaScoreRank,this.matchTowerDealRank);
     }
 
 }
