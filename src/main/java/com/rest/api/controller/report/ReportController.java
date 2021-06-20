@@ -4,6 +4,7 @@ package com.rest.api.controller.report;
 import com.rest.api.dto.request.report.ReportRequestDto;
 import com.rest.api.dto.response.BaseResponseDto;
 import com.rest.api.dto.response.ErrorResponseDto;
+import com.rest.api.dto.response.report.ReportListResponseDto;
 import com.rest.api.dto.response.report.ReportResponseDto;
 import com.rest.api.service.report.ReportService;
 import io.swagger.annotations.*;
@@ -42,9 +43,9 @@ public class ReportController {
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponseDto.class),
     })
     @GetMapping
-    public ResponseEntity<BaseResponseDto> getReportByName(@ApiParam(value = "소환사 이름", required = true) @RequestParam String name) {
+    public ResponseEntity<ReportListResponseDto> getReportByName(@ApiParam(value = "소환사 이름", required = true) @RequestParam String name) {
         List<ReportResponseDto> reportResponseDtos = reportService.getReportResponsesWithSummonerName(name);
-        return new ResponseEntity<>(new BaseResponseDto(HttpStatus.OK.value(), "데이터 조회 성공", reportResponseDtos), HttpStatus.OK);
+        return new ResponseEntity<>(new ReportListResponseDto(HttpStatus.OK.value(), "데이터 조회 성공", reportResponseDtos), HttpStatus.OK);
     }
 
     // TODO : 나머지 UPDATE, DELETE 등 구현하기

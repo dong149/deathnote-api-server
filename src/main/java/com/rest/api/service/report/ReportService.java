@@ -20,7 +20,7 @@ public class ReportService {
     public ReportResponseDto createReport(ReportRequestDto reportRequestDto){
         Report report = Report.builder()
                 .reportAccountId(reportRequestDto.getAccountId())
-                .summonerName(reportRequestDto.getSummonerName())
+                .summonerName(getFormattedSummonerName(reportRequestDto.getSummonerName()))
                 .content(reportRequestDto.getContent())
                 .isReport(reportRequestDto.isReport())
                 .build();

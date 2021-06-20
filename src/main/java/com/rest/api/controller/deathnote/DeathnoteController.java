@@ -21,23 +21,23 @@ import java.util.List;
 @Api(tags = {"2. Deathnote"})
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "api/v1")
+@RequestMapping(value = "api/v1/deathnote")
 public class DeathnoteController {
 
     private final DeathnoteService deathnoteService;
 
-    @GetMapping(value = "/deathnote")
-    public ResponseEntity<BaseResponseDto> getSummonerInfo(@RequestParam String name) {
+
+    @GetMapping(value = "/summoner")
+    public ResponseEntity<BaseResponseDto> getSummonerInfo(@RequestParam String name,boolean reload) {
         SummonerInfoDto summonerInfoDto = null;
         try{
             System.out.println(name);
-            summonerInfoDto = deathnoteService.getSummonerInfoDtoWithSummonerName(name);
+            summonerInfoDto = deathnoteService.getSummonerInfoDtoWithSummonerName(name,reload);
         }catch(Exception e){
             e.printStackTrace();
         }
 
         return new ResponseEntity<>(new BaseResponseDto(HttpStatus.OK.value(), "데이터 조회 성공", summonerInfoDto), HttpStatus.OK);
     }
-
 
 }
