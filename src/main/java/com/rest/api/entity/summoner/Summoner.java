@@ -3,6 +3,7 @@ package com.rest.api.entity.summoner;
 import com.rest.api.entity.report.Report;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -25,6 +26,9 @@ public class Summoner {
 
     @Column
     private String summonerName;
+    // Decoded summonerName
+    @Column
+    private String summonerDecodedName;
     // Encrypted summoner ID
     @Column
     private String summonerId;
@@ -65,6 +69,9 @@ public class Summoner {
     private List<Report> reports;
 
     @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
     private LocalDateTime updatedAt;
 
 

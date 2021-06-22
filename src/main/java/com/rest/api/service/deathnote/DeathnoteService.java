@@ -1,6 +1,7 @@
 package com.rest.api.service.deathnote;
 
 import com.rest.api.dto.*;
+import com.rest.api.dto.response.search.SummonerKeywordResponseDto;
 import com.rest.api.dto.result.SummonerInfoDto;
 import com.rest.api.dto.result.SummonerMatchDto;
 import com.rest.api.dto.StatInfoDto;
@@ -11,6 +12,7 @@ import com.rest.api.enumerator.QueueType;
 import com.rest.api.repository.MatchJpaRepo;
 import com.rest.api.repository.SummonerJpaRepo;
 import com.rest.api.service.riot.RiotService;
+import com.rest.api.util.NameFormatter;
 import com.rest.api.util.ParticipantsComparator;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -47,7 +49,7 @@ public class DeathnoteService {
     @Value("${lol.game.size}")
     private int GAME_MAX_SIZE;
 
-    public SummonerInfoDto getSummonerInfoDtoWithSummonerName(String name,boolean reload) throws IOException, URISyntaxException {
+    public SummonerInfoDto getSummonerInfoDtoWithSummonerName(String name, boolean reload) throws IOException, URISyntaxException {
 
         int matchCnt = 0;
         int matchScoreSum = 0;
@@ -62,13 +64,13 @@ public class DeathnoteService {
 
         // TODO: SummonerInfoDto와 매핑 필요
         Optional<Summoner> summonerOptional = summonerJpaRepo.findById(summonerDto.getAccountId());
-        if (summonerOptional.isPresent()&&!reload) {
+        if (summonerOptional.isPresent() && !reload) {
             Summoner summonerFromDB = summonerOptional.get();
             List<SummonerMatchDto> summonerMatchDtoList = new ArrayList<>();
-            for(Match match : summonerFromDB.getMatches()){
+            for (Match match : summonerFromDB.getMatches()) {
                 // match -> summonerMatchDtoList
                 summonerMatchDtoList.add(SummonerMatchDto.builder()
-                .matchAssists(match.getMatchAssists())
+                        .matchAssists(match.getMatchAssists())
                         .matchChampion(match.getMatchChampion())
                         .matchDealRank(match.getMatchDealRank())
                         .matchDeaths(match.getMatchDeaths())
@@ -102,7 +104,7 @@ public class DeathnoteService {
                     .matchCount(summonerFromDB.getMatchCount())
                     .build();
         }
-        if(reload){
+        if (reload) {
             matchJpaRepo.deleteAllByMatchAccountId(summonerDto.getAccountId());
             logger.info(new StringBuilder()
                     .append("Match 정보 Reload")
@@ -157,14 +159,6 @@ public class DeathnoteService {
                 summonerMatchDtoList.add(summonerMatchDtoFuture);
                 matches.add(summonerMatchDtoFuture.toEntity(summonerDto.getAccountId()));
 
-//                logger.info(
-//                        new StringBuilder()
-//                                .append('\n')
-//                                .append(summonerMatchDtoFuture.getMatchDeaths())
-//                                .append("테스트입니다.")
-//                                .toString()
-//                );
-
 
                 if (summonerMatchDtoFuture.isMatchWin()) {
                     matchScoreSum += summonerMatchDtoFuture.getMatchRank();
@@ -179,11 +173,12 @@ public class DeathnoteService {
         }
 
 
-        matchFinalScore = (int)((11 - ((1.0)*matchScoreSum / matchCnt)) * 10);
+        matchFinalScore = (int) ((11 - ((1.0) * matchScoreSum / matchCnt)) * 10);
         matchWinningRate = (int) ((1.0) * matchWin / (matchWin + matchLose) * 100);
 
         Summoner summoner = Summoner.builder()
                 .summonerName(summonerDto.getName())
+                .summonerDecodedName(NameFormatter.getFormattedSummonerName(summonerDto.getName()))
                 .summonerRank(leagueEntryDto.getRank())
                 .summonerTier(leagueEntryDto.getTier())
                 .trollerScore(matchFinalScore)
@@ -349,6 +344,28 @@ public class DeathnoteService {
         return summonerMatchDto;
     }
 
+    public SummonerKeywordResponseDto getSummonerNameWithKeyword(String keyword){
+        String formattedKeyword = NameFormatter.getFormattedSummonerName(keyword);
+        List<Summoner> summonerList = summonerJpaRepo.search(formattedKeyword);
+        List<SummonerKeywordDto> summonerKeywordDtoList = new ArrayList<>();
+        for(Summoner summoner :summonerList){
+            summonerKeywordDtoList.add(SummonerKeywordDto
+                    .builder()
+                    .summonerIcon(summoner.getProfileIconId())
+                    .summonerLevel(summoner.getSummonerLevel())
+                    .summonerName(summoner.getSummonerName())
+                    .SummonerRank(summoner.getSummonerRank())
+                    .SummonerTier(summoner.getSummonerTier())
+                    .build()
+            );
+        }
+
+        return SummonerKeywordResponseDto.builder().summonerKeywordDtoList(summonerKeywordDtoList).build();
+    }
+
+
+
+
     private static int compareRank(List<StatRankDto> statRankDtoList, int participantId) {
 
         for (int i = 0; i < statRankDtoList.size(); i++) {
@@ -357,6 +374,7 @@ public class DeathnoteService {
         }
         return 0;
     }
+
 
 
 }

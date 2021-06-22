@@ -55,8 +55,6 @@ public class Match {
     @Column
     private int matchTowerDealRank;
 
-
-
     @CreationTimestamp
     private LocalDateTime createdAt;
 
