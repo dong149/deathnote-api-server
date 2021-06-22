@@ -1,6 +1,7 @@
 package com.rest.api.repository;
 
 import com.rest.api.entity.summoner.Summoner;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,7 +13,7 @@ public interface SummonerJpaRepo extends JpaRepository<Summoner, String> {
 
 
     @Transactional(readOnly = true)
-    @Query("SELECT s FROM Summoner as s where s.summonerDecodedName like %:keyword%")
-    List<Summoner> search(@Param("keyword") String keyword);
+    @Query("SELECT s FROM Summoner as s where s.summonerDecodedName like :keyword%")
+    List<Summoner> search(@Param("keyword") String keyword, Pageable pageable);
 
 }

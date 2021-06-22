@@ -18,6 +18,9 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -344,9 +347,13 @@ public class DeathnoteService {
         return summonerMatchDto;
     }
 
+    Pageable pageable = PageRequest.of(0, 4, Sort.by(Sort.Direction.DESC, "updatedAt"));
     public SummonerKeywordResponseDto getSummonerNameWithKeyword(String keyword){
         String formattedKeyword = NameFormatter.getFormattedSummonerName(keyword);
-        List<Summoner> summonerList = summonerJpaRepo.search(formattedKeyword);
+        if(formattedKeyword.equals("")){
+            return null;
+        }
+        List<Summoner> summonerList = summonerJpaRepo.search(formattedKeyword,pageable);
         List<SummonerKeywordDto> summonerKeywordDtoList = new ArrayList<>();
         for(Summoner summoner :summonerList){
             summonerKeywordDtoList.add(SummonerKeywordDto
