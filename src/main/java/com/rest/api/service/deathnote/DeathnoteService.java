@@ -178,7 +178,8 @@ public class DeathnoteService {
             e.printStackTrace();
         }
 
-        matchFinalScore = (int) (11 - (matchScoreSum / matchCnt) * 1.0) * 10;
+
+        matchFinalScore = (int)((11 - ((1.0)*matchScoreSum / matchCnt)) * 10);
         matchWinningRate = (int) ((1.0) * matchWin / (matchWin + matchLose) * 100);
 
         Summoner summoner = Summoner.builder()
