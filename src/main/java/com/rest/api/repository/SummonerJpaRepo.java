@@ -11,6 +11,9 @@ import java.util.List;
 
 public interface SummonerJpaRepo extends JpaRepository<Summoner, String> {
 
+    @Transactional(readOnly = true)
+    @Query("SELECT s FROM Summoner as s ORDER BY s.trollerScore ASC")
+    List<Summoner> findTrollerRanker(@Param("num") int num, Pageable pageable);
 
     @Transactional(readOnly = true)
     @Query("SELECT s FROM Summoner as s where s.summonerDecodedName like :keyword%")

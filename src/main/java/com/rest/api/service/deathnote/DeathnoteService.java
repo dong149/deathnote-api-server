@@ -1,6 +1,7 @@
 package com.rest.api.service.deathnote;
 
 import com.rest.api.dto.*;
+import com.rest.api.dto.response.rank.TrollerRankerResponseDto;
 import com.rest.api.dto.response.search.SummonerKeywordResponseDto;
 import com.rest.api.dto.result.SummonerInfoDto;
 import com.rest.api.dto.result.SummonerMatchDto;
@@ -347,13 +348,37 @@ public class DeathnoteService {
         return summonerMatchDto;
     }
 
-    Pageable pageable = PageRequest.of(0, 4, Sort.by(Sort.Direction.DESC, "updatedAt"));
+
+    public TrollerRankerResponseDto getTrollerRankerListWithNum(int num){
+        Pageable trollerRankerPageable = PageRequest.of(0, 100, Sort.by(Sort.Direction.DESC, "trollerScore"));
+        List<Summoner> summonerList = summonerJpaRepo.findTrollerRanker(num,trollerRankerPageable);
+        List<TrollerRankerDto> trollerRankerDtoList = new ArrayList<>();
+        for(Summoner summoner:summonerList){
+            trollerRankerDtoList.add(TrollerRankerDto
+                    .builder()
+                    .summonerIcon(summoner.getProfileIconId())
+                    .trollerScore(summoner.getTrollerScore())
+                    .summonerLevel(summoner.getSummonerLevel())
+                    .summonerName(summoner.getSummonerName())
+                    .SummonerRank(summoner.getSummonerRank())
+                    .SummonerTier(summoner.getSummonerTier())
+                    .build()
+            );
+        }
+        return TrollerRankerResponseDto.builder().trollerRankerDtoList(trollerRankerDtoList).build();
+    }
+
+
+
+
+
+    static Pageable keywordPageable = PageRequest.of(0, 4, Sort.by(Sort.Direction.DESC, "updatedAt"));
     public SummonerKeywordResponseDto getSummonerNameWithKeyword(String keyword){
         String formattedKeyword = NameFormatter.getFormattedSummonerName(keyword);
         if(formattedKeyword.equals("")){
             return null;
         }
-        List<Summoner> summonerList = summonerJpaRepo.search(formattedKeyword,pageable);
+        List<Summoner> summonerList = summonerJpaRepo.search(formattedKeyword,keywordPageable);
         List<SummonerKeywordDto> summonerKeywordDtoList = new ArrayList<>();
         for(Summoner summoner :summonerList){
             summonerKeywordDtoList.add(SummonerKeywordDto
