@@ -48,8 +48,6 @@ public class ReportController {
         return new ResponseEntity<>(new ReportListResponseDto(HttpStatus.OK.value(), "데이터 조회 성공", reportResponseDtos), HttpStatus.OK);
     }
 
-    // TODO : 나머지 UPDATE, DELETE 등 구현하기
-
     @ApiOperation(value = "report", notes = "report 수정")
     @ApiResponses({
             @ApiResponse(code = 200, message = "report 수정 성공"),
@@ -63,6 +61,21 @@ public class ReportController {
 
         return new ResponseEntity<>(new ReportListResponseDto(HttpStatus.OK.value(), "데이터 수정 성공", reportResponseDtos), HttpStatus.OK);
     }
+
+    @ApiOperation(value = "report", notes = "report 삭제")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "report 삭제 성공"),
+            @ApiResponse(code = 404, message = "존재하지 않는 report 접근"),
+            @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponseDto.class),
+    })
+    @DeleteMapping
+    public ResponseEntity<ReportListResponseDto> deleteReportByReportId(@ApiParam(value = "소환사 이름", required = true) @RequestParam String reportId) {
+        List<ReportResponseDto> reportResponseDtos = null;
+        // TODO: Report delete by Id. (check reachable report contents)
+
+        return new ResponseEntity<>(new ReportListResponseDto(HttpStatus.OK.value(), "데이터 삭제 성공", reportResponseDtos), HttpStatus.OK);
+    }
+    
 //
 //
 //    @ApiOperation(value = "리폿", notes = "리폿/칭찬 내용을 작성합니다.")
