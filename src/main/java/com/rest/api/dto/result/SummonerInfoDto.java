@@ -24,6 +24,7 @@ public class SummonerInfoDto {
         ( 매 판 등수, 어떤 챔피언을 선택했는지, kda 정보 )
      **/
     private String summonerName;
+    private String accountId;
     private int trollerScore;
     private int matchCount;
     private int matchWinningRate;

@@ -3,6 +3,7 @@ package com.rest.api.dto.result;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.rest.api.entity.summoner.Match;
 import lombok.*;
 
 @Getter
@@ -14,10 +15,7 @@ import lombok.*;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SummonerMatchDto {
-    /**
-     4. 매게임 정보 (랭크 게임만 해당)
-     ( 매 판 등수, 어떤 챔피언을 선택했는지, kda 정보 )
-     **/
+
     private int matchRank;
     private boolean matchWin;
     private int matchChampion;
@@ -29,5 +27,8 @@ public class SummonerMatchDto {
     private int matchKdaScoreRank;
     private int matchTowerDealRank;
 
+    public Match toEntity(String accountId) {
+        return new Match(accountId,this.matchRank,this.matchWin,this.matchChampion,this.matchKills,this.matchDeaths,this.matchAssists,this.matchDealRank,this.matchTankRank,this.matchKdaScoreRank,this.matchTowerDealRank);
+    }
 
 }
