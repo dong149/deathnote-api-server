@@ -24,9 +24,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -53,7 +50,7 @@ public class DeathnoteService {
     @Value("${lol.game.size}")
     private int GAME_MAX_SIZE;
 
-    public SummonerInfoDto getSummonerInfoDtoWithSummonerName(String name, boolean reload) throws IOException, URISyntaxException {
+    public SummonerInfoDto getSummonerInfoDtoWithSummonerName(String name, boolean reload) {
 
         int matchCnt = 0;
         int matchScoreSum = 0;
@@ -62,9 +59,9 @@ public class DeathnoteService {
         int matchLose = 0;
         int matchWinningRate = 0;
 
-
         SummonerDto summonerDto = riotService.getSummonerDtoWithRiotAPIBySummonerName(name);
 
+        System.out.println("실행중");
 
         // TODO: SummonerInfoDto와 매핑 필요
         Optional<Summoner> summonerOptional = summonerJpaRepo.findById(summonerDto.getAccountId());
@@ -349,11 +346,11 @@ public class DeathnoteService {
     }
 
 
-    public TrollerRankerResponseDto getTrollerRankerListWithNum(int num){
+    public TrollerRankerResponseDto getTrollerRankerListWithNum(int num) {
         Pageable trollerRankerPageable = PageRequest.of(0, 100, Sort.by(Sort.Direction.DESC, "trollerScore"));
-        List<Summoner> summonerList = summonerJpaRepo.findTrollerRanker(num,trollerRankerPageable);
+        List<Summoner> summonerList = summonerJpaRepo.findTrollerRanker(num, trollerRankerPageable);
         List<TrollerRankerDto> trollerRankerDtoList = new ArrayList<>();
-        for(Summoner summoner:summonerList){
+        for (Summoner summoner : summonerList) {
             trollerRankerDtoList.add(TrollerRankerDto
                     .builder()
                     .summonerIcon(summoner.getProfileIconId())
@@ -369,18 +366,16 @@ public class DeathnoteService {
     }
 
 
-
-
-
     static Pageable keywordPageable = PageRequest.of(0, 4, Sort.by(Sort.Direction.DESC, "updatedAt"));
-    public SummonerKeywordResponseDto getSummonerNameWithKeyword(String keyword){
+
+    public SummonerKeywordResponseDto getSummonerNameWithKeyword(String keyword) {
         String formattedKeyword = NameFormatter.getFormattedSummonerName(keyword);
-        if(formattedKeyword.equals("")){
+        if (formattedKeyword.equals("")) {
             return null;
         }
-        List<Summoner> summonerList = summonerJpaRepo.search(formattedKeyword,keywordPageable);
+        List<Summoner> summonerList = summonerJpaRepo.search(formattedKeyword, keywordPageable);
         List<SummonerKeywordDto> summonerKeywordDtoList = new ArrayList<>();
-        for(Summoner summoner :summonerList){
+        for (Summoner summoner : summonerList) {
             summonerKeywordDtoList.add(SummonerKeywordDto
                     .builder()
                     .summonerIcon(summoner.getProfileIconId())
@@ -396,8 +391,6 @@ public class DeathnoteService {
     }
 
 
-
-
     private static int compareRank(List<StatRankDto> statRankDtoList, int participantId) {
 
         for (int i = 0; i < statRankDtoList.size(); i++) {
@@ -406,7 +399,6 @@ public class DeathnoteService {
         }
         return 0;
     }
-
 
 
 }

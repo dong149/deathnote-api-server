@@ -28,14 +28,7 @@ public class RiotAPIController {
     @ApiOperation(value = "소환자 정보", notes = "이름을 통해 소환사 정보를 return한다.")
     @GetMapping(value = "/summoner")
     public SummonerDto getSummoner(@ApiParam(value = "소환사 이름", required = true) @RequestParam String name) {
-
-        SummonerDto summonerDto = null;
-        try {
-            summonerDto = riotService.getSummonerDtoWithRiotAPIBySummonerName(name);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return summonerDto;
+        return riotService.getSummonerDtoWithRiotAPIBySummonerName(name);
     }
 
 

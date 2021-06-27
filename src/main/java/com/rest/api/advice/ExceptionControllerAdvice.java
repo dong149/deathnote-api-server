@@ -9,17 +9,23 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice("com.rest.api.controller")
+import java.util.ArrayList;
+
+@RestControllerAdvice(annotations = RestController.class)
 @Slf4j
 public class ExceptionControllerAdvice {
+    /**
+     * @param e : RiotAPIService 에서 발생하는 에러들
+     * @return : ErrorResponseDto
+     */
     @ExceptionHandler(SummonerNotFoundException.class)
-    public ResponseEntity<ErrorResponseDto> notFoundException(SummonerNotFoundException e){
-        log.error(e.getMessage(),e);
-        return error(ErrorType.NOT_FOUND_ERROR,HttpStatus.NOT_FOUND);
+    public ResponseEntity<ErrorResponseDto> handleSummonerNotFoundException(SummonerNotFoundException e) {
+        log.error(e.getMessage(), e);
+        return error(ErrorType.NOT_FOUND_ERROR, HttpStatus.NOT_FOUND, e.getMessage());
     }
-
 
     @ExceptionHandler(RiotAPIBadRequestException.class)
     private ResponseEntity<ErrorResponseDto> BadRequestException(RiotAPIBadRequestException e) {
@@ -28,12 +34,13 @@ public class ExceptionControllerAdvice {
     }
 
     private ResponseEntity<ErrorResponseDto> error(final ErrorType errorType, final HttpStatus httpStatus) {
-        return new ResponseEntity<>(new ErrorResponseDto(errorType.getErrorCode(), errorType.getErrorMessage()), httpStatus);
+        return new ResponseEntity<>(new ErrorResponseDto(errorType.getErrorCode(), errorType.getErrorMessage(), new ArrayList<>()), httpStatus);
     }
 
     private ResponseEntity<ErrorResponseDto> error(final ErrorType errorType, final HttpStatus httpStatus, String customMessage) {
-        return new ResponseEntity<>(new ErrorResponseDto(errorType.getErrorCode(), customMessage), httpStatus);
+        return new ResponseEntity<>(new ErrorResponseDto(errorType.getErrorCode(), customMessage, new ArrayList<>()), httpStatus);
     }
+
     //TODO: Exception Handler 추가 설정해주기.
 }
 
