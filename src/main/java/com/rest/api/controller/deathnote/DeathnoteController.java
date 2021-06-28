@@ -8,8 +8,10 @@ import com.rest.api.dto.response.rank.TrollerRankerResponseDto;
 import com.rest.api.dto.response.search.SummonerKeywordResponseDto;
 import com.rest.api.dto.result.SummonerInfoDto;
 import com.rest.api.service.deathnote.DeathnoteService;
+import com.rest.api.service.deathnote.batch.DeathnoteBatch;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +27,10 @@ import java.net.URISyntaxException;
 public class DeathnoteController {
 
     private final DeathnoteService deathnoteService;
+    private final DeathnoteBatch deathnoteBatch;
 
+    @Value("${deathnote.key}")
+    private String ADMIN_KEY;
 
     @ApiOperation(value = "summonerInfo", notes = "summonerInfo 조회")
     @ApiResponses({
@@ -65,6 +70,27 @@ public class DeathnoteController {
         }
         return new ResponseEntity<>(new BaseResponseDto(HttpStatus.OK.value(), "데이터 조회 성공", trollerRankerResponseDto), HttpStatus.OK);
     }
+
+
+
+
+
+    @ApiOperation(value = "key", notes = "매치 정보 배치 작업")
+    @GetMapping(value = "/match/batch")
+    public String doMatchBatch(@ApiParam(value = "관리자 키", required = true) @RequestParam String key) {
+
+        if(!ADMIN_KEY.equals(key)){
+            return "키가 잘못되었습니다.";
+        }
+        try {
+            deathnoteBatch.doMatchUpdateBatch();
+            return "완료 되었습니다.";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "배치 작업 중 오류가 발생했습니다.";
+        }
+    }
+
 
 
 }

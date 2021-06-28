@@ -49,14 +49,18 @@ public class RiotService {
         }
     }
 
-    public MatchListDto getMatchListDtoWithRiotAPIByEncryptedAccountId(String encryptedAccountId) throws URISyntaxException, IOException {
-        String requestUrl = UriComponentsBuilder
-                .fromUriString("https://kr.api.riotgames.com/lol/match/v4/matchlists/by-account/")
-                .path(encryptedAccountId)
-                .queryParam("api_key", API_KEY)
-                .toUriString();
-        URI uri = new URI(requestUrl);
-        return objectMapper.readValue(restTemplate.getForEntity(uri, String.class).getBody(), MatchListDto.class);
+    public MatchListDto getMatchListDtoWithRiotAPIByEncryptedAccountId(String encryptedAccountId){
+        try {
+            String requestUrl = UriComponentsBuilder
+                    .fromUriString("https://kr.api.riotgames.com/lol/match/v4/matchlists/by-account/")
+                    .path(encryptedAccountId)
+                    .queryParam("api_key", API_KEY)
+                    .toUriString();
+            URI uri = new URI(requestUrl);
+            return objectMapper.readValue(restTemplate.getForEntity(uri, String.class).getBody(), MatchListDto.class);
+        }catch (Exception e) {
+            throw new SummonerNotFoundException("무지성으로 가져오는 매치 List 정보가 존재하지 않습니다. ");
+        }
     }
 
 

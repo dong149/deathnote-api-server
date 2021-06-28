@@ -19,4 +19,8 @@ public interface SummonerJpaRepo extends JpaRepository<Summoner, String> {
     @Query("SELECT s FROM Summoner as s where s.summonerDecodedName like :keyword%")
     List<Summoner> search(@Param("keyword") String keyword, Pageable pageable);
 
+
+    List<Summoner> findAll();
+
+
 }
