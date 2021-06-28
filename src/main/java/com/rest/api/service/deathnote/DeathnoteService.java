@@ -89,6 +89,7 @@ public class DeathnoteService {
                     .matchLose(summonerFromDB.getMatchLose())
                     .matchWin(summonerFromDB.getMatchWin())
                     .matchCount(summonerFromDB.getMatchCount())
+                    .updatedAt(summonerFromDB.getUpdatedAt())
                     .build();
         }
         if (reload) {
@@ -211,7 +212,7 @@ public class DeathnoteService {
                     .build()
             );
         }
-        return TrollerRankerResponseDto.builder().trollerRankerDtoList(trollerRankerDtoList).build();
+        return TrollerRankerResponseDto.builder().rankList(trollerRankerDtoList).build();
     }
 
 
