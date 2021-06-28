@@ -1,14 +1,10 @@
 package com.rest.api.service.deathnote;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rest.api.config.AppConfig;
 import com.rest.api.dto.*;
 import com.rest.api.dto.response.rank.TrollerRankerResponseDto;
 import com.rest.api.dto.response.search.SummonerKeywordResponseDto;
 import com.rest.api.dto.result.SummonerInfoDto;
 import com.rest.api.dto.result.SummonerMatchDto;
-import com.rest.api.dto.StatInfoDto;
-import com.rest.api.dto.StatRankDto;
 import com.rest.api.entity.summoner.Match;
 import com.rest.api.entity.summoner.Summoner;
 import com.rest.api.enumerator.QueueType;
@@ -16,7 +12,6 @@ import com.rest.api.repository.MatchJpaRepo;
 import com.rest.api.repository.SummonerJpaRepo;
 import com.rest.api.service.riot.RiotService;
 import com.rest.api.util.NameFormatter;
-import com.rest.api.util.ParticipantsComparator;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -39,7 +34,6 @@ import java.util.concurrent.Future;
 public class DeathnoteService {
 
 
-
     private final RiotService riotService;
     private final SummonerJpaRepo summonerJpaRepo;
     private final MatchJpaRepo matchJpaRepo;
@@ -55,7 +49,6 @@ public class DeathnoteService {
     private int GAME_MAX_SIZE;
 
 
-
     public SummonerInfoDto getSummonerInfoDtoWithSummonerName(String name, boolean reload) {
 
         int matchCnt = 0;
@@ -69,28 +62,13 @@ public class DeathnoteService {
 
         System.out.println("실행중");
 
-        // TODO: SummonerInfoDto와 매핑 필요
         Optional<Summoner> summonerOptional = summonerJpaRepo.findById(summonerDto.getAccountId());
         if (summonerOptional.isPresent() && !reload) {
             Summoner summonerFromDB = summonerOptional.get();
             List<SummonerMatchDto> summonerMatchDtoList = new ArrayList<>();
             for (Match match : summonerFromDB.getMatches()) {
 
-                summonerMatchDtoList.add(modelMapper.map(match,SummonerMatchDto.class));
-                // match -> summonerMatchDtoList
-//                summonerMatchDtoList.add(SummonerMatchDto.builder()
-//                        .matchAssists(match.getMatchAssists())
-//                        .matchChampion(match.getMatchChampion())
-//                        .matchDealRank(match.getMatchDealRank())
-//                        .matchDeaths(match.getMatchDeaths())
-//                        .matchKdaScoreRank(match.getMatchKdaScoreRank())
-//                        .matchKills(match.getMatchKills())
-//                        .matchRank(match.getMatchRank())
-//                        .matchTankRank(match.getMatchTankRank())
-//                        .matchTowerDealRank(match.getMatchTowerDealRank())
-//                        .matchWin(match.isMatchWin())
-//                        .build()
-//                );
+                summonerMatchDtoList.add(modelMapper.map(match, SummonerMatchDto.class));
             }
 
 
@@ -139,20 +117,13 @@ public class DeathnoteService {
             }
         }
         matchCnt = gameIdList.size();
-
-        /*
-         * TODO: gameIdList의 값들을 각각 API에 요청해야한다. 요청할 때, 동시에 여러번 호출하게끔 만들어야된다. 여기서 시간이 가장 많이 오바됨.
-         */
-        SummonerMatchDto summonerMatchDto;
-
         final List<Future<SummonerMatchDto>> futures = new ArrayList<>();
 
         for (Long gameId : gameIdList) {
             Callable<SummonerMatchDto> callable = new Callable<SummonerMatchDto>() {
                 @Override
                 public SummonerMatchDto call() throws Exception {
-                    SummonerMatchDto result = DeathnoteServiceHelper.getMatchScore(riotService.getMatchDtoWithRiotAPIByMatchId(gameId), encryptedAccountId);
-                    return result;
+                    return DeathnoteServiceHelper.getMatchScore(riotService.getMatchDtoWithRiotAPIByMatchId(gameId), encryptedAccountId);
                 }
             };
             futures.add(executor.submit(callable));
@@ -182,7 +153,7 @@ public class DeathnoteService {
         }
 
 
-        matchFinalScore = (int) ((11 - ((1.0) * matchScoreSum / matchCnt)) * 10);
+        matchFinalScore = (int) ((10 - ((1.0) * matchScoreSum / matchCnt)) * 10);
         matchWinningRate = (int) ((1.0) * matchWin / (matchWin + matchLose) * 100);
 
         Summoner summoner = Summoner.builder()
@@ -195,10 +166,10 @@ public class DeathnoteService {
                 .summonerId(summonerDto.getId())
                 .profileIconId(summonerDto.getProfileIconId())
                 .summonerLevel(summonerDto.getSummonerLevel())
-                .matchCount(matchCnt)
-                .matchWin(matchWin)
-                .matchLose(matchLose)
-                .matchWinningRate(matchWinningRate)
+                .matchCount(leagueEntryDto.getWins()+leagueEntryDto.getLosses())
+                .matchWin(leagueEntryDto.getWins())
+                .matchLose(leagueEntryDto.getLosses())
+                .matchWinningRate((int) ((1.0) * leagueEntryDto.getWins() / (leagueEntryDto.getWins()+leagueEntryDto.getLosses()) * 100))
                 .matches(matches)
                 .build();
 
@@ -214,10 +185,10 @@ public class DeathnoteService {
                 .summonerMatch(summonerMatchDtoList)
                 .summonerLevel(summonerDto.getSummonerLevel())
                 .summonerIcon(summonerDto.getProfileIconId())
-                .matchWinningRate(matchWinningRate)
-                .matchLose(matchLose)
-                .matchWin(matchWin)
-                .matchCount(matchCnt)
+                .matchWinningRate((int) ((1.0) * leagueEntryDto.getWins() / (leagueEntryDto.getWins()+leagueEntryDto.getLosses()) * 100))
+                .matchLose(leagueEntryDto.getLosses())
+                .matchWin(leagueEntryDto.getWins())
+                .matchCount(leagueEntryDto.getWins()+leagueEntryDto.getLosses())
                 .build();
 
 
@@ -267,7 +238,6 @@ public class DeathnoteService {
 
         return SummonerKeywordResponseDto.builder().summonerKeywordDtoList(summonerKeywordDtoList).build();
     }
-
 
 
 }
