@@ -1,5 +1,6 @@
 package com.rest.api.entity.summoner;
 
+import com.rest.api.entity.note.Note;
 import com.rest.api.entity.report.Report;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -67,6 +68,10 @@ public class Summoner {
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "reportAccountId")
     private List<Report> reports;
+
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinColumn(name = "noteAccountId")
+    private List<Note> notes;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
