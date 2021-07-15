@@ -13,5 +13,5 @@ import java.util.List;
 @Getter
 @Setter
 public class TrollerRankerResponseDto {
-    private List<TrollerRankerDto> trollerRankerDtoList;
+    private List<TrollerRankerDto> rankList;
 }

@@ -30,6 +30,8 @@ public class SummonerResponseDto {
 
     private LocalDateTime createdAt;
 
+    private LocalDateTime updatedAt;
+
     public SummonerResponseDto(String name, LocalDateTime createdAt) {
         this.name = name;
         this.createdAt = createdAt;
