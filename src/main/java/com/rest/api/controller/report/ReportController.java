@@ -43,8 +43,8 @@ public class ReportController {
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponseDto.class),
     })
     @GetMapping
-    public ResponseEntity<ReportListResponseDto> getReportByName(@ApiParam(value = "소환사 이름", required = true) @RequestParam String name) {
-        List<ReportResponseDto> reportResponseDtos = reportService.getReportResponsesWithSummonerName(name);
+    public ResponseEntity<ReportListResponseDto> getReportByAccountId(@ApiParam(value = "소환사 ID", required = true) @RequestParam String accountId) {
+        List<ReportResponseDto> reportResponseDtos = reportService.getReportResponsesWithAccountId(accountId);
         return new ResponseEntity<>(new ReportListResponseDto(HttpStatus.OK.value(), "데이터 조회 성공", reportResponseDtos), HttpStatus.OK);
     }
 

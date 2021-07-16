@@ -11,6 +11,10 @@ public class ReportServiceHelper {
         return reportJpaRepo.findAllBySummonerName(summonerName);
     }
 
+    public static List<Report> findAllExistingByAccountId(ReportJpaRepo reportJpaRepo,String accountId){
+        return reportJpaRepo.findAllByReportAccountId(accountId);
+    }
+
 
 
 
