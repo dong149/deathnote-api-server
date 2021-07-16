@@ -22,6 +22,9 @@ public class Summoner {
      * Summoner
      **/
     // Encrypted account ID
+
+
+
     @Id
     private String accountId;
 
@@ -61,15 +64,15 @@ public class Summoner {
     @Column
     private String summonerRank;
 
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "matchAccountId")
     private List<Match> matches;
 
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "reportAccountId")
     private List<Report> reports;
 
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "noteAccountId")
     private List<Note> notes;
 
@@ -78,6 +81,24 @@ public class Summoner {
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+
+    // for test
+    public Summoner(String accountId, String summonerName, String summonerTier, String summonerRank) {
+        this.accountId = accountId;
+        this.summonerName = summonerName;
+        this.summonerDecodedName = null;
+        this.summonerId = null;
+        this.summonerTier = summonerTier;
+        this.summonerRank = summonerRank;
+        this.profileIconId = 0;
+        this.summonerLevel = 0;
+        this.trollerScore = 0;
+        this.matchCount = 0;
+        this.matchWin = 0;
+        this.matchLose = 0;
+        this.matchWinningRate = 0;
+    }
 
 
 }

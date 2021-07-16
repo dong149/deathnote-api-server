@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface ReportJpaRepo extends JpaRepository <Report, Long> {
     List<Report> findAllBySummonerName(String summonerName);
+    List<Report> findAllByReportAccountId(String accountId);
 
 }

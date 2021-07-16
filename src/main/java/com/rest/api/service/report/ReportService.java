@@ -29,6 +29,17 @@ public class ReportService {
     }
 
 
+    public List<ReportResponseDto> getReportResponsesWithAccountId(String accountId){
+
+        List<Report> reports = ReportServiceHelper.findAllExistingByAccountId(reportJpaRepo,getFormattedSummonerName(accountId));
+        return ReportResponseDto.of(reports)
+                .stream()
+                .sorted(Comparator.comparing(ReportResponseDto::getCreatedAt))
+                .collect(Collectors.toList());
+    }
+
+
+
     public List<ReportResponseDto> getReportResponsesWithSummonerName(String summonerName){
 
         List<Report> reports = ReportServiceHelper.findAllExistingBySummonerName(reportJpaRepo,getFormattedSummonerName(summonerName));

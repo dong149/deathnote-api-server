@@ -25,7 +25,7 @@ public class NoteController {
             @ApiResponse(code = 200, message = "note 생성 성공"),
             @ApiResponse(code = 500, message = "서버 에러"),
     })
-    @PostMapping(value = "/")
+    @PostMapping
     public ResponseEntity<BaseResponseDto> createNote(@RequestBody NoteRequestDto noteRequestDto) {
         return new ResponseEntity<>(new BaseResponseDto(HttpStatus.CREATED.value(), "note 생성 성공", noteService.createNote(noteRequestDto)), HttpStatus.CREATED);
     }
@@ -35,7 +35,7 @@ public class NoteController {
             @ApiResponse(code = 200, message = "note 조회 성공"),
             @ApiResponse(code = 500, message = "서버 에러"),
     })
-    @GetMapping(value="/")
+    @GetMapping
     public ResponseEntity<BaseResponseDto> getNoteByAccountId(@ApiParam(value = "accountId", required = true) @RequestParam String accountId){
         return new ResponseEntity<>(new BaseResponseDto(HttpStatus.OK.value(), "note 조회 성공", noteService.findNoteListWithAccountId(accountId)), HttpStatus.OK);
     }
