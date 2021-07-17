@@ -8,6 +8,7 @@ import com.rest.api.dto.result.SummonerMatchDto;
 import com.rest.api.entity.summoner.Match;
 import com.rest.api.entity.summoner.Summoner;
 import com.rest.api.enumerator.QueueType;
+import com.rest.api.exception.summoner.SummonerNotFoundException;
 import com.rest.api.repository.MatchJpaRepo;
 import com.rest.api.repository.SummonerJpaRepo;
 import com.rest.api.service.riot.RiotService;
@@ -135,8 +136,6 @@ public class DeathnoteService {
             for (Future<SummonerMatchDto> item : futures) {
 
                 SummonerMatchDto summonerMatchDtoFuture = item.get();
-
-
                 summonerMatchDtoList.add(summonerMatchDtoFuture);
                 matches.add(summonerMatchDtoFuture.toEntity(summonerDto.getAccountId()));
 
@@ -157,23 +156,48 @@ public class DeathnoteService {
         matchFinalScore = (int) ((10 - ((1.0) * matchScoreSum / matchCnt)) * 10);
         matchWinningRate = (int) ((1.0) * matchWin / (matchWin + matchLose) * 100);
 
-        Summoner summoner = Summoner.builder()
-                .summonerName(summonerDto.getName())
-                .summonerDecodedName(NameFormatter.getFormattedSummonerName(summonerDto.getName()))
-                .summonerRank(leagueEntryDto.getRank())
-                .summonerTier(leagueEntryDto.getTier())
-                .trollerScore(matchFinalScore)
-                .accountId(summonerDto.getAccountId())
-                .summonerId(summonerDto.getId())
-                .profileIconId(summonerDto.getProfileIconId())
-                .summonerLevel(summonerDto.getSummonerLevel())
-                .matchCount(leagueEntryDto.getWins()+leagueEntryDto.getLosses())
-                .matchWin(leagueEntryDto.getWins())
-                .matchLose(leagueEntryDto.getLosses())
-                .matchWinningRate((int) ((1.0) * leagueEntryDto.getWins() / (leagueEntryDto.getWins()+leagueEntryDto.getLosses()) * 100))
-                .matches(matches)
-                .build();
 
+
+
+        Summoner summoner;
+
+        if(!reload) { // not reload 새롭게 생성
+            summoner = Summoner.builder()
+                    .summonerName(summonerDto.getName())
+                    .summonerDecodedName(NameFormatter.getFormattedSummonerName(summonerDto.getName()))
+                    .summonerRank(leagueEntryDto.getRank())
+                    .summonerTier(leagueEntryDto.getTier())
+                    .trollerScore(matchFinalScore)
+                    .accountId(summonerDto.getAccountId())
+                    .summonerId(summonerDto.getId())
+                    .profileIconId(summonerDto.getProfileIconId())
+                    .summonerLevel(summonerDto.getSummonerLevel())
+                    .matchCount(leagueEntryDto.getWins() + leagueEntryDto.getLosses())
+                    .matchWin(leagueEntryDto.getWins())
+                    .matchLose(leagueEntryDto.getLosses())
+                    .matchWinningRate((int) ((1.0) * leagueEntryDto.getWins() / (leagueEntryDto.getWins() + leagueEntryDto.getLosses()) * 100))
+                    .matches(matches)
+                    .build();
+        }else{  // reload
+            summoner = summonerJpaRepo.findById(summonerDto.getAccountId()).orElseThrow(()->{
+                throw new SummonerNotFoundException("Summoner를 찾을 수 없습니다. Reload시 발생");
+            });
+            summoner.reload(
+                    summonerDto.getName(),
+                    NameFormatter.getFormattedSummonerName(summonerDto.getName()),
+                    leagueEntryDto.getRank(),
+                    leagueEntryDto.getTier(),
+                    matchFinalScore,
+                    summonerDto.getProfileIconId(),
+                    summonerDto.getSummonerLevel(),
+                    leagueEntryDto.getWins() + leagueEntryDto.getLosses(),
+                    leagueEntryDto.getWins(),
+                    leagueEntryDto.getLosses(),
+                    (int) ((1.0) * leagueEntryDto.getWins() / (leagueEntryDto.getWins() + leagueEntryDto.getLosses()) * 100),
+                    matches
+            );
+
+        }
 
         summonerJpaRepo.save(summoner);
 

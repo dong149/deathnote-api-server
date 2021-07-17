@@ -2,6 +2,7 @@ package com.rest.api.entity.summoner;
 
 import com.rest.api.entity.note.Note;
 import com.rest.api.entity.report.Report;
+import com.rest.api.util.NameFormatter;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -100,5 +101,32 @@ public class Summoner {
         this.matchWinningRate = 0;
     }
 
+    public void reload(
+            String summonerName,
+            String summonerDecodedName,
+            String summonerRank,
+            String summonerTier,
+            int trollerScore,
+            int profileIconId,
+            long summonerLevel,
+            int matchCount,
+            int matchWin,
+            int matchLose,
+            int matchWinningRate,
+            List<Match> matches){
+        this.summonerName = summonerName;
+        this.summonerDecodedName = summonerDecodedName;
+        this.summonerRank = summonerRank;
+        this.summonerTier = summonerTier;
+        this.trollerScore = trollerScore;
+        this.profileIconId = profileIconId;
+        this.summonerLevel= summonerLevel;
+        this.matchCount = matchCount;
+        this.matchWin = matchWin;
+        this.matchLose = matchLose;
+        this.matchWinningRate = matchWinningRate;
+        this.matches = matches;
 
+        this.updatedAt = LocalDateTime.now();
+    }
 }

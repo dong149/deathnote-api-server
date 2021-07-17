@@ -31,7 +31,7 @@ public class ReportService {
 
     public List<ReportResponseDto> getReportResponsesWithAccountId(String accountId){
 
-        List<Report> reports = ReportServiceHelper.findAllExistingByAccountId(reportJpaRepo,getFormattedSummonerName(accountId));
+        List<Report> reports = ReportServiceHelper.findAllExistingByAccountId(reportJpaRepo,accountId);
         return ReportResponseDto.of(reports)
                 .stream()
                 .sorted(Comparator.comparing(ReportResponseDto::getCreatedAt))
