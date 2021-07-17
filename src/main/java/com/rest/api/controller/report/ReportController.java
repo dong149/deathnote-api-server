@@ -24,10 +24,10 @@ public class ReportController {
 
     private final ReportService reportService;
 
-    @ApiOperation(value = "report", notes = "report 생성", response = ReportResponseDto.class)
+    @ApiOperation(value = "report", notes = "report 생성")
     @ApiResponses({
             @ApiResponse(code = 200, message = "report 생성 성공"),
-            @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponseDto.class),
+            @ApiResponse(code = 500, message = "서버 에러"),
     })
     @PostMapping
     public ResponseEntity<BaseResponseDto> createReport(@RequestBody ReportRequestDto reportRequestDto) {
@@ -54,8 +54,8 @@ public class ReportController {
             @ApiResponse(code = 404, message = "존재하지 않는 report 접근"),
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponseDto.class),
     })
-    @PutMapping
-    public ResponseEntity<ReportListResponseDto> updateReportByReportId(@ApiParam(value = "소환사 이름", required = true) @RequestParam String reportId) {
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<ReportListResponseDto> updateReportByReportId(@ApiParam(value = "소환사 이름", required = true) @PathVariable Long id) {
         List<ReportResponseDto> reportResponseDtos = null;
         // TODO: Report update by Id. (check reachable report contents)
 
@@ -68,22 +68,13 @@ public class ReportController {
             @ApiResponse(code = 404, message = "존재하지 않는 report 접근"),
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponseDto.class),
     })
-    @DeleteMapping
-    public ResponseEntity<ReportListResponseDto> deleteReportByReportId(@ApiParam(value = "소환사 이름", required = true) @RequestParam String reportId) {
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<ReportListResponseDto> deleteReportByReportId(@ApiParam(value = "소환사 이름", required = true) @PathVariable Long id) {
         List<ReportResponseDto> reportResponseDtos = null;
         // TODO: Report delete by Id. (check reachable report contents)
 
         return new ResponseEntity<>(new ReportListResponseDto(HttpStatus.OK.value(), "데이터 삭제 성공", reportResponseDtos), HttpStatus.OK);
     }
-    
-//
-//
-//    @ApiOperation(value = "리폿", notes = "리폿/칭찬 내용을 작성합니다.")
-//    @DeleteMapping(value = "/report")
-//    public CommonResult deleteReport(@RequestParam long id) {
-//        reportJpaRepo.deleteById(id);
-//        return responseService.getSuccessResult();
-//    }
 
 
 }
