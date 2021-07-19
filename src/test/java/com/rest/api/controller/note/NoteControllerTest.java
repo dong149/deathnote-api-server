@@ -62,7 +62,7 @@ public class NoteControllerTest {
         ObjectMapper objectMapper = new ObjectMapper();
         ObjectNode content = objectMapper.createObjectNode();
         content.put("accountId", ACCOUNT_ID);
-        content.put("isGood", IS_GOOD);
+        content.put("good", Boolean.FALSE);
         content.put("title", TITLE);
         content.put("content", CONTENT);
         content.put("matchId", 0);

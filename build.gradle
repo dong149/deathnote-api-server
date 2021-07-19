@@ -38,7 +38,8 @@ dependencies {
     testImplementation ('org.springframework.boot:spring-boot-starter-test'){
         exclude module:'junit'
     }
-    testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.4.0'
+//    testImplementation("org.junit.jupiter:junit-jupiter-api")
     testCompile("org.junit.jupiter:junit-jupiter-params")
     testRuntime("org.junit.jupiter:junit-jupiter-engine")
 

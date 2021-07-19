@@ -62,9 +62,6 @@ public class ReportService {
 
 
 
-
-
-
     // 이름을 공통된 format으로 활용하기 위함입니다.
     public static String getFormattedSummonerName(String summonerName) {
         return summonerName.replaceAll(" ", "").toLowerCase();

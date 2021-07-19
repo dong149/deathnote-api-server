@@ -22,8 +22,6 @@ import java.util.List;
 @RequestMapping(value = "/api/v1/report")
 public class ReportController {
 
-    // TODO : 테스트 코드 업데이트하기
-
     private final ReportService reportService;
 
     @ApiOperation(value = "report", notes = "report 생성")
@@ -55,7 +53,7 @@ public class ReportController {
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponseDto.class),
     })
     @PutMapping(path = "/{id}")
-    public ResponseEntity<BaseResponseDto> updateReportByReportId(@ApiParam(value = "소환사 이름", required = true) @PathVariable Long id , @RequestBody ReportUpdateRequestDto reportUpdateRequestDto) {
+    public ResponseEntity<BaseResponseDto> updateReportByReportId(@ApiParam(value = "reportId", required = true) @PathVariable Long id , @RequestBody ReportUpdateRequestDto reportUpdateRequestDto) {
         return new ResponseEntity<>(new BaseResponseDto(HttpStatus.OK.value(), "데이터 수정 성공", reportService.updateReportWithId(id,reportUpdateRequestDto)), HttpStatus.OK);
     }
 
@@ -66,7 +64,7 @@ public class ReportController {
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponseDto.class),
     })
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<BaseResponseDto> deleteReportByReportId(@ApiParam(value = "소환사 이름", required = true) @PathVariable Long id) {
+    public ResponseEntity<BaseResponseDto> deleteReportByReportId(@ApiParam(value = "reportId", required = true) @PathVariable Long id) {
         return new ResponseEntity<>(new BaseResponseDto(HttpStatus.OK.value(), "데이터 삭제 성공", reportService.removeReportWithId(id)), HttpStatus.OK);
     }
 
