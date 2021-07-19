@@ -4,12 +4,10 @@ package com.rest.api.service.note;
 import com.rest.api.dto.request.note.NoteRequestDto;
 import com.rest.api.dto.response.note.NoteResponseDto;
 import com.rest.api.entity.note.Note;
-import com.rest.api.entity.summoner.Summoner;
 import com.rest.api.exception.summoner.SummonerNotFoundException;
 import com.rest.api.repository.NoteJpaRepo;
 import com.rest.api.repository.SummonerJpaRepo;
 import com.rest.api.repository.SummonerToNoteFieldMapper;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -32,7 +30,6 @@ public class NoteService {
     private static final Pageable noteRecentPageable = PageRequest.of(0, RECENT_NOTE_NUM, Sort.by(Sort.Direction.DESC, "updatedAt"));
 
     public NoteResponseDto createNote(NoteRequestDto noteRequestDto) {
-
 
         noteJpaRepo.save(Note.builder()
                 .title(noteRequestDto.getTitle())

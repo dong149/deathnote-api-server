@@ -48,4 +48,10 @@ public class Report {
         this.summonerName = summonerName;
         this.content = content;
     }
+
+    public void update(String content){
+        this.content = content;
+        this.updatedAt = LocalDateTime.now();
+
+    }
 }
