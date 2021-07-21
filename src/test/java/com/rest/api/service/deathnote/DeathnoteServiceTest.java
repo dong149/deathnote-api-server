@@ -19,8 +19,6 @@ class DeathnoteServiceTest {
     private DeathnoteService deathnoteService;
 
 
-
-
     @BeforeEach
     void beforeEach() {
 //        Summoner
