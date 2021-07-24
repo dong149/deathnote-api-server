@@ -7,6 +7,7 @@ import com.rest.api.dto.response.note.NoteResponseDto;
 import com.rest.api.service.note.NoteService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,6 +47,7 @@ public class NoteController {
             @ApiResponse(code = 200, message = "최근 note 조회 성공"),
             @ApiResponse(code = 500, message = "서버 에러"),
     })
+    @Cacheable("noteRecent")
     @GetMapping(value="/recent")
     public ResponseEntity<BaseResponseDto> getNoteRecent(){
         return new ResponseEntity<>(new BaseResponseDto(HttpStatus.OK.value(), "최근 note 조회 성공", NoteListResponseDto.builder().noteList(noteService.findNoteListRecent()).build()), HttpStatus.OK);

@@ -49,7 +49,6 @@ public class ReportControllerTest {
     }
 
     @Test
-    @Order(1)
     @DisplayName("1.report 생성 성공 테스트")
     void createReportSuccessTest() throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -76,7 +75,6 @@ public class ReportControllerTest {
     }
 
     @Test
-    @Order(2)
     @DisplayName("2.report 조회 성공 테스트")
     void getReportByAccountIdSuccessTest() throws Exception {
         ResultActions result = mockMvc.perform(
@@ -97,7 +95,6 @@ public class ReportControllerTest {
     }
 
     @Test
-    @Order(3)
     @DisplayName("3.report 수정 성공 테스트")
     void updateReportByReportIdSuccessTest() throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
