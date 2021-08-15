@@ -60,7 +60,7 @@ public class ExceptionControllerAdvice {
 
     private ResponseEntity<ErrorResponseDto> error(final ErrorType errorType, final HttpStatus httpStatus, String customMessage) {
         return new ResponseEntity<>(new ErrorResponseDto(errorType.getErrorCode(), customMessage, new ArrayList<>()), httpStatus);
-    }
+     }
 
     //TODO: Exception Handler 추가 설정해주기.
 }
