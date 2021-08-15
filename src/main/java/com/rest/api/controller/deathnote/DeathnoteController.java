@@ -1,7 +1,5 @@
 package com.rest.api.controller.deathnote;
 
-
-import com.rest.api.dto.SummonerDto;
 import com.rest.api.dto.response.BaseResponseDto;
 import com.rest.api.dto.response.ErrorResponseDto;
 import com.rest.api.dto.response.rank.TrollerRankerResponseDto;
@@ -16,16 +14,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-
 
 @Api(tags = {"2. Deathnote"})
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "api/v1/deathnote")
 public class DeathnoteController {
-
     private final DeathnoteService deathnoteService;
     private final DeathnoteBatch deathnoteBatch;
 
@@ -57,7 +51,6 @@ public class DeathnoteController {
 
         return new ResponseEntity<>(new BaseResponseDto(HttpStatus.OK.value(), "데이터 조회 성공", summonerKeywordResponseDto), HttpStatus.OK);
     }
-
 
     @ApiOperation(value = "실시간 트롤러 랭커 정보", notes = "실시간 트롤러 랭커 정보를 return한다.")
     @GetMapping(value = "/troller/rank")

@@ -57,6 +57,8 @@ public class ReportController {
         return new ResponseEntity<>(new BaseResponseDto(HttpStatus.OK.value(), "데이터 수정 성공", reportService.updateReportWithId(id,reportUpdateRequestDto)), HttpStatus.OK);
     }
 
+
+    // TODO : 삭제 방식을 그냥 바로 삭제하는 것 -> deletedAt Column 을 추가해주는 걸로 변경
     @ApiOperation(value = "report", notes = "report 삭제")
     @ApiResponses({
             @ApiResponse(code = 200, message = "report 삭제 성공"),
