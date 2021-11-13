@@ -288,4 +288,5 @@ https://donghoon.site/swagger-ui.html
   https://udacity.github.io/git-styleguide/
 
 - Riot API<br/>
-  https://developer.riotgames.com/
+  [Riot API](https://developer.riotgames.com/)
+  weel
