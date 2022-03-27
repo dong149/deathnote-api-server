@@ -1,11 +1,11 @@
 plugins {
+    id 'org.springframework.boot' version '2.5.4'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
-    id 'org.springframework.boot' version '2.1.4.RELEASE'
 }
-apply plugin: 'io.spring.dependency-management'
 
 group 'gg.deathnote'
-version '1.5.1-SNAPSHOT'
+version = '0.0.1-SNAPSHOT'
 
 configurations {
     compileOnly {
@@ -17,17 +17,13 @@ repositories {
     mavenCentral()
 }
 
-test {
-    useJUnitPlatform()
-}
-
-
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-freemarker'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-aop'
-    implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.4.1'
+    implementation('org.springframework.boot:spring-boot-starter-validation')
+//    implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.4.1'
     implementation 'com.google.code.gson:gson'
     implementation 'io.springfox:springfox-swagger2:2.9.2'
     implementation 'io.springfox:springfox-swagger-ui:2.9.2'
@@ -38,53 +34,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-cache'
     implementation 'org.ehcache:ehcache:3.8.0'
     implementation 'javax.cache:cache-api:1.0.0'
-    
-
-
-    testImplementation('org.springframework.boot:spring-boot-starter-test') {
-        exclude module: 'junit'
-    }
-//    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.4.0'
-//    testImplementation group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
-//    testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '3.10.0'
-
-
-    /**
-     * JUnit Jupiter as a testing framework.
-     */
-    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.2.0'
-
-    /**
-     * JUnit Jupiter parameter configuration.
-     */
-    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: '5.2.0'
-
-    /**
-     * JUnit Jupiter testing engine.
-     */
-    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.2.0'
-
-    /**
-     * Vintage platform engine.
-     */
-    testCompile group: 'org.junit.platform', name: 'junit-platform-engine', version: '1.2.0'
-
-    /**
-     * JUnit jupiter with mockito.
-     */
-    testCompile group: 'org.mockito', name: 'mockito-junit-jupiter', version: '2.19.0'
-
-    /**
-     * Mockito for mocking.
-     */
-    testCompile group: 'org.mockito', name: 'mockito-core', version: '2.19.0'
-//    testCompile("org.junit.jupiter:junit-jupiter-params")
-//    testRuntime("org.junit.jupiter:junit-jupiter-engine")
-
-    compile 'org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.2'
-    compile 'org.springframework.boot:spring-boot-starter-jdbc'
-    compile 'mysql:mysql-connector-java:8.0.23'
-    compile 'commons-io:commons-io:2.8.0'
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+    implementation('org.springframework.boot:spring-boot-starter-jdbc')
+    implementation('mysql:mysql-connector-java:8.0.23')
+//    compile 'commons-io:commons-io:2.8.0'
     compileOnly 'org.projectlombok:lombok'
     compileOnly 'org.springframework.boot:spring-boot-devtools'
 
@@ -92,4 +45,8 @@ dependencies {
     implementation 'com.h2database:h2'
     runtimeOnly 'mysql:mysql-connector-java'
     annotationProcessor 'org.projectlombok:lombok'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
 }

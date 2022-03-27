@@ -7,12 +7,18 @@ import com.rest.api.dto.response.search.SummonerKeywordResponseDto;
 import com.rest.api.dto.result.SummonerInfoDto;
 import com.rest.api.service.deathnote.DeathnoteService;
 import com.rest.api.service.deathnote.batch.DeathnoteBatch;
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 
 @Api(tags = {"2. Deathnote"})
@@ -20,28 +26,35 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "api/v1/deathnote")
 public class DeathnoteController {
+
     private final DeathnoteService deathnoteService;
     private final DeathnoteBatch deathnoteBatch;
 
-    @Value("${deathnote.key}")
-    private String ADMIN_KEY;
+//    @Value("${deathnote.key}")
+//    private String ADMIN_KEY;
 
     @ApiOperation(value = "summonerInfo", notes = "summonerInfo 조회")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "조회 성공", response = ResponseEntity.class),
-            @ApiResponse(code = 404, message = "존재하지 않는 summoner 접근", response = ErrorResponseDto.class),
-            @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponseDto.class),
+        @ApiResponse(code = 200, message = "조회 성공", response = ResponseEntity.class),
+        @ApiResponse(code = 404, message = "존재하지 않는 summoner 접근", response = ErrorResponseDto.class),
+        @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponseDto.class),
     })
     @GetMapping(value = "/summoner")
-    public ResponseEntity<BaseResponseDto> getSummonerInfo(@ApiParam(value = "소환사 이름", required = true) @RequestParam String name, @ApiParam(value = "갱신 여부", required = true) @RequestParam boolean reload){
-        SummonerInfoDto summonerInfoDto = deathnoteService.getSummonerInfoDtoWithSummonerName(name, reload);
+    public ResponseEntity<BaseResponseDto> getSummonerInfo(
+        @ApiParam(value = "소환사 이름", required = true) @RequestParam String name,
+        @ApiParam(value = "갱신 여부", required = true) @RequestParam boolean reload) {
+        SummonerInfoDto summonerInfoDto = deathnoteService.getSummonerInfoDtoWithSummonerName(name,
+                                                                                              reload);
 
-        return new ResponseEntity<>(new BaseResponseDto(HttpStatus.OK.value(), "데이터 조회 성공", summonerInfoDto), HttpStatus.OK);
+        return new ResponseEntity<>(
+            new BaseResponseDto(HttpStatus.OK.value(), "데이터 조회 성공", summonerInfoDto),
+            HttpStatus.OK);
     }
 
 
     @GetMapping(value = "/summoner/keyword")
-    public ResponseEntity<BaseResponseDto> getSummonerNameWithKeyword(@RequestParam String keyword) {
+    public ResponseEntity<BaseResponseDto> getSummonerNameWithKeyword(
+        @RequestParam String keyword) {
         SummonerKeywordResponseDto summonerKeywordResponseDto = null;
         try {
             summonerKeywordResponseDto = deathnoteService.getSummonerNameWithKeyword(keyword);
@@ -49,32 +62,34 @@ public class DeathnoteController {
             e.printStackTrace();
         }
 
-        return new ResponseEntity<>(new BaseResponseDto(HttpStatus.OK.value(), "데이터 조회 성공", summonerKeywordResponseDto), HttpStatus.OK);
+        return new ResponseEntity<>(
+            new BaseResponseDto(HttpStatus.OK.value(), "데이터 조회 성공", summonerKeywordResponseDto),
+            HttpStatus.OK);
     }
 
     @ApiOperation(value = "실시간 트롤러 랭커 정보", notes = "실시간 트롤러 랭커 정보를 return한다.")
     @GetMapping(value = "/troller/rank")
-    public ResponseEntity<BaseResponseDto> getTrollerRank(@ApiParam(value = "몇 명", required = true) @RequestParam int num) {
+    public ResponseEntity<BaseResponseDto> getTrollerRank(
+        @ApiParam(value = "몇 명", required = true) @RequestParam int num) {
         TrollerRankerResponseDto trollerRankerResponseDto = null;
         try {
             trollerRankerResponseDto = deathnoteService.getTrollerRankerListWithNum(num);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new ResponseEntity<>(new BaseResponseDto(HttpStatus.OK.value(), "데이터 조회 성공", trollerRankerResponseDto), HttpStatus.OK);
+        return new ResponseEntity<>(
+            new BaseResponseDto(HttpStatus.OK.value(), "데이터 조회 성공", trollerRankerResponseDto),
+            HttpStatus.OK);
     }
-
-
-
-
 
     @ApiOperation(value = "key", notes = "매치 정보 배치 작업")
     @GetMapping(value = "/match/batch")
-    public String doMatchBatch(@ApiParam(value = "관리자 키", required = true) @RequestParam String key) {
+    public String doMatchBatch(
+        @ApiParam(value = "관리자 키", required = true) @RequestParam String key) {
 
-        if(!ADMIN_KEY.equals(key)){
-            return "키가 잘못되었습니다.";
-        }
+//        if(!ADMIN_KEY.equals(key)){
+//            return "키가 잘못되었습니다.";
+//        }
         try {
             deathnoteBatch.doMatchUpdateBatch();
             return "완료 되었습니다.";
@@ -83,7 +98,4 @@ public class DeathnoteController {
             return "배치 작업 중 오류가 발생했습니다.";
         }
     }
-
-
-
 }
