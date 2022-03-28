@@ -1,4 +1,5 @@
 package com.rest.api.dto.response;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -11,6 +12,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class BaseResponseDto {
+
     private int status;
     private String message;
 

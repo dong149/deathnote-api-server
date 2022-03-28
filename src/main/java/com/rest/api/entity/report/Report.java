@@ -1,14 +1,20 @@
 package com.rest.api.entity.report;
 
 
-import lombok.*;
+import java.time.LocalDateTime;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 
 
 @Entity
@@ -18,6 +24,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Table(name = "reports")
 public class Report {
+
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,7 +56,7 @@ public class Report {
         this.content = content;
     }
 
-    public void update(String content){
+    public void update(String content) {
         this.content = content;
         this.updatedAt = LocalDateTime.now();
 

@@ -1,20 +1,22 @@
 package com.rest.api.controller.riot;
 
-import com.rest.api.dto.*;
+import com.rest.api.dto.LeagueEntryDto;
+import com.rest.api.dto.MatchDto;
+import com.rest.api.dto.MatchListDto;
+import com.rest.api.dto.MatchReferenceDto;
+import com.rest.api.dto.SummonerDto;
 import com.rest.api.dto.mldata.DataRankDto;
-import com.rest.api.exception.riot.RiotAPIBadRequestException;
 import com.rest.api.service.riot.RiotService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Api(tags = {"1. Summoner"})
 @RequiredArgsConstructor
@@ -31,10 +33,10 @@ public class RiotAPIController {
         return riotService.getSummonerDtoWithRiotAPIBySummonerName(name);
     }
 
-
     @ApiOperation(value = "소환자 정보", notes = "account ID를 통해 소환사 정보를 return한다.")
     @GetMapping(value = "/matchlist")
-    public MatchListDto getMatchList(@ApiParam(value = "소환사 이름", required = true) @RequestParam String accountId) {
+    public MatchListDto getMatchList(
+        @ApiParam(value = "소환사 이름", required = true) @RequestParam String accountId) {
 
         MatchListDto matchListDto = null;
         try {
@@ -56,13 +58,13 @@ public class RiotAPIController {
             e.printStackTrace();
         }
         return matchDto;
-
     }
 
 
     @ApiOperation(value = "소환사 정보", notes = "id 를 이용하여, 리그 정보를 알아냅니다.")
     @GetMapping(value = "/league")
-    public LeagueEntryDto getLeagueInfo(@ApiParam(value = "EncryptedSummonerId", required = true) @RequestParam String encryptedId) {
+    public LeagueEntryDto getLeagueInfo(
+        @ApiParam(value = "EncryptedSummonerId", required = true) @RequestParam String encryptedId) {
 
         LeagueEntryDto leagueEntryDto = null;
         try {
@@ -89,7 +91,8 @@ public class RiotAPIController {
     @ApiOperation(value = "소환자 정보", notes = "summonerName을 통해 솔로 랭크 게임 리스트를 가져옵니디")
     @GetMapping(value = "/matchlist/solo")
     public List<Long> getMatchListForML(String summonerName) {
-        List<MatchReferenceDto> matchList = getMatchList(getSummoner(summonerName).getAccountId()).getMatches();
+        List<MatchReferenceDto> matchList = getMatchList(
+            getSummoner(summonerName).getAccountId()).getMatches();
         List<Long> matchIdList = new ArrayList<>();
         for (int i = 0; i < matchList.size(); i++) {
             //솔로랭크인 게임( queue : 420 )의 정보를 리스트에 담아 Return 합니다.

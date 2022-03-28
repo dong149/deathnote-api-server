@@ -1,6 +1,7 @@
 package com.rest.api.exception.note;
 
 public class NoteNotFoundException extends RuntimeException {
+
     public NoteNotFoundException() {
     }
 

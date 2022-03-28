@@ -30,9 +30,6 @@ public class DeathnoteController {
     private final DeathnoteService deathnoteService;
     private final DeathnoteBatch deathnoteBatch;
 
-//    @Value("${deathnote.key}")
-//    private String ADMIN_KEY;
-
     @ApiOperation(value = "summonerInfo", notes = "summonerInfo 조회")
     @ApiResponses({
         @ApiResponse(code = 200, message = "조회 성공", response = ResponseEntity.class),
@@ -43,8 +40,9 @@ public class DeathnoteController {
     public ResponseEntity<BaseResponseDto> getSummonerInfo(
         @ApiParam(value = "소환사 이름", required = true) @RequestParam String name,
         @ApiParam(value = "갱신 여부", required = true) @RequestParam boolean reload) {
-        SummonerInfoDto summonerInfoDto = deathnoteService.getSummonerInfoDtoWithSummonerName(name,
-                                                                                              reload);
+        SummonerInfoDto summonerInfoDto = deathnoteService.getSummonerInfoDtoWithSummonerName(
+            name,
+            reload);
 
         return new ResponseEntity<>(
             new BaseResponseDto(HttpStatus.OK.value(), "데이터 조회 성공", summonerInfoDto),
@@ -86,10 +84,6 @@ public class DeathnoteController {
     @GetMapping(value = "/match/batch")
     public String doMatchBatch(
         @ApiParam(value = "관리자 키", required = true) @RequestParam String key) {
-
-//        if(!ADMIN_KEY.equals(key)){
-//            return "키가 잘못되었습니다.";
-//        }
         try {
             deathnoteBatch.doMatchUpdateBatch();
             return "완료 되었습니다.";

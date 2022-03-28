@@ -9,6 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TrollerRankerDto {
+
     private String summonerName;
     private int trollerScore;
     private Long summonerLevel;

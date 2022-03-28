@@ -1,7 +1,6 @@
 package com.rest.api.dto.mldata;
 
 
-import com.opencsv.bean.CsvBindByPosition;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +15,6 @@ public class DataRankDto {
     int visionRank;
     int towerDealRank;
     int kdaRank;
-
     // 시범적으로 넣은 데이터
     int totalUnitsHealedRank;
     int goldEarnedRank;
@@ -45,12 +43,7 @@ public class DataRankDto {
     int sightWardsBoughtInGameRank;
     int neutralMinionsKilledEnemyJungleRank;
     int trueDamageDealtRank;
-
     int championId;
     String lane;
     int isWin;
-
-
-
-
 }

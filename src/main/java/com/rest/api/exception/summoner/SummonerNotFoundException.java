@@ -13,5 +13,4 @@ public class SummonerNotFoundException extends RuntimeException {
     public SummonerNotFoundException(String msg) {
         super(msg);
     }
-
 }

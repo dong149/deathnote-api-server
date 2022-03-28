@@ -1,6 +1,7 @@
 package com.rest.api.exception.report;
 
 public class ReportNotFoundException extends RuntimeException {
+
     public ReportNotFoundException() {
     }
 

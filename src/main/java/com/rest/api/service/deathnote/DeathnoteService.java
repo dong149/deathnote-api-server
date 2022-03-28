@@ -1,6 +1,11 @@
 package com.rest.api.service.deathnote;
 
-import com.rest.api.dto.*;
+import com.rest.api.dto.LeagueEntryDto;
+import com.rest.api.dto.MatchListDto;
+import com.rest.api.dto.MatchReferenceDto;
+import com.rest.api.dto.SummonerDto;
+import com.rest.api.dto.SummonerKeywordDto;
+import com.rest.api.dto.TrollerRankerDto;
 import com.rest.api.dto.response.rank.TrollerRankerResponseDto;
 import com.rest.api.dto.response.search.SummonerKeywordResponseDto;
 import com.rest.api.dto.result.SummonerInfoDto;
@@ -13,6 +18,13 @@ import com.rest.api.repository.MatchJpaRepo;
 import com.rest.api.repository.SummonerJpaRepo;
 import com.rest.api.service.riot.RiotService;
 import com.rest.api.util.NameFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -22,12 +34,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import java.util.*;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 
 @RequiredArgsConstructor
@@ -71,8 +77,10 @@ public class DeathnoteService {
          */
         deleteAllMatchByAccountIdWhenReloadIsTrue(reload, summonerDto);
 
-        MatchListDto matchListDto = riotService.getMatchListDtoWithRiotAPIByEncryptedAccountIdAndQueueAndSeason(summonerDto.getAccountId(), QueueType.SOLO_RANK_QUEUE, CURRENT_SEASON);
-        LeagueEntryDto leagueEntryDto = riotService.getLeagueEntryDtoWithRiotAPIByEncryptedId(summonerDto.getId());
+        MatchListDto matchListDto = riotService.getMatchListDtoWithRiotAPIByEncryptedAccountIdAndQueueAndSeason(
+            summonerDto.getAccountId(), QueueType.SOLO_RANK_QUEUE, CURRENT_SEASON);
+        LeagueEntryDto leagueEntryDto = riotService.getLeagueEntryDtoWithRiotAPIByEncryptedId(
+            summonerDto.getId());
         List<SummonerMatchDto> summonerMatchDtoList = new ArrayList<>();
         List<Match> matches = new ArrayList<>();
         String encryptedAccountId = summonerDto.getAccountId();
@@ -84,7 +92,8 @@ public class DeathnoteService {
         gameID에 해당하는 연산을 비동기적으로 처리한다.
          */
         for (Long gameId : gameIdList) {
-            Callable<SummonerMatchDto> callable = () -> DeathnoteServiceHelper.getMatchScore(riotService.getMatchDtoWithRiotAPIByMatchId(gameId), encryptedAccountId);
+            Callable<SummonerMatchDto> callable = () -> DeathnoteServiceHelper.getMatchScore(
+                riotService.getMatchDtoWithRiotAPIByMatchId(gameId), encryptedAccountId);
             futures.add(executor.submit(callable));
         }
 
@@ -94,7 +103,6 @@ public class DeathnoteService {
                 SummonerMatchDto summonerMatchDtoFuture = item.get();
                 summonerMatchDtoList.add(summonerMatchDtoFuture);
                 matches.add(summonerMatchDtoFuture.toEntity(summonerDto.getAccountId()));
-
 
                 if (summonerMatchDtoFuture.isMatchWin()) {
                     matchScoreSum += summonerMatchDtoFuture.getMatchRank();
@@ -107,32 +115,35 @@ public class DeathnoteService {
             printLogger("gameId 비동기 연산 실패");
         }
 
-
         matchFinalScore = getMatchFinalScore(matchCnt, matchScoreSum);
         Summoner summoner;
 
         if (!reload) { // not reload 새롭게 생성
-            summoner = getSummonerWithMatchFinalScoreAndSummonerDtoAndLeagueEntryDtoAndMatches(matchFinalScore, summonerDto, leagueEntryDto, matches);
+            summoner = getSummonerWithMatchFinalScoreAndSummonerDtoAndLeagueEntryDtoAndMatches(
+                matchFinalScore, summonerDto, leagueEntryDto, matches);
         } else {  // reload
             summoner = getSummonerById(summonerDto);
             summoner.reload(
-                    summonerDto.getName(),
-                    NameFormatter.getFormattedSummonerName(summonerDto.getName()),
-                    leagueEntryDto.getRank(),
-                    leagueEntryDto.getTier(),
-                    matchFinalScore,
-                    summonerDto.getProfileIconId(),
-                    summonerDto.getSummonerLevel(),
-                    leagueEntryDto.getWins() + leagueEntryDto.getLosses(),
-                    leagueEntryDto.getWins(),
-                    leagueEntryDto.getLosses(),
-                    (int) ((1.0) * leagueEntryDto.getWins() / (leagueEntryDto.getWins() + leagueEntryDto.getLosses()) * 100),
-                    matches
-            );
+                summonerDto.getName(),
+                NameFormatter.getFormattedSummonerName(summonerDto.getName()),
+                leagueEntryDto.getRank(),
+                leagueEntryDto.getTier(),
+                matchFinalScore,
+                summonerDto.getProfileIconId(),
+                summonerDto.getSummonerLevel(),
+                leagueEntryDto.getWins() + leagueEntryDto.getLosses(),
+                leagueEntryDto.getWins(),
+                leagueEntryDto.getLosses(),
+                (int) (
+                    (1.0) * leagueEntryDto.getWins() / (leagueEntryDto.getWins() + leagueEntryDto.getLosses())
+                        * 100),
+                matches
+                           );
 
         }
         summonerJpaRepo.save(summoner);
-        return getSummonerInfoDtoWithMatchFinalScoreAndSummonerDtoAndLeagueEntryDto(matchFinalScore, summonerDto, leagueEntryDto, summonerMatchDtoList);
+        return getSummonerInfoDtoWithMatchFinalScoreAndSummonerDtoAndLeagueEntryDto(
+            matchFinalScore, summonerDto, leagueEntryDto, summonerMatchDtoList);
 
 
     }
@@ -144,15 +155,15 @@ public class DeathnoteService {
         List<TrollerRankerDto> trollerRankerDtoList = new ArrayList<>();
         for (Summoner summoner : summonerList) {
             trollerRankerDtoList.add(TrollerRankerDto
-                    .builder()
-                    .summonerIcon(summoner.getProfileIconId())
-                    .trollerScore(summoner.getTrollerScore())
-                    .summonerLevel(summoner.getSummonerLevel())
-                    .summonerName(summoner.getSummonerName())
-                    .SummonerRank(summoner.getSummonerRank())
-                    .SummonerTier(summoner.getSummonerTier())
-                    .build()
-            );
+                                         .builder()
+                                         .summonerIcon(summoner.getProfileIconId())
+                                         .trollerScore(summoner.getTrollerScore())
+                                         .summonerLevel(summoner.getSummonerLevel())
+                                         .summonerName(summoner.getSummonerName())
+                                         .SummonerRank(summoner.getSummonerRank())
+                                         .SummonerTier(summoner.getSummonerTier())
+                                         .build()
+                                    );
         }
         return TrollerRankerResponseDto.builder().rankList(trollerRankerDtoList).build();
     }
@@ -168,14 +179,14 @@ public class DeathnoteService {
         List<SummonerKeywordDto> summonerKeywordDtoList = new ArrayList<>();
         for (Summoner summoner : summonerList) {
             summonerKeywordDtoList.add(SummonerKeywordDto
-                    .builder()
-                    .summonerIcon(summoner.getProfileIconId())
-                    .summonerLevel(summoner.getSummonerLevel())
-                    .summonerName(summoner.getSummonerName())
-                    .SummonerRank(summoner.getSummonerRank())
-                    .SummonerTier(summoner.getSummonerTier())
-                    .build()
-            );
+                                           .builder()
+                                           .summonerIcon(summoner.getProfileIconId())
+                                           .summonerLevel(summoner.getSummonerLevel())
+                                           .summonerName(summoner.getSummonerName())
+                                           .SummonerRank(summoner.getSummonerRank())
+                                           .SummonerTier(summoner.getSummonerTier())
+                                           .build()
+                                      );
         }
 
         return SummonerKeywordResponseDto.builder().summonerKeywordDtoList(summonerKeywordDtoList).build();
@@ -218,9 +229,9 @@ public class DeathnoteService {
         }
 
         printLogger("DB에서 불러오기 성공");
-        return getSummonerInfoDtoWithSummonerFromDBAndSummonerMatchDtoList(summonerFromDB, summonerMatchDtoList);
+        return getSummonerInfoDtoWithSummonerFromDBAndSummonerMatchDtoList(
+            summonerFromDB, summonerMatchDtoList);
     }
-
 
 
     private Summoner getSummonerById(SummonerDto summonerDto) {
@@ -239,61 +250,68 @@ public class DeathnoteService {
     }
 
 
-    private Summoner getSummonerWithMatchFinalScoreAndSummonerDtoAndLeagueEntryDtoAndMatches(int matchFinalScore, SummonerDto summonerDto, LeagueEntryDto leagueEntryDto, List<Match> matches) {
+    private Summoner getSummonerWithMatchFinalScoreAndSummonerDtoAndLeagueEntryDtoAndMatches(
+        int matchFinalScore, SummonerDto summonerDto, LeagueEntryDto leagueEntryDto, List<Match> matches) {
         return Summoner.builder()
-                .summonerName(summonerDto.getName())
-                .summonerDecodedName(NameFormatter.getFormattedSummonerName(summonerDto.getName()))
-                .summonerRank(leagueEntryDto.getRank())
-                .summonerTier(leagueEntryDto.getTier())
-                .trollerScore(matchFinalScore)
-                .accountId(summonerDto.getAccountId())
-                .summonerId(summonerDto.getId())
-                .profileIconId(summonerDto.getProfileIconId())
-                .summonerLevel(summonerDto.getSummonerLevel())
-                .matchCount(leagueEntryDto.getWins() + leagueEntryDto.getLosses())
-                .matchWin(leagueEntryDto.getWins())
-                .matchLose(leagueEntryDto.getLosses())
-                .matchWinningRate((int) ((1.0) * leagueEntryDto.getWins() / (leagueEntryDto.getWins() + leagueEntryDto.getLosses()) * 100))
-                .matches(matches)
-                .build();
+                       .summonerName(summonerDto.getName())
+                       .summonerDecodedName(NameFormatter.getFormattedSummonerName(summonerDto.getName()))
+                       .summonerRank(leagueEntryDto.getRank())
+                       .summonerTier(leagueEntryDto.getTier())
+                       .trollerScore(matchFinalScore)
+                       .accountId(summonerDto.getAccountId())
+                       .summonerId(summonerDto.getId())
+                       .profileIconId(summonerDto.getProfileIconId())
+                       .summonerLevel(summonerDto.getSummonerLevel())
+                       .matchCount(leagueEntryDto.getWins() + leagueEntryDto.getLosses())
+                       .matchWin(leagueEntryDto.getWins())
+                       .matchLose(leagueEntryDto.getLosses())
+                       .matchWinningRate((int) ((1.0) * leagueEntryDto.getWins() / (leagueEntryDto.getWins()
+                                                                                        + leagueEntryDto.getLosses())
+                                                    * 100))
+                       .matches(matches)
+                       .build();
     }
 
 
-    private SummonerInfoDto getSummonerInfoDtoWithSummonerFromDBAndSummonerMatchDtoList(Summoner summonerFromDB, List<SummonerMatchDto> summonerMatchDtoList) {
+    private SummonerInfoDto getSummonerInfoDtoWithSummonerFromDBAndSummonerMatchDtoList(
+        Summoner summonerFromDB, List<SummonerMatchDto> summonerMatchDtoList) {
         return SummonerInfoDto.builder()
-                .summonerName(summonerFromDB.getSummonerName())
-                .accountId(summonerFromDB.getAccountId())
-                .trollerScore(summonerFromDB.getTrollerScore())
-                .summonerTier(summonerFromDB.getSummonerTier())
-                .summonerRank(summonerFromDB.getSummonerRank())
-                .summonerMatch(summonerMatchDtoList)
-                .summonerLevel(summonerFromDB.getSummonerLevel())
-                .summonerIcon(summonerFromDB.getProfileIconId())
-                .matchWinningRate(summonerFromDB.getMatchWinningRate())
-                .matchLose(summonerFromDB.getMatchLose())
-                .matchWin(summonerFromDB.getMatchWin())
-                .matchCount(summonerFromDB.getMatchCount())
-                .updatedAt(summonerFromDB.getUpdatedAt())
-                .build();
+                              .summonerName(summonerFromDB.getSummonerName())
+                              .accountId(summonerFromDB.getAccountId())
+                              .trollerScore(summonerFromDB.getTrollerScore())
+                              .summonerTier(summonerFromDB.getSummonerTier())
+                              .summonerRank(summonerFromDB.getSummonerRank())
+                              .summonerMatch(summonerMatchDtoList)
+                              .summonerLevel(summonerFromDB.getSummonerLevel())
+                              .summonerIcon(summonerFromDB.getProfileIconId())
+                              .matchWinningRate(summonerFromDB.getMatchWinningRate())
+                              .matchLose(summonerFromDB.getMatchLose())
+                              .matchWin(summonerFromDB.getMatchWin())
+                              .matchCount(summonerFromDB.getMatchCount())
+                              .updatedAt(summonerFromDB.getUpdatedAt())
+                              .build();
     }
 
 
-    private SummonerInfoDto getSummonerInfoDtoWithMatchFinalScoreAndSummonerDtoAndLeagueEntryDto(int matchFinalScore, SummonerDto summonerDto, LeagueEntryDto leagueEntryDto, List<SummonerMatchDto> summonerMatchDtoList) {
+    private SummonerInfoDto getSummonerInfoDtoWithMatchFinalScoreAndSummonerDtoAndLeagueEntryDto(
+        int matchFinalScore, SummonerDto summonerDto, LeagueEntryDto leagueEntryDto,
+        List<SummonerMatchDto> summonerMatchDtoList) {
         return SummonerInfoDto.builder()
-                .trollerScore(matchFinalScore)
-                .accountId(summonerDto.getAccountId())
-                .summonerTier(leagueEntryDto.getTier())
-                .summonerRank(leagueEntryDto.getRank())
-                .summonerName(summonerDto.getName())
-                .summonerMatch(summonerMatchDtoList)
-                .summonerLevel(summonerDto.getSummonerLevel())
-                .summonerIcon(summonerDto.getProfileIconId())
-                .matchWinningRate((int) ((1.0) * leagueEntryDto.getWins() / (leagueEntryDto.getWins() + leagueEntryDto.getLosses()) * 100))
-                .matchLose(leagueEntryDto.getLosses())
-                .matchWin(leagueEntryDto.getWins())
-                .matchCount(leagueEntryDto.getWins() + leagueEntryDto.getLosses())
-                .build();
+                              .trollerScore(matchFinalScore)
+                              .accountId(summonerDto.getAccountId())
+                              .summonerTier(leagueEntryDto.getTier())
+                              .summonerRank(leagueEntryDto.getRank())
+                              .summonerName(summonerDto.getName())
+                              .summonerMatch(summonerMatchDtoList)
+                              .summonerLevel(summonerDto.getSummonerLevel())
+                              .summonerIcon(summonerDto.getProfileIconId())
+                              .matchWinningRate((int) (
+                                  (1.0) * leagueEntryDto.getWins() / (leagueEntryDto.getWins()
+                                                                          + leagueEntryDto.getLosses())
+                                      * 100))
+                              .matchLose(leagueEntryDto.getLosses())
+                              .matchWin(leagueEntryDto.getWins())
+                              .matchCount(leagueEntryDto.getWins() + leagueEntryDto.getLosses())
+                              .build();
     }
-
-
 }

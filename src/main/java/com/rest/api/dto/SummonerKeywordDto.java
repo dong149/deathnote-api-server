@@ -11,6 +11,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class SummonerKeywordDto {
+
     private String summonerName;
     private Long summonerLevel;
     private int summonerIcon;

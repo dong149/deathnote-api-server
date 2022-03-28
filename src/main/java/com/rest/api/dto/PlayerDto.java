@@ -3,7 +3,12 @@ package com.rest.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 
 @Getter
@@ -15,6 +20,7 @@ import lombok.*;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PlayerDto {
+
     private int profileIcon;
     private String accountId;
     private String matchHistoryUri;
@@ -23,5 +29,4 @@ public class PlayerDto {
     private String summonerName;
     private String summonerId;
     private String platformId;
-
 }

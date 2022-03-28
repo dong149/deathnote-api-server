@@ -1,11 +1,17 @@
 package com.rest.api.entity.summoner;
 
-import com.rest.api.dto.result.SummonerMatchDto;
-import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-
-import javax.persistence.*;
 import java.time.LocalDateTime;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 
 @Entity
@@ -136,7 +142,18 @@ public class Match {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    public Match(String matchAccountId,int matchRank, boolean matchWin, int matchChampion, int matchKills, int matchDeaths, int matchAssists, int kdaRank, int totalDamageDealtToChampionsRank, int totalDamageTakenRank, int visionScoreRank, int damageDealtToTurretsRank, int totalUnitsHealedRank, int goldEarnedRank, int champLevelRank, int damageDealtToObjectivesRank, int neutralMinionsKilledRank, int magicDamageDealtToChampionsRank, int wardsKilledRank, int damageSelfMitigatedRank, int largestCriticalStrikeRank, int nodeNeutralizeRank, int totalTimeCrowdControlDealtRank, int wardsPlacedRank, int totalDamageDealtRank, int timeCCingOthersRank, int magicalDamageTakenRank, int physicalDamageDealtToChampionsRank, int neutralMinionsKilledTeamJungleRank, int totalMinionsKilledRank, int visionWardsBoughtInGameRank, int trueDamageTakenRank, int totalHealRank, int longestTimeSpentLivingRank, int killingSpreesRank, int neutralMinionsKilledEnemyJungleRank, int trueDamageDealtRank) {
+    public Match(
+        String matchAccountId, int matchRank, boolean matchWin, int matchChampion, int matchKills,
+        int matchDeaths, int matchAssists, int kdaRank, int totalDamageDealtToChampionsRank,
+        int totalDamageTakenRank, int visionScoreRank, int damageDealtToTurretsRank, int totalUnitsHealedRank,
+        int goldEarnedRank, int champLevelRank, int damageDealtToObjectivesRank, int neutralMinionsKilledRank,
+        int magicDamageDealtToChampionsRank, int wardsKilledRank, int damageSelfMitigatedRank,
+        int largestCriticalStrikeRank, int nodeNeutralizeRank, int totalTimeCrowdControlDealtRank,
+        int wardsPlacedRank, int totalDamageDealtRank, int timeCCingOthersRank, int magicalDamageTakenRank,
+        int physicalDamageDealtToChampionsRank, int neutralMinionsKilledTeamJungleRank,
+        int totalMinionsKilledRank, int visionWardsBoughtInGameRank, int trueDamageTakenRank,
+        int totalHealRank, int longestTimeSpentLivingRank, int killingSpreesRank,
+        int neutralMinionsKilledEnemyJungleRank, int trueDamageDealtRank) {
         this.matchAccountId = matchAccountId;
         this.matchRank = matchRank;
         this.matchWin = matchWin;
@@ -175,27 +192,4 @@ public class Match {
         this.neutralMinionsKilledEnemyJungleRank = neutralMinionsKilledEnemyJungleRank;
         this.trueDamageDealtRank = trueDamageDealtRank;
     }
-//
-//    public Match(String accountId, int matchRank, boolean matchWin, int matchChampion, int matchKills, int matchDeaths, int matchAssists, int kdaRank, int totalDamageDealtToChampionsRank, int totalDamageTakenRank, int visionScoreRank, int damageDealtToTurretsRank, int totalUnitsHealedRank, int goldEarnedRank, int champLevelRank, int damageDealtToObjectivesRank, int neutralMinionsKilledRank, int magicDamageDealtToChampionsRank, int wardsKilledRank, int damageSelfMitigatedRank, int largestCriticalStrikeRank, int nodeNeutralizeRank, int totalTimeCrowdControlDealtRank, int wardsPlacedRank, int totalDamageDealtRank, int timeCCingOthersRank, int magicalDamageTakenRank, int physicalDamageDealtToChampionsRank, int neutralMinionsKilledTeamJungleRank, int totalMinionsKilledRank, int visionWardsBoughtInGameRank, int trueDamageTakenRank, int totalHealRank, int longestTimeSpentLivingRank, int killingSpreesRank, int neutralMinionsKilledEnemyJungleRank, int trueDamageDealtRank) {
-//        this.matchAccountId = accountId;
-//
-//    }
-
-//
-//    public Match(String matchAccountId,int matchRank, boolean matchWin, int matchChampion, int matchKills, int matchDeaths, int matchAssists, int matchDealRank, int matchTankRank, int matchKdaScoreRank, int matchTowerDealRank) {
-//        this.matchAccountId = matchAccountId;
-//        this.matchRank = matchRank;
-//        this.matchWin = matchWin;
-//        this.matchChampion = matchChampion;
-//        this.matchKills = matchKills;
-//        this.matchDeaths = matchDeaths;
-//        this.matchAssists = matchAssists;
-//        this.matchDealRank = matchDealRank;
-//        this.matchTankRank = matchTankRank;
-//        this.matchKdaScoreRank = matchKdaScoreRank;
-//        this.matchTowerDealRank = matchTowerDealRank;
-//    }
-
-
-
 }

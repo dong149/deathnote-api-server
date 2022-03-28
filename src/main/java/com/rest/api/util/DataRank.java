@@ -3,10 +3,9 @@ package com.rest.api.util;
 import com.rest.api.dto.MatchDto;
 import com.rest.api.dto.ParticipantDto;
 import com.rest.api.dto.ParticipantStatDto;
+import com.rest.api.dto.StatInfoDto;
 import com.rest.api.dto.mldata.DataRankDto;
 import com.rest.api.dto.result.SummonerMatchDto;
-import com.rest.api.dto.StatInfoDto;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +20,6 @@ public class DataRank {
     // 이 때, DataRankDto의 형태로 리턴한다. 한 명의 각각의 데이터에 대한 Rank 정보와 승/패 정보가 담겨있다.
     public List<DataRankDto> getDataRank(MatchDto match) {
 
-
         SummonerMatchDto summonerMatchDto = new SummonerMatchDto();
         List<StatInfoDto> deathNoteStat = new ArrayList<>();
         List<StatInfoDto> deal = new ArrayList<>();
@@ -29,7 +27,6 @@ public class DataRank {
         List<StatInfoDto> vision = new ArrayList<>();
         List<StatInfoDto> towerDeal = new ArrayList<>();
         List<StatInfoDto> kda = new ArrayList<>();
-
 
         // 시범적으로 넣어보는 값들
         List<StatInfoDto> totalUnitsHealed = new ArrayList<>();
@@ -59,7 +56,6 @@ public class DataRank {
         List<StatInfoDto> sightWardsBoughtInGame = new ArrayList<>();
         List<StatInfoDto> neutralMinionsKilledEnemyJungle = new ArrayList<>();
         List<StatInfoDto> trueDamageDealt = new ArrayList<>();
-
 
         // 핵심 지표
         int[] dealRank = new int[11];
@@ -97,7 +93,6 @@ public class DataRank {
         int[] neutralMinionsKilledEnemyJungleRank = new int[11];
         int[] trueDamageDealtRank = new int[11];
 
-
         // 승 패 여부
         int[] championId = new int[11];
         int[] isWin = new int[11];
@@ -124,48 +119,58 @@ public class DataRank {
             towerDeal.add(new StatInfoDto(participantId, participantStatDto.getDamageDealtToTurrets()));
             kda.add(new StatInfoDto(participantId, kdaScore));
 
-
             //시범적으로 넣어보는 값들
-            totalUnitsHealed.add(new StatInfoDto(participantId,participantStatDto.getTotalUnitsHealed()));
-            goldEarned.add(new StatInfoDto(participantId,participantStatDto.getGoldEarned()));
-            champLevel.add(new StatInfoDto(participantId,participantStatDto.getChampLevel()));
-            damageDealtToObjectives.add(new StatInfoDto(participantId,participantStatDto.getDamageDealtToObjectives()));
-            neutralMinionsKilled.add(new StatInfoDto(participantId,participantStatDto.getNeutralMinionsKilled()));
-            magicDamageDealtToChampions.add(new StatInfoDto(participantId,participantStatDto.getMagicDamageDealtToChampions()));
-            wardsKilled.add(new StatInfoDto(participantId,participantStatDto.getWardsKilled()));
-            damageSelfMitigated.add(new StatInfoDto(participantId,participantStatDto.getDamageSelfMitigated()));
-            largestCriticalStrike.add(new StatInfoDto(participantId,participantStatDto.getLargestCriticalStrike()));
-            nodeNeutralize.add(new StatInfoDto(participantId,participantStatDto.getNodeNeutralize()));
-            totalTimeCrowdControlDealt.add(new StatInfoDto(participantId,participantStatDto.getTotalTimeCrowdControlDealt()));
-            wardsPlaced.add(new StatInfoDto(participantId,participantStatDto.getWardsPlaced()));
-            totalDamageDealt.add(new StatInfoDto(participantId,participantStatDto.getTotalDamageDealt()));
-            timeCCingOthers.add(new StatInfoDto(participantId,participantStatDto.getTimeCCingOthers()));
-            magicalDamageTaken.add(new StatInfoDto(participantId,participantStatDto.getMagicalDamageTaken()));
-            physicalDamageDealtToChampions.add(new StatInfoDto(participantId,participantStatDto.getPhysicalDamageDealtToChampions()));
-            neutralMinionsKilledTeamJungle.add(new StatInfoDto(participantId,participantStatDto.getNeutralMinionsKilledTeamJungle()));
-            totalMinionsKilled.add(new StatInfoDto(participantId,participantStatDto.getTotalMinionsKilled()));
-            visionWardsBoughtInGame.add(new StatInfoDto(participantId,participantStatDto.getVisionWardsBoughtInGame()));
-            trueDamageTaken.add(new StatInfoDto(participantId,participantStatDto.getTrueDamageTaken()));
-            goldSpent.add(new StatInfoDto(participantId,participantStatDto.getGoldSpent()));
-            totalHeal.add(new StatInfoDto(participantId,participantStatDto.getTotalHeal()));
-            longestTimeSpentLiving.add(new StatInfoDto(participantId,participantStatDto.getLongestTimeSpentLiving()));
-            killingSprees.add(new StatInfoDto(participantId,participantStatDto.getKillingSprees()));
-            sightWardsBoughtInGame.add(new StatInfoDto(participantId,participantStatDto.getSightWardsBoughtInGame()));
-            neutralMinionsKilledEnemyJungle.add(new StatInfoDto(participantId,participantStatDto.getNeutralMinionsKilledEnemyJungle()));
-            trueDamageDealt.add(new StatInfoDto(participantId,participantStatDto.getTrueDamageDealt()));
-
-
-
+            totalUnitsHealed.add(new StatInfoDto(participantId, participantStatDto.getTotalUnitsHealed()));
+            goldEarned.add(new StatInfoDto(participantId, participantStatDto.getGoldEarned()));
+            champLevel.add(new StatInfoDto(participantId, participantStatDto.getChampLevel()));
+            damageDealtToObjectives.add(
+                new StatInfoDto(participantId, participantStatDto.getDamageDealtToObjectives()));
+            neutralMinionsKilled.add(
+                new StatInfoDto(participantId, participantStatDto.getNeutralMinionsKilled()));
+            magicDamageDealtToChampions.add(
+                new StatInfoDto(participantId, participantStatDto.getMagicDamageDealtToChampions()));
+            wardsKilled.add(new StatInfoDto(participantId, participantStatDto.getWardsKilled()));
+            damageSelfMitigated.add(
+                new StatInfoDto(participantId, participantStatDto.getDamageSelfMitigated()));
+            largestCriticalStrike.add(
+                new StatInfoDto(participantId, participantStatDto.getLargestCriticalStrike()));
+            nodeNeutralize.add(new StatInfoDto(participantId, participantStatDto.getNodeNeutralize()));
+            totalTimeCrowdControlDealt.add(
+                new StatInfoDto(participantId, participantStatDto.getTotalTimeCrowdControlDealt()));
+            wardsPlaced.add(new StatInfoDto(participantId, participantStatDto.getWardsPlaced()));
+            totalDamageDealt.add(new StatInfoDto(participantId, participantStatDto.getTotalDamageDealt()));
+            timeCCingOthers.add(new StatInfoDto(participantId, participantStatDto.getTimeCCingOthers()));
+            magicalDamageTaken.add(
+                new StatInfoDto(participantId, participantStatDto.getMagicalDamageTaken()));
+            physicalDamageDealtToChampions.add(
+                new StatInfoDto(participantId, participantStatDto.getPhysicalDamageDealtToChampions()));
+            neutralMinionsKilledTeamJungle.add(
+                new StatInfoDto(participantId, participantStatDto.getNeutralMinionsKilledTeamJungle()));
+            totalMinionsKilled.add(
+                new StatInfoDto(participantId, participantStatDto.getTotalMinionsKilled()));
+            visionWardsBoughtInGame.add(
+                new StatInfoDto(participantId, participantStatDto.getVisionWardsBoughtInGame()));
+            trueDamageTaken.add(new StatInfoDto(participantId, participantStatDto.getTrueDamageTaken()));
+            goldSpent.add(new StatInfoDto(participantId, participantStatDto.getGoldSpent()));
+            totalHeal.add(new StatInfoDto(participantId, participantStatDto.getTotalHeal()));
+            longestTimeSpentLiving.add(
+                new StatInfoDto(participantId, participantStatDto.getLongestTimeSpentLiving()));
+            killingSprees.add(new StatInfoDto(participantId, participantStatDto.getKillingSprees()));
+            sightWardsBoughtInGame.add(
+                new StatInfoDto(participantId, participantStatDto.getSightWardsBoughtInGame()));
+            neutralMinionsKilledEnemyJungle.add(
+                new StatInfoDto(participantId, participantStatDto.getNeutralMinionsKilledEnemyJungle()));
+            trueDamageDealt.add(new StatInfoDto(participantId, participantStatDto.getTrueDamageDealt()));
 
             championId[participantId] = match.getParticipants().get(i).getChampionId();
-            if(participantStatDto.isWin())
+            if (participantStatDto.isWin()) {
                 isWin[participantId] = 1;
-            else
+            } else {
                 isWin[participantId] = 0;
+            }
             lane[participantId] = match.getParticipants().get(i).getTimeline().getLane();
 
         }
-
 
         // 오름차순으로 정렬한다.
         deal.sort(new ParticipantsComparator());
@@ -173,7 +178,6 @@ public class DataRank {
         vision.sort(new ParticipantsComparator());
         towerDeal.sort(new ParticipantsComparator());
         kda.sort(new ParticipantsComparator());
-
 
         // 시범적으로 넣어보는 값들
         totalUnitsHealed.sort(new ParticipantsComparator());
@@ -214,33 +218,33 @@ public class DataRank {
             kdaRank[getParticipantId(kda, i)] = rank;
 
             //시범적으로 넣어보는 값들
-            totalUnitsHealedRank[getParticipantId(totalUnitsHealed,i)] = rank;
-            goldEarnedRank[getParticipantId(goldEarned,i)] = rank;
-            champLevelRank[getParticipantId(champLevel,i)] = rank;
-            damageDealtToObjectivesRank[getParticipantId(damageDealtToObjectives,i)] = rank;
-            neutralMinionsKilledRank[getParticipantId(neutralMinionsKilled,i)] = rank;
-            magicDamageDealtToChampionsRank[getParticipantId(magicDamageDealtToChampions,i)] = rank;
-            wardsKilledRank[getParticipantId(wardsKilled,i)] = rank;
-            damageSelfMitigatedRank[getParticipantId(damageSelfMitigated,i)] = rank;
-            largestCriticalStrikeRank[getParticipantId(largestCriticalStrike,i)] = rank;
-            nodeNeutralizeRank[getParticipantId(nodeNeutralize,i)] = rank;
-            totalTimeCrowdControlDealtRank[getParticipantId(totalTimeCrowdControlDealt,i)] = rank;
-            wardsPlacedRank[getParticipantId(wardsPlaced,i)] = rank;
-            totalDamageDealtRank[getParticipantId(totalDamageDealt,i)] = rank;
-            timeCCingOthersRank[getParticipantId(timeCCingOthers,i)] = rank;
-            magicalDamageTakenRank[getParticipantId(magicalDamageTaken,i)] = rank;
-            physicalDamageDealtToChampionsRank[getParticipantId(physicalDamageDealtToChampions,i)] = rank;
-            neutralMinionsKilledTeamJungleRank[getParticipantId(neutralMinionsKilledTeamJungle,i)] = rank;
-            totalMinionsKilledRank[getParticipantId(totalMinionsKilled,i)] = rank;
-            visionWardsBoughtInGameRank[getParticipantId(visionWardsBoughtInGame,i)] = rank;
-            trueDamageTakenRank[getParticipantId(trueDamageTaken,i)] = rank;
-            goldSpentRank[getParticipantId(goldSpent,i)] = rank;
-            totalHealRank[getParticipantId(totalHeal,i)] = rank;
-            longestTimeSpentLivingRank[getParticipantId(longestTimeSpentLiving,i)] = rank;
-            killingSpreesRank[getParticipantId(killingSprees,i)] = rank;
-            sightWardsBoughtInGameRank[getParticipantId(sightWardsBoughtInGame,i)] = rank;
-            neutralMinionsKilledEnemyJungleRank[getParticipantId(neutralMinionsKilledEnemyJungle,i)] = rank;
-            trueDamageDealtRank[getParticipantId(trueDamageDealt,i)] = rank;
+            totalUnitsHealedRank[getParticipantId(totalUnitsHealed, i)] = rank;
+            goldEarnedRank[getParticipantId(goldEarned, i)] = rank;
+            champLevelRank[getParticipantId(champLevel, i)] = rank;
+            damageDealtToObjectivesRank[getParticipantId(damageDealtToObjectives, i)] = rank;
+            neutralMinionsKilledRank[getParticipantId(neutralMinionsKilled, i)] = rank;
+            magicDamageDealtToChampionsRank[getParticipantId(magicDamageDealtToChampions, i)] = rank;
+            wardsKilledRank[getParticipantId(wardsKilled, i)] = rank;
+            damageSelfMitigatedRank[getParticipantId(damageSelfMitigated, i)] = rank;
+            largestCriticalStrikeRank[getParticipantId(largestCriticalStrike, i)] = rank;
+            nodeNeutralizeRank[getParticipantId(nodeNeutralize, i)] = rank;
+            totalTimeCrowdControlDealtRank[getParticipantId(totalTimeCrowdControlDealt, i)] = rank;
+            wardsPlacedRank[getParticipantId(wardsPlaced, i)] = rank;
+            totalDamageDealtRank[getParticipantId(totalDamageDealt, i)] = rank;
+            timeCCingOthersRank[getParticipantId(timeCCingOthers, i)] = rank;
+            magicalDamageTakenRank[getParticipantId(magicalDamageTaken, i)] = rank;
+            physicalDamageDealtToChampionsRank[getParticipantId(physicalDamageDealtToChampions, i)] = rank;
+            neutralMinionsKilledTeamJungleRank[getParticipantId(neutralMinionsKilledTeamJungle, i)] = rank;
+            totalMinionsKilledRank[getParticipantId(totalMinionsKilled, i)] = rank;
+            visionWardsBoughtInGameRank[getParticipantId(visionWardsBoughtInGame, i)] = rank;
+            trueDamageTakenRank[getParticipantId(trueDamageTaken, i)] = rank;
+            goldSpentRank[getParticipantId(goldSpent, i)] = rank;
+            totalHealRank[getParticipantId(totalHeal, i)] = rank;
+            longestTimeSpentLivingRank[getParticipantId(longestTimeSpentLiving, i)] = rank;
+            killingSpreesRank[getParticipantId(killingSprees, i)] = rank;
+            sightWardsBoughtInGameRank[getParticipantId(sightWardsBoughtInGame, i)] = rank;
+            neutralMinionsKilledEnemyJungleRank[getParticipantId(neutralMinionsKilledEnemyJungle, i)] = rank;
+            trueDamageDealtRank[getParticipantId(trueDamageDealt, i)] = rank;
         }
 //        StringBuilder sb = new StringBuilder();
 //        for (int i = 1; i < 11; i++) {
@@ -252,10 +256,22 @@ public class DataRank {
 //        }
 //        System.out.print(sb);
 
-
         List<DataRankDto> dataRankDtos = new ArrayList<>();
-        for(int i=1;i<11;i++){
-            dataRankDtos.add(new DataRankDto(dealRank[i],tankRank[i],visionRank[i],towerDealRank[i],kdaRank[i],totalUnitsHealedRank[i],goldEarnedRank[i],champLevelRank[i],damageDealtToObjectivesRank[i],neutralMinionsKilledRank[i],magicDamageDealtToChampionsRank[i],wardsKilledRank[i],damageSelfMitigatedRank[i],largestCriticalStrikeRank[i],nodeNeutralizeRank[i],totalTimeCrowdControlDealtRank[i],wardsPlacedRank[i],totalDamageDealtRank[i],timeCCingOthersRank[i],magicalDamageTakenRank[i],physicalDamageDealtToChampionsRank[i],neutralMinionsKilledTeamJungleRank[i],totalMinionsKilledRank[i],visionWardsBoughtInGameRank[i],trueDamageTakenRank[i],goldSpentRank[i],totalHealRank[i],longestTimeSpentLivingRank[i],killingSpreesRank[i],sightWardsBoughtInGameRank[i],neutralMinionsKilledEnemyJungleRank[i],trueDamageDealtRank[i],championId[i],lane[i],isWin[i]));
+        for (int i = 1; i < 11; i++) {
+            dataRankDtos.add(
+                new DataRankDto(dealRank[i], tankRank[i], visionRank[i], towerDealRank[i], kdaRank[i],
+                                totalUnitsHealedRank[i], goldEarnedRank[i], champLevelRank[i],
+                                damageDealtToObjectivesRank[i], neutralMinionsKilledRank[i],
+                                magicDamageDealtToChampionsRank[i], wardsKilledRank[i],
+                                damageSelfMitigatedRank[i], largestCriticalStrikeRank[i],
+                                nodeNeutralizeRank[i], totalTimeCrowdControlDealtRank[i], wardsPlacedRank[i],
+                                totalDamageDealtRank[i], timeCCingOthersRank[i], magicalDamageTakenRank[i],
+                                physicalDamageDealtToChampionsRank[i], neutralMinionsKilledTeamJungleRank[i],
+                                totalMinionsKilledRank[i], visionWardsBoughtInGameRank[i],
+                                trueDamageTakenRank[i], goldSpentRank[i], totalHealRank[i],
+                                longestTimeSpentLivingRank[i], killingSpreesRank[i],
+                                sightWardsBoughtInGameRank[i], neutralMinionsKilledEnemyJungleRank[i],
+                                trueDamageDealtRank[i], championId[i], lane[i], isWin[i]));
         }
         return dataRankDtos;
     }

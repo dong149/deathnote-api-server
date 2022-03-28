@@ -1,12 +1,19 @@
 package com.rest.api.service.deathnote;
 
-import com.rest.api.dto.*;
+import com.rest.api.dto.MatchDto;
+import com.rest.api.dto.ParticipantIdentityDto;
+import com.rest.api.dto.ParticipantStatDto;
+import com.rest.api.dto.StatInfoDto;
+import com.rest.api.dto.StatRankDto;
 import com.rest.api.dto.result.SummonerMatchDto;
 import com.rest.api.util.ParticipantsComparator;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class DeathnoteServiceHelper {
 
@@ -21,7 +28,8 @@ public class DeathnoteServiceHelper {
     // 한 게임에서 필요한 소환사 수
     private static final int TOTAL_SUMMONER = 10;
 
-    public static SummonerMatchDto getMatchScore(MatchDto match, String accountId) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public static SummonerMatchDto getMatchScore(MatchDto match, String accountId)
+        throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         /*
         1. 지표들을 List에 담는다.
         2. mainParticipantId ( accountId )에 해당하는 소환사를 찾는다.
@@ -63,10 +71,11 @@ public class DeathnoteServiceHelper {
                 }
                 String getter = "get" + key.substring(0, 1).toUpperCase() + key.substring(1, key.length());
                 Method getterMethod = ParticipantStatDto.class.getMethod(getter);
-                statInfoDtoListMap.get(key).add(new StatInfoDto(participantId, key, ((Number) getterMethod.invoke(participantStatDto)).longValue()));
+                statInfoDtoListMap.get(key).add(new StatInfoDto(participantId, key,
+                                                                ((Number) getterMethod.invoke(
+                                                                    participantStatDto)).longValue()));
             }
         }
-
 
         // List<StatInfoDto>를 정렬해줍니다.
         Comparator<StatInfoDto> comparator = new ParticipantsComparator();
@@ -74,9 +83,7 @@ public class DeathnoteServiceHelper {
             statInfoDtoListMap.get(feature.getName()).sort(comparator);
         }
 
-
         List<StatInfoDto> deathnoteStatList = new ArrayList<>();
-
 
         int[] deathnoteStatArr = new int[TOTAL_SUMMONER + 1];
 
@@ -85,8 +92,9 @@ public class DeathnoteServiceHelper {
             for (int i = 0; i < TOTAL_SUMMONER; i++) {
                 int curParticipantId = statInfoDtoList.get(i).getParticipantId();
                 deathnoteStatArr[curParticipantId] += (i + 1) * feature.getWeight();
-                if (curParticipantId == mainParticipantId)
+                if (curParticipantId == mainParticipantId) {
                     summonerRankMap.put(feature.getName(), 10 - i);
+                }
             }
         }
 
@@ -96,7 +104,6 @@ public class DeathnoteServiceHelper {
 
         deathnoteStatList.sort(comparator);
 
-
         //TODO : Rank 뿐만 아니라, 점수까지 같이 넣으면 좋을듯. 알고리즘 개선 필요 , 가중치 넣어주면 된다.
         for (int i = 0; i < TOTAL_SUMMONER; i++) {
             if (deathnoteStatList.get(i).getParticipantId() == mainParticipantId) {
@@ -105,47 +112,56 @@ public class DeathnoteServiceHelper {
             }
         }
 
-
         return SummonerMatchDto.builder()
-                .matchRank(deathNoteRank)
-                .matchChampion(match.getParticipants().get(mainParticipantId - 1).getChampionId())
-                .matchWin(match.getParticipants().get(mainParticipantId - 1).getStats().isWin())
-                .matchKills(match.getParticipants().get(mainParticipantId - 1).getStats().getKills())
-                .matchDeaths(match.getParticipants().get(mainParticipantId - 1).getStats().getDeaths())
-                .matchAssists(match.getParticipants().get(mainParticipantId - 1).getStats().getAssists())
-                .kdaRank(summonerRankMap.get("kda"))
-                .totalDamageDealtToChampionsRank(summonerRankMap.get("totalDamageDealtToChampions"))
-                .totalDamageTakenRank(summonerRankMap.get("totalDamageTaken"))
-                .visionScoreRank(summonerRankMap.get("visionScore"))
-                .damageDealtToTurretsRank(summonerRankMap.get("damageDealtToTurrets"))
-                .totalUnitsHealedRank(summonerRankMap.get("totalUnitsHealed"))
-                .goldEarnedRank(summonerRankMap.get("goldEarned"))
-                .champLevelRank(summonerRankMap.get("champLevel"))
-                .damageDealtToObjectivesRank(summonerRankMap.get("damageDealtToObjectives"))
-                .neutralMinionsKilledRank(summonerRankMap.get("neutralMinionsKilled"))
-                .magicDamageDealtToChampionsRank(summonerRankMap.get("magicDamageDealtToChampions"))
-                .wardsKilledRank(summonerRankMap.get("wardsKilled"))
-                .damageSelfMitigatedRank(summonerRankMap.get("damageSelfMitigated"))
-                .largestCriticalStrikeRank(summonerRankMap.get("largestCriticalStrike"))
-                .nodeNeutralizeRank(summonerRankMap.get("nodeNeutralize"))
-                .totalTimeCrowdControlDealtRank(summonerRankMap.get("totalTimeCrowdControlDealt"))
-                .wardsPlacedRank(summonerRankMap.get("wardsPlaced"))
-                .totalDamageDealtRank(summonerRankMap.get("totalDamageDealt"))
-                .timeCCingOthersRank(summonerRankMap.get("timeCCingOthers"))
-                .magicalDamageTakenRank(summonerRankMap.get("magicalDamageTaken"))
-                .physicalDamageDealtToChampionsRank(summonerRankMap.get("physicalDamageDealtToChampions"))
-                .neutralMinionsKilledTeamJungleRank(summonerRankMap.get("neutralMinionsKilledTeamJungle"))
-                .totalMinionsKilledRank(summonerRankMap.get("totalMinionsKilled"))
-                .visionWardsBoughtInGameRank(summonerRankMap.get("visionWardsBoughtInGame"))
-                .trueDamageTakenRank(summonerRankMap.get("trueDamageTaken"))
-                .totalHealRank(summonerRankMap.get("totalHeal"))
-                .longestTimeSpentLivingRank(summonerRankMap.get("longestTimeSpentLiving"))
-                .killingSpreesRank(summonerRankMap.get("killingSprees"))
-                .neutralMinionsKilledEnemyJungleRank(summonerRankMap.get("neutralMinionsKilledEnemyJungle"))
-                .trueDamageDealtRank(summonerRankMap.get("trueDamageDealt"))
-                .build();
+                               .matchRank(deathNoteRank)
+                               .matchChampion(
+                                   match.getParticipants().get(mainParticipantId - 1).getChampionId())
+                               .matchWin(
+                                   match.getParticipants().get(mainParticipantId - 1).getStats().isWin())
+                               .matchKills(
+                                   match.getParticipants().get(mainParticipantId - 1).getStats().getKills())
+                               .matchDeaths(
+                                   match.getParticipants().get(mainParticipantId - 1).getStats().getDeaths())
+                               .matchAssists(
+                                   match.getParticipants().get(mainParticipantId - 1).getStats().getAssists())
+                               .kdaRank(summonerRankMap.get("kda"))
+                               .totalDamageDealtToChampionsRank(
+                                   summonerRankMap.get("totalDamageDealtToChampions"))
+                               .totalDamageTakenRank(summonerRankMap.get("totalDamageTaken"))
+                               .visionScoreRank(summonerRankMap.get("visionScore"))
+                               .damageDealtToTurretsRank(summonerRankMap.get("damageDealtToTurrets"))
+                               .totalUnitsHealedRank(summonerRankMap.get("totalUnitsHealed"))
+                               .goldEarnedRank(summonerRankMap.get("goldEarned"))
+                               .champLevelRank(summonerRankMap.get("champLevel"))
+                               .damageDealtToObjectivesRank(summonerRankMap.get("damageDealtToObjectives"))
+                               .neutralMinionsKilledRank(summonerRankMap.get("neutralMinionsKilled"))
+                               .magicDamageDealtToChampionsRank(
+                                   summonerRankMap.get("magicDamageDealtToChampions"))
+                               .wardsKilledRank(summonerRankMap.get("wardsKilled"))
+                               .damageSelfMitigatedRank(summonerRankMap.get("damageSelfMitigated"))
+                               .largestCriticalStrikeRank(summonerRankMap.get("largestCriticalStrike"))
+                               .nodeNeutralizeRank(summonerRankMap.get("nodeNeutralize"))
+                               .totalTimeCrowdControlDealtRank(
+                                   summonerRankMap.get("totalTimeCrowdControlDealt"))
+                               .wardsPlacedRank(summonerRankMap.get("wardsPlaced"))
+                               .totalDamageDealtRank(summonerRankMap.get("totalDamageDealt"))
+                               .timeCCingOthersRank(summonerRankMap.get("timeCCingOthers"))
+                               .magicalDamageTakenRank(summonerRankMap.get("magicalDamageTaken"))
+                               .physicalDamageDealtToChampionsRank(
+                                   summonerRankMap.get("physicalDamageDealtToChampions"))
+                               .neutralMinionsKilledTeamJungleRank(
+                                   summonerRankMap.get("neutralMinionsKilledTeamJungle"))
+                               .totalMinionsKilledRank(summonerRankMap.get("totalMinionsKilled"))
+                               .visionWardsBoughtInGameRank(summonerRankMap.get("visionWardsBoughtInGame"))
+                               .trueDamageTakenRank(summonerRankMap.get("trueDamageTaken"))
+                               .totalHealRank(summonerRankMap.get("totalHeal"))
+                               .longestTimeSpentLivingRank(summonerRankMap.get("longestTimeSpentLiving"))
+                               .killingSpreesRank(summonerRankMap.get("killingSprees"))
+                               .neutralMinionsKilledEnemyJungleRank(
+                                   summonerRankMap.get("neutralMinionsKilledEnemyJungle"))
+                               .trueDamageDealtRank(summonerRankMap.get("trueDamageDealt"))
+                               .build();
     }
-
 
     private static int findMainParticipantId(MatchDto match, String accountId) {
         int mainParticipantId = 0;
@@ -157,14 +173,13 @@ public class DeathnoteServiceHelper {
         return mainParticipantId;
     }
 
-
     private static int compareRank(List<StatRankDto> statRankDtoList, int participantId) {
 
         for (int i = 0; i < statRankDtoList.size(); i++) {
-            if (statRankDtoList.get(i).getParticipantId() == participantId)
+            if (statRankDtoList.get(i).getParticipantId() == participantId) {
                 return statRankDtoList.get(i).getRank();
+            }
         }
         return 0;
     }
-
 }

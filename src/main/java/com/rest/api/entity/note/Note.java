@@ -1,14 +1,18 @@
 package com.rest.api.entity.note;
 
+import java.time.LocalDateTime;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
-import javax.persistence.*;
-import java.time.LocalDateTime;
 
 
 @Entity
@@ -47,13 +51,6 @@ public class Note {
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
-
-//    public Report(String reportAccountId, boolean isReport, String summonerName, String content) {
-//        this.reportAccountId = reportAccountId;
-//        this.isReport = isReport;
-//        this.summonerName = summonerName;
-//        this.content = content;
-//    }
 }
 
 

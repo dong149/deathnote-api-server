@@ -4,9 +4,12 @@ package com.rest.api.dto.result;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.rest.api.entity.summoner.Match;
-import lombok.*;
-
-import javax.persistence.Column;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
@@ -56,53 +59,45 @@ public class SummonerMatchDto {
     private int neutralMinionsKilledEnemyJungleRank;
     private int trueDamageDealtRank;
 
-
-// 이전 데이터
-//    private int matchDealRank;
-//    private int matchTankRank;
-//    private int matchKdaScoreRank;
-//    private int matchTowerDealRank;
-
     public Match toEntity(String accountId) {
         return new Match(
-                accountId,
-                this.matchRank,
-                this.matchWin,
-                this.matchChampion,
-                this.matchKills,
-                this.matchDeaths,
-                this.matchAssists,
-                this.kdaRank,
-                this.totalDamageDealtToChampionsRank,
-                this.totalDamageTakenRank,
-                this.visionScoreRank,
-                this.damageDealtToTurretsRank,
-                this.totalUnitsHealedRank,
-                this.goldEarnedRank,
-                this.champLevelRank,
-                this.damageDealtToObjectivesRank,
-                this.neutralMinionsKilledRank,
-                this.magicDamageDealtToChampionsRank,
-                this.wardsKilledRank,
-                this.damageSelfMitigatedRank,
-                this.largestCriticalStrikeRank,
-                this.nodeNeutralizeRank,
-                this.totalTimeCrowdControlDealtRank,
-                this.wardsPlacedRank,
-                this.totalDamageDealtRank,
-                this.timeCCingOthersRank,
-                this.magicalDamageTakenRank,
-                this.physicalDamageDealtToChampionsRank,
-                this.neutralMinionsKilledTeamJungleRank,
-                this.totalMinionsKilledRank,
-                this.visionWardsBoughtInGameRank,
-                this.trueDamageTakenRank,
-                this.totalHealRank,
-                this.longestTimeSpentLivingRank,
-                this.killingSpreesRank,
-                this.neutralMinionsKilledEnemyJungleRank,
-                this.trueDamageDealtRank
-                );
+            accountId,
+            this.matchRank,
+            this.matchWin,
+            this.matchChampion,
+            this.matchKills,
+            this.matchDeaths,
+            this.matchAssists,
+            this.kdaRank,
+            this.totalDamageDealtToChampionsRank,
+            this.totalDamageTakenRank,
+            this.visionScoreRank,
+            this.damageDealtToTurretsRank,
+            this.totalUnitsHealedRank,
+            this.goldEarnedRank,
+            this.champLevelRank,
+            this.damageDealtToObjectivesRank,
+            this.neutralMinionsKilledRank,
+            this.magicDamageDealtToChampionsRank,
+            this.wardsKilledRank,
+            this.damageSelfMitigatedRank,
+            this.largestCriticalStrikeRank,
+            this.nodeNeutralizeRank,
+            this.totalTimeCrowdControlDealtRank,
+            this.wardsPlacedRank,
+            this.totalDamageDealtRank,
+            this.timeCCingOthersRank,
+            this.magicalDamageTakenRank,
+            this.physicalDamageDealtToChampionsRank,
+            this.neutralMinionsKilledTeamJungleRank,
+            this.totalMinionsKilledRank,
+            this.visionWardsBoughtInGameRank,
+            this.trueDamageTakenRank,
+            this.totalHealRank,
+            this.longestTimeSpentLivingRank,
+            this.killingSpreesRank,
+            this.neutralMinionsKilledEnemyJungleRank,
+            this.trueDamageDealtRank
+        );
     }
-
 }
