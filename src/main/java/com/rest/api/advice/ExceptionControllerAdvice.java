@@ -1,12 +1,12 @@
 package com.rest.api.advice;
 
 
-import com.rest.api.model.dto.response.ErrorResponseDto;
 import com.rest.api.enumerator.ErrorType;
 import com.rest.api.exception.note.NoteNotFoundException;
 import com.rest.api.exception.report.ReportNotFoundException;
 import com.rest.api.exception.riot.RiotAPIBadRequestException;
 import com.rest.api.exception.summoner.SummonerNotFoundException;
+import com.rest.api.model.dto.response.ErrorResponseDto;
 import java.util.ArrayList;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

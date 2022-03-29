@@ -4,9 +4,6 @@ import com.rest.api.model.dto.StatInfoDto;
 import java.util.Comparator;
 
 
-/**
- * Participants의 스탯 정보를 정렬하기 위한 함수입니다.
- **/
 public class ParticipantsComparator implements Comparator<StatInfoDto> {
 
     @Override

@@ -6,7 +6,7 @@ import com.rest.api.model.dto.MatchListDto;
 import com.rest.api.model.dto.MatchReferenceDto;
 import com.rest.api.model.dto.SummonerDto;
 import com.rest.api.model.dto.mldata.DataRankDto;
-import com.rest.api.service.riot.RiotService;
+import com.rest.api.adapter.riot.RiotApiAdapter;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -25,12 +25,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class RiotAPIController {
 
     // TODO : DB에 저장
-    private final RiotService riotService;
+    private final RiotApiAdapter riotApiAdapter;
 
     @ApiOperation(value = "소환자 정보", notes = "이름을 통해 소환사 정보를 return한다.")
     @GetMapping(value = "/summoner")
     public SummonerDto getSummoner(@ApiParam(value = "소환사 이름", required = true) @RequestParam String name) {
-        return riotService.getSummonerDtoWithRiotAPIBySummonerName(name);
+        return riotApiAdapter.getSummonerDtoWithRiotAPIBySummonerName(name);
     }
 
     @ApiOperation(value = "소환자 정보", notes = "account ID를 통해 소환사 정보를 return한다.")
@@ -40,7 +40,7 @@ public class RiotAPIController {
 
         MatchListDto matchListDto = null;
         try {
-            matchListDto = riotService.getMatchListDtoWithRiotAPIByEncryptedAccountId(accountId);
+            matchListDto = riotApiAdapter.getMatchListDtoWithRiotAPIByEncryptedAccountId(accountId);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -53,7 +53,7 @@ public class RiotAPIController {
 
         MatchDto matchDto = null;
         try {
-            matchDto = riotService.getMatchDtoWithRiotAPIByMatchId(matchId);
+            matchDto = riotApiAdapter.getMatchDtoWithRiotAPIByMatchId(matchId);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -68,7 +68,7 @@ public class RiotAPIController {
 
         LeagueEntryDto leagueEntryDto = null;
         try {
-            leagueEntryDto = riotService.getLeagueEntryDtoWithRiotAPIByEncryptedId(encryptedId);
+            leagueEntryDto = riotApiAdapter.getLeagueEntryDtoWithRiotAPIByEncryptedId(encryptedId);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -80,7 +80,7 @@ public class RiotAPIController {
     public List<DataRankDto> getMatchInfoForML(String MatchId) {
         List<DataRankDto> dataRankDtoList = null;
         try {
-            dataRankDtoList = riotService.getDataRankDtosMLWithRiotAPIByMatchId(MatchId);
+            dataRankDtoList = riotApiAdapter.getDataRankDtosMLWithRiotAPIByMatchId(MatchId);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -6,7 +6,7 @@ import com.rest.api.model.dto.response.rank.TrollerRankerResponseDto;
 import com.rest.api.model.dto.response.search.SummonerKeywordResponseDto;
 import com.rest.api.model.dto.result.SummonerInfoDto;
 import com.rest.api.service.deathnote.DeathnoteService;
-import com.rest.api.service.deathnote.batch.DeathnoteBatch;
+import com.rest.api.batch.DeathnoteBatch;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

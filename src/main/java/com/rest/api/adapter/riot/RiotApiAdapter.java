@@ -1,4 +1,4 @@
-package com.rest.api.service.riot;
+package com.rest.api.adapter.riot;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,7 +9,7 @@ import com.rest.api.model.dto.SummonerDto;
 import com.rest.api.model.dto.mldata.DataRankDto;
 import com.rest.api.enumerator.QueueType;
 import com.rest.api.exception.summoner.SummonerNotFoundException;
-import com.rest.api.util.DataRank;
+import com.rest.api.util.DataRankUtils;
 import java.net.URI;
 import java.util.List;
 import java.util.Objects;
@@ -22,7 +22,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @RequiredArgsConstructor
 @Service
-public class RiotService {
+public class RiotApiAdapter {
 
     @Value("${riot.API_KEY}")
     private String API_KEY;
@@ -122,8 +122,8 @@ public class RiotService {
     public List<DataRankDto> getDataRankDtosMLWithRiotAPIByMatchId(String MatchId) {
         try {
             MatchDto matchDto = getMatchDtoWithRiotAPIByMatchId(Long.parseLong(MatchId));
-            DataRank dataRank = new DataRank();
-            return dataRank.getDataRank(matchDto);
+            DataRankUtils dataRankUtils = new DataRankUtils();
+            return dataRankUtils.getDataRank(matchDto);
         } catch (Exception e) {
             throw new SummonerNotFoundException("DataRankDto List 정보가 존재하지 않습니다.");
         }

@@ -9,10 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface NoteJpaRepo extends JpaRepository<Note, Long> {
 
-    @Transactional(readOnly = true)
     List<Note> findAllByNoteAccountId(String accountId);
 
-    @Transactional(readOnly = true)
     @Query("SELECT n FROM Note as n")
     List<Note> findNoteListRecent(Pageable pageable);
 }

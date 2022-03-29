@@ -16,8 +16,8 @@ import com.rest.api.enumerator.QueueType;
 import com.rest.api.exception.summoner.SummonerNotFoundException;
 import com.rest.api.repository.MatchJpaRepo;
 import com.rest.api.repository.SummonerJpaRepo;
-import com.rest.api.service.riot.RiotService;
-import com.rest.api.util.NameFormatter;
+import com.rest.api.adapter.riot.RiotApiAdapter;
+import com.rest.api.util.NameFormatUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -41,7 +41,7 @@ import org.springframework.stereotype.Service;
 public class DeathnoteService {
 
 
-    private final RiotService riotService;
+    private final RiotApiAdapter riotApiAdapter;
     private final SummonerJpaRepo summonerJpaRepo;
     private final MatchJpaRepo matchJpaRepo;
     private final ModelMapper modelMapper;
@@ -62,7 +62,7 @@ public class DeathnoteService {
         int matchScoreSum = 0;
         int matchFinalScore = 0;
 
-        SummonerDto summonerDto = riotService.getSummonerDtoWithRiotAPIBySummonerName(name);
+        SummonerDto summonerDto = riotApiAdapter.getSummonerDtoWithRiotAPIBySummonerName(name);
         Optional<Summoner> summonerOptional = summonerJpaRepo.findById(summonerDto.getAccountId());
 
         /*
@@ -77,9 +77,9 @@ public class DeathnoteService {
          */
         deleteAllMatchByAccountIdWhenReloadIsTrue(reload, summonerDto);
 
-        MatchListDto matchListDto = riotService.getMatchListDtoWithRiotAPIByEncryptedAccountIdAndQueueAndSeason(
+        MatchListDto matchListDto = riotApiAdapter.getMatchListDtoWithRiotAPIByEncryptedAccountIdAndQueueAndSeason(
             summonerDto.getAccountId(), QueueType.SOLO_RANK_QUEUE, CURRENT_SEASON);
-        LeagueEntryDto leagueEntryDto = riotService.getLeagueEntryDtoWithRiotAPIByEncryptedId(
+        LeagueEntryDto leagueEntryDto = riotApiAdapter.getLeagueEntryDtoWithRiotAPIByEncryptedId(
             summonerDto.getId());
         List<SummonerMatchDto> summonerMatchDtoList = new ArrayList<>();
         List<Match> matches = new ArrayList<>();
@@ -93,7 +93,7 @@ public class DeathnoteService {
          */
         for (Long gameId : gameIdList) {
             Callable<SummonerMatchDto> callable = () -> DeathnoteServiceHelper.getMatchScore(
-                riotService.getMatchDtoWithRiotAPIByMatchId(gameId), encryptedAccountId);
+                riotApiAdapter.getMatchDtoWithRiotAPIByMatchId(gameId), encryptedAccountId);
             futures.add(executor.submit(callable));
         }
 
@@ -125,7 +125,7 @@ public class DeathnoteService {
             summoner = getSummonerById(summonerDto);
             summoner.reload(
                 summonerDto.getName(),
-                NameFormatter.getFormattedSummonerName(summonerDto.getName()),
+                NameFormatUtils.getFormattedSummonerName(summonerDto.getName()),
                 leagueEntryDto.getRank(),
                 leagueEntryDto.getTier(),
                 matchFinalScore,
@@ -171,7 +171,7 @@ public class DeathnoteService {
     static Pageable keywordPageable = PageRequest.of(0, 4, Sort.by(Sort.Direction.DESC, "updatedAt"));
 
     public SummonerKeywordResponseDto getSummonerNameWithKeyword(String keyword) {
-        String formattedKeyword = NameFormatter.getFormattedSummonerName(keyword);
+        String formattedKeyword = NameFormatUtils.getFormattedSummonerName(keyword);
         if (formattedKeyword.equals("")) {
             return null;
         }
@@ -254,7 +254,7 @@ public class DeathnoteService {
         int matchFinalScore, SummonerDto summonerDto, LeagueEntryDto leagueEntryDto, List<Match> matches) {
         return Summoner.builder()
                        .summonerName(summonerDto.getName())
-                       .summonerDecodedName(NameFormatter.getFormattedSummonerName(summonerDto.getName()))
+                       .summonerDecodedName(NameFormatUtils.getFormattedSummonerName(summonerDto.getName()))
                        .summonerRank(leagueEntryDto.getRank())
                        .summonerTier(leagueEntryDto.getTier())
                        .trollerScore(matchFinalScore)

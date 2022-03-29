@@ -1,9 +1,9 @@
 package com.rest.api.service.note;
 
+import com.rest.api.exception.summoner.SummonerNotFoundException;
 import com.rest.api.model.dto.request.note.NoteRequestDto;
 import com.rest.api.model.dto.response.note.NoteResponseDto;
 import com.rest.api.model.entity.note.Note;
-import com.rest.api.exception.summoner.SummonerNotFoundException;
 import com.rest.api.repository.NoteJpaRepo;
 import com.rest.api.repository.SummonerJpaRepo;
 import com.rest.api.repository.SummonerToNoteFieldMapper;
@@ -59,10 +59,7 @@ public class NoteService {
         List<NoteResponseDto> noteResponseDtoList = new ArrayList<>();
         for (Note note : notes) {
             SummonerToNoteFieldMapper summoner = summonerJpaRepo.getByAccountId(note.getNoteAccountId())
-                                                                .orElseThrow(() -> {
-                                                                    throw new SummonerNotFoundException(
-                                                                        "Summoner를 찾을 수 없습니다.");
-                                                                });
+                                                                .orElseThrow(SummonerNotFoundException::new);
 
             noteResponseDtoList.add(NoteResponseDto.of(note, summoner));
         }

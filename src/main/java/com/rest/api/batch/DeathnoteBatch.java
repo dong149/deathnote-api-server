@@ -1,4 +1,4 @@
-package com.rest.api.service.deathnote.batch;
+package com.rest.api.batch;
 
 
 import com.rest.api.model.entity.summoner.Summoner;

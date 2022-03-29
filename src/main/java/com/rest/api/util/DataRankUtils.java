@@ -9,16 +9,15 @@ import com.rest.api.model.dto.result.SummonerMatchDto;
 import java.util.ArrayList;
 import java.util.List;
 
-
-/*
-한 게임에서 10명의 여러 지표들의 Rank를 구하여, 반환합니다.
+/**
+ * 한 게임에서 10명의 여러 지표들의 Rank를 구하여, 반환합니다.
  */
-public class DataRank {
+public class DataRankUtils {
 
 
     // 한 명의 데이터를 리턴한다.
     // 이 때, DataRankDto의 형태로 리턴한다. 한 명의 각각의 데이터에 대한 Rank 정보와 승/패 정보가 담겨있다.
-    public List<DataRankDto> getDataRank(MatchDto match) {
+    public static List<DataRankDto> getDataRank(MatchDto match) {
 
         SummonerMatchDto summonerMatchDto = new SummonerMatchDto();
         List<StatInfoDto> deathNoteStat = new ArrayList<>();
