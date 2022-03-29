@@ -1,11 +1,11 @@
 package com.rest.api.util;
 
-import com.rest.api.dto.MatchDto;
-import com.rest.api.dto.ParticipantDto;
-import com.rest.api.dto.ParticipantStatDto;
-import com.rest.api.dto.StatInfoDto;
-import com.rest.api.dto.mldata.DataRankDto;
-import com.rest.api.dto.result.SummonerMatchDto;
+import com.rest.api.model.dto.MatchDto;
+import com.rest.api.model.dto.ParticipantDto;
+import com.rest.api.model.dto.ParticipantStatDto;
+import com.rest.api.model.dto.StatInfoDto;
+import com.rest.api.model.dto.mldata.DataRankDto;
+import com.rest.api.model.dto.result.SummonerMatchDto;
 import java.util.ArrayList;
 import java.util.List;
 

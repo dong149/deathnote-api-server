@@ -1,6 +1,6 @@
 package com.rest.api.service.report;
 
-import com.rest.api.entity.report.Report;
+import com.rest.api.model.entity.report.Report;
 import com.rest.api.repository.ReportJpaRepo;
 import java.util.List;
 

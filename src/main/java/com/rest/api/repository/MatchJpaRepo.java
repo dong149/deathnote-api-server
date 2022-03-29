@@ -1,6 +1,6 @@
 package com.rest.api.repository;
 
-import com.rest.api.entity.summoner.Match;
+import com.rest.api.model.entity.summoner.Match;
 import javax.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 

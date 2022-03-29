@@ -1,6 +1,6 @@
 package com.rest.api.repository;
 
-import com.rest.api.entity.report.Report;
+import com.rest.api.model.entity.report.Report;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 

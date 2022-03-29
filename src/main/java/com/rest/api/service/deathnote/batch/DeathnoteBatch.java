@@ -1,7 +1,7 @@
 package com.rest.api.service.deathnote.batch;
 
 
-import com.rest.api.entity.summoner.Summoner;
+import com.rest.api.model.entity.summoner.Summoner;
 import com.rest.api.repository.SummonerJpaRepo;
 import com.rest.api.service.deathnote.DeathnoteService;
 import java.util.List;

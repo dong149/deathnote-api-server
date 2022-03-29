@@ -1,11 +1,11 @@
 package com.rest.api.service.deathnote;
 
-import com.rest.api.dto.MatchDto;
-import com.rest.api.dto.ParticipantIdentityDto;
-import com.rest.api.dto.ParticipantStatDto;
-import com.rest.api.dto.StatInfoDto;
-import com.rest.api.dto.StatRankDto;
-import com.rest.api.dto.result.SummonerMatchDto;
+import com.rest.api.model.dto.MatchDto;
+import com.rest.api.model.dto.ParticipantIdentityDto;
+import com.rest.api.model.dto.ParticipantStatDto;
+import com.rest.api.model.dto.StatInfoDto;
+import com.rest.api.model.dto.StatRankDto;
+import com.rest.api.model.dto.result.SummonerMatchDto;
 import com.rest.api.util.ParticipantsComparator;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

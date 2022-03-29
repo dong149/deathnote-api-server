@@ -1,6 +1,6 @@
 package com.rest.api.repository;
 
-import com.rest.api.entity.summoner.Summoner;
+import com.rest.api.model.entity.summoner.Summoner;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Pageable;

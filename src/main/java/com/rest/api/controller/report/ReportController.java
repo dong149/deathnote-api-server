@@ -1,11 +1,11 @@
 package com.rest.api.controller.report;
 
 
-import com.rest.api.dto.request.report.ReportRequestDto;
-import com.rest.api.dto.request.report.ReportUpdateRequestDto;
-import com.rest.api.dto.response.BaseResponseDto;
-import com.rest.api.dto.response.ErrorResponseDto;
-import com.rest.api.dto.response.report.ReportListResponseDto;
+import com.rest.api.model.dto.request.report.ReportRequestDto;
+import com.rest.api.model.dto.request.report.ReportUpdateRequestDto;
+import com.rest.api.model.dto.response.BaseResponseDto;
+import com.rest.api.model.dto.response.ErrorResponseDto;
+import com.rest.api.model.dto.response.report.ReportListResponseDto;
 import com.rest.api.service.report.ReportService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

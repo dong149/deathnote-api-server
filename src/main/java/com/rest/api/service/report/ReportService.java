@@ -1,10 +1,10 @@
 package com.rest.api.service.report;
 
 
-import com.rest.api.dto.request.report.ReportRequestDto;
-import com.rest.api.dto.request.report.ReportUpdateRequestDto;
-import com.rest.api.dto.response.report.ReportResponseDto;
-import com.rest.api.entity.report.Report;
+import com.rest.api.model.dto.request.report.ReportRequestDto;
+import com.rest.api.model.dto.request.report.ReportUpdateRequestDto;
+import com.rest.api.model.dto.response.report.ReportResponseDto;
+import com.rest.api.model.entity.report.Report;
 import com.rest.api.exception.report.ReportNotFoundException;
 import com.rest.api.repository.ReportJpaRepo;
 import java.util.Comparator;

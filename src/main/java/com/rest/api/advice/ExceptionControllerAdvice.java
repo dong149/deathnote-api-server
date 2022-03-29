@@ -1,7 +1,7 @@
 package com.rest.api.advice;
 
 
-import com.rest.api.dto.response.ErrorResponseDto;
+import com.rest.api.model.dto.response.ErrorResponseDto;
 import com.rest.api.enumerator.ErrorType;
 import com.rest.api.exception.note.NoteNotFoundException;
 import com.rest.api.exception.report.ReportNotFoundException;

@@ -4,9 +4,9 @@ package com.rest.api.service.note;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-import com.rest.api.dto.request.note.NoteRequestDto;
-import com.rest.api.dto.response.note.NoteResponseDto;
-import com.rest.api.entity.note.Note;
+import com.rest.api.model.dto.request.note.NoteRequestDto;
+import com.rest.api.model.dto.response.note.NoteResponseDto;
+import com.rest.api.model.entity.note.Note;
 import com.rest.api.repository.NoteJpaRepo;
 import com.rest.api.repository.SummonerJpaRepo;
 import org.junit.jupiter.api.BeforeAll;
@@ -69,7 +69,6 @@ public class NoteServiceTest {
                 .isGood(false)
                 .noteAccountId(ACCOUNT_ID)
                 .upCount(0)
-                .updatedAt(LocalDateTime.now())
                 .build();
         Note note2 = Note.builder()
                 .title(TITLE_2)
@@ -77,7 +76,6 @@ public class NoteServiceTest {
                 .isGood(false)
                 .noteAccountId(ACCOUNT_ID)
                 .upCount(0)
-                .updatedAt(LocalDateTime.now())
                 .build();
         Note note3 = Note.builder()
                 .title(TITLE_2)
@@ -85,7 +83,6 @@ public class NoteServiceTest {
                 .isGood(false)
                 .noteAccountId(ACCOUNT_ID_2)
                 .upCount(0)
-                .updatedAt(LocalDateTime.now())
                 .build();
 
 
@@ -118,6 +115,7 @@ public class NoteServiceTest {
         //when
         List<NoteResponseDto> noteResponseDtoList = noteService.findNoteListWithAccountId(ACCOUNT_ID);
         List<NoteResponseDto> noteResponseDtoList2 = noteService.findNoteListWithAccountId(ACCOUNT_ID_2);
+
         //then
         assertEquals(2, noteResponseDtoList.size());
         assertEquals(TITLE, noteResponseDtoList.get(0).getTitle());
@@ -125,6 +123,4 @@ public class NoteServiceTest {
         assertEquals(1, noteResponseDtoList2.size());
         assertEquals(TITLE_2, noteResponseDtoList2.get(0).getTitle());
     }
-
-
 }

@@ -1,6 +1,6 @@
 package com.rest.api.util;
 
-import com.rest.api.dto.StatInfoDto;
+import com.rest.api.model.dto.StatInfoDto;
 import java.util.Comparator;
 
 

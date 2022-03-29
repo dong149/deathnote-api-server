@@ -3,7 +3,7 @@ package com.rest.api.controller.report;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.rest.api.entity.summoner.Summoner;
+import com.rest.api.model.entity.summoner.Summoner;
 import com.rest.api.repository.SummonerJpaRepo;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;

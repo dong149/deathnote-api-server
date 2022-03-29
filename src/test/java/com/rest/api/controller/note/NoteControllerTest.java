@@ -1,8 +1,15 @@
 package com.rest.api.controller.note;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.handler;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.rest.api.entity.summoner.Summoner;
+import com.rest.api.model.entity.summoner.Summoner;
 import com.rest.api.repository.SummonerJpaRepo;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -16,12 +23,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 @SpringBootTest(properties = "spring.profiles.active:local")
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -34,8 +35,6 @@ public class NoteControllerTest {
     private static final Boolean IS_GOOD = Boolean.FALSE;
     private static final String TITLE = "여기를 봐주세요 이것은 테스트입니다.";
     private static final String CONTENT = "이 사람은 정말 잘해서 신고합니다. 여기좀 봐주세요!!";
-
-
     private MockMvc mockMvc;
 
     @Autowired
@@ -54,7 +53,6 @@ public class NoteControllerTest {
         summonerJpaRepo.save(summoner);
     }
 
-
     @Test
     @Order(1)
     @DisplayName("note 생성 성공 테스트")
@@ -68,19 +66,18 @@ public class NoteControllerTest {
         content.put("matchId", 0);
 
         ResultActions result = mockMvc.perform(
-                post("/api/v1/note")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(content))
-        );
-
+            post("/api/v1/note")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(content))
+                                              );
 
         result.andDo(print())
-                .andExpect(status().isCreated())
-                .andExpect(handler().handlerType(NoteController.class))
-                .andExpect(handler().methodName("createNote"))
-                .andExpect(jsonPath("$.data.title").value(TITLE))
-                .andExpect(jsonPath("$.data.content").value(CONTENT));
+              .andExpect(status().isCreated())
+              .andExpect(handler().handlerType(NoteController.class))
+              .andExpect(handler().methodName("createNote"))
+              .andExpect(jsonPath("$.data.title").value(TITLE))
+              .andExpect(jsonPath("$.data.content").value(CONTENT));
     }
 
     @Test
@@ -89,16 +86,15 @@ public class NoteControllerTest {
     void getNoteByAccountIdSuccessTest() throws Exception {
 
         ResultActions result = mockMvc.perform(
-                get("/api/v1/note")
-                        .param("accountId", ACCOUNT_ID)
-        );
+            get("/api/v1/note")
+                .param("accountId", ACCOUNT_ID)
+                                              );
         result.andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(handler().handlerType(NoteController.class))
-                .andExpect(handler().methodName("getNoteByAccountId"));
+              .andExpect(status().isOk())
+              .andExpect(handler().handlerType(NoteController.class))
+              .andExpect(handler().methodName("getNoteByAccountId"));
 
     }
-
 
     @Test
     @Order(3)
@@ -106,14 +102,12 @@ public class NoteControllerTest {
     void getNoteRecentSuccessTest() throws Exception {
 
         ResultActions result = mockMvc.perform(
-                get("/api/v1/note/recent")
+            get("/api/v1/note/recent")
 
-        );
+                                              );
         result.andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(handler().handlerType(NoteController.class))
-                .andExpect(handler().methodName("getNoteRecent"));
+              .andExpect(status().isOk())
+              .andExpect(handler().handlerType(NoteController.class))
+              .andExpect(handler().methodName("getNoteRecent"));
     }
-
-
 }

@@ -2,11 +2,11 @@ package com.rest.api.service.riot;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rest.api.dto.LeagueEntryDto;
-import com.rest.api.dto.MatchDto;
-import com.rest.api.dto.MatchListDto;
-import com.rest.api.dto.SummonerDto;
-import com.rest.api.dto.mldata.DataRankDto;
+import com.rest.api.model.dto.LeagueEntryDto;
+import com.rest.api.model.dto.MatchDto;
+import com.rest.api.model.dto.MatchListDto;
+import com.rest.api.model.dto.SummonerDto;
+import com.rest.api.model.dto.mldata.DataRankDto;
 import com.rest.api.enumerator.QueueType;
 import com.rest.api.exception.summoner.SummonerNotFoundException;
 import com.rest.api.util.DataRank;

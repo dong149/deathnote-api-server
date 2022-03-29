@@ -1,6 +1,6 @@
 package com.rest.api.repository;
 
-import com.rest.api.entity.note.Note;
+import com.rest.api.model.entity.note.Note;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

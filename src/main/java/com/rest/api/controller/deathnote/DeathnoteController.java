@@ -1,10 +1,10 @@
 package com.rest.api.controller.deathnote;
 
-import com.rest.api.dto.response.BaseResponseDto;
-import com.rest.api.dto.response.ErrorResponseDto;
-import com.rest.api.dto.response.rank.TrollerRankerResponseDto;
-import com.rest.api.dto.response.search.SummonerKeywordResponseDto;
-import com.rest.api.dto.result.SummonerInfoDto;
+import com.rest.api.model.dto.response.BaseResponseDto;
+import com.rest.api.model.dto.response.ErrorResponseDto;
+import com.rest.api.model.dto.response.rank.TrollerRankerResponseDto;
+import com.rest.api.model.dto.response.search.SummonerKeywordResponseDto;
+import com.rest.api.model.dto.result.SummonerInfoDto;
 import com.rest.api.service.deathnote.DeathnoteService;
 import com.rest.api.service.deathnote.batch.DeathnoteBatch;
 import io.swagger.annotations.Api;

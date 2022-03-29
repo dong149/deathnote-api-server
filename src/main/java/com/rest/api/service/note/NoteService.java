@@ -1,9 +1,8 @@
 package com.rest.api.service.note;
 
-
-import com.rest.api.dto.request.note.NoteRequestDto;
-import com.rest.api.dto.response.note.NoteResponseDto;
-import com.rest.api.entity.note.Note;
+import com.rest.api.model.dto.request.note.NoteRequestDto;
+import com.rest.api.model.dto.response.note.NoteResponseDto;
+import com.rest.api.model.entity.note.Note;
 import com.rest.api.exception.summoner.SummonerNotFoundException;
 import com.rest.api.repository.NoteJpaRepo;
 import com.rest.api.repository.SummonerJpaRepo;
@@ -45,7 +44,6 @@ public class NoteService {
                               .build();
     }
 
-
     public List<NoteResponseDto> findNoteListWithAccountId(String accountId) {
 
         List<Note> notes = noteJpaRepo.findAllByNoteAccountId(accountId);
@@ -54,7 +52,6 @@ public class NoteService {
                               .sorted(Comparator.comparing(NoteResponseDto::getUpdatedAt))
                               .collect(Collectors.toList());
     }
-
 
     public List<NoteResponseDto> findNoteListRecent() {
 
@@ -71,6 +68,4 @@ public class NoteService {
         }
         return noteResponseDtoList;
     }
-
-
 }
