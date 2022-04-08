@@ -25,11 +25,11 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-freemarker'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-aop'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation('org.springframework.boot:spring-boot-starter-validation')
     implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.4.1'
     implementation 'com.google.code.gson:gson'
-    implementation 'io.springfox:springfox-swagger2:2.9.2'
-    implementation 'io.springfox:springfox-swagger-ui:2.9.2'
+    implementation('io.springfox:springfox-boot-starter:3.0.0')
     implementation 'org.apache.httpcomponents:httpclient'
     implementation 'com.opencsv:opencsv:4.5'
     implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.8'
@@ -40,7 +40,6 @@ dependencies {
     testImplementation('org.springframework.boot:spring-boot-starter-test')
     implementation('org.springframework.boot:spring-boot-starter-jdbc')
     implementation('mysql:mysql-connector-java:8.0.23')
-//    compile 'commons-io:commons-io:2.8.0'
     compileOnly 'org.projectlombok:lombok'
     compileOnly 'org.springframework.boot:spring-boot-devtools'
     implementation 'com.h2database:h2'
