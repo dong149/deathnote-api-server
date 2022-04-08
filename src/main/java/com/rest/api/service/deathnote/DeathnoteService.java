@@ -1,5 +1,8 @@
 package com.rest.api.service.deathnote;
 
+import com.rest.api.adapter.riot.RiotApiAdapter;
+import com.rest.api.enumerator.QueueType;
+import com.rest.api.exception.summoner.SummonerNotFoundException;
 import com.rest.api.model.dto.LeagueEntryDto;
 import com.rest.api.model.dto.MatchListDto;
 import com.rest.api.model.dto.MatchReferenceDto;
@@ -12,11 +15,8 @@ import com.rest.api.model.dto.result.SummonerInfoDto;
 import com.rest.api.model.dto.result.SummonerMatchDto;
 import com.rest.api.model.entity.summoner.Match;
 import com.rest.api.model.entity.summoner.Summoner;
-import com.rest.api.enumerator.QueueType;
-import com.rest.api.exception.summoner.SummonerNotFoundException;
 import com.rest.api.repository.MatchJpaRepo;
 import com.rest.api.repository.SummonerJpaRepo;
-import com.rest.api.adapter.riot.RiotApiAdapter;
 import com.rest.api.util.NameFormatUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 public class DeathnoteService {
-
 
     private final RiotApiAdapter riotApiAdapter;
     private final SummonerJpaRepo summonerJpaRepo;
