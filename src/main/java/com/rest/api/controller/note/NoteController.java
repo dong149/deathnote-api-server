@@ -11,7 +11,6 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,7 +62,7 @@ public class NoteController {
         @ApiResponse(code = 200, message = "최근 note 조회 성공"),
         @ApiResponse(code = 500, message = "서버 에러"),
     })
-    @Cacheable("noteRecent")
+//    @Cacheable("noteRecent")
     @GetMapping(value = "/recent")
     public ResponseEntity<BaseResponseDto> getNoteRecent() {
         return new ResponseEntity<>(

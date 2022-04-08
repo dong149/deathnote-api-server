@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name="notes")
 public class Note extends BaseEntity {
 
     @Id
