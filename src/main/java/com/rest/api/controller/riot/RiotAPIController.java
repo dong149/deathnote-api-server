@@ -1,16 +1,13 @@
 package com.rest.api.controller.riot;
 
+import com.rest.api.adapter.riot.RiotApiAdapter;
 import com.rest.api.model.dto.LeagueEntryDto;
 import com.rest.api.model.dto.MatchDto;
-import com.rest.api.model.dto.MatchListDto;
-import com.rest.api.model.dto.MatchReferenceDto;
 import com.rest.api.model.dto.SummonerDto;
 import com.rest.api.model.dto.mldata.DataRankDto;
-import com.rest.api.adapter.riot.RiotApiAdapter;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,23 +30,23 @@ public class RiotAPIController {
         return riotApiAdapter.getSummonerDtoWithRiotAPIBySummonerName(name);
     }
 
-    @ApiOperation(value = "소환자 정보", notes = "account ID를 통해 소환사 정보를 return한다.")
+    @ApiOperation(value = "소환자 정보", notes = "puuid를 통해 소환사 정보를 return한다.")
     @GetMapping(value = "/matchlist")
-    public MatchListDto getMatchList(
-        @ApiParam(value = "소환사 이름", required = true) @RequestParam String accountId) {
+    public List<String> getMatchIds(
+        @ApiParam(value = "소환사 uuid", required = true) @RequestParam String puuid) {
 
-        MatchListDto matchListDto = null;
+        List<String> matchIds = null;
         try {
-            matchListDto = riotApiAdapter.getMatchListDtoWithRiotAPIByEncryptedAccountId(accountId);
+            matchIds = riotApiAdapter.getMatchListDto(puuid);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return matchListDto;
+        return matchIds;
     }
 
     @ApiOperation(value = "소환자 정보", notes = "MatchId를 이용하여, Match 정보를 가져옵니다.")
     @GetMapping(value = "/match")
-    public MatchDto getMatchInfo(@ApiParam(value = "MatchId", required = true) @RequestParam long matchId) {
+    public MatchDto getMatchInfo(@ApiParam(value = "MatchId", required = true) @RequestParam String matchId) {
 
         MatchDto matchDto = null;
         try {
@@ -90,16 +87,7 @@ public class RiotAPIController {
 
     @ApiOperation(value = "소환자 정보", notes = "summonerName을 통해 솔로 랭크 게임 리스트를 가져옵니디")
     @GetMapping(value = "/matchlist/solo")
-    public List<Long> getMatchListForML(String summonerName) {
-        List<MatchReferenceDto> matchList = getMatchList(
-            getSummoner(summonerName).getAccountId()).getMatches();
-        List<Long> matchIdList = new ArrayList<>();
-        for (int i = 0; i < matchList.size(); i++) {
-            //솔로랭크인 게임( queue : 420 )의 정보를 리스트에 담아 Return 합니다.
-            if (matchList.get(i).getQueue() == 420) {
-                matchIdList.add(matchList.get(i).getGameId());
-            }
-        }
-        return matchIdList;
+    public List<String> getMatchListForML(String summonerName) {
+        return getMatchIds(getSummoner(summonerName).getPuuid());
     }
 }

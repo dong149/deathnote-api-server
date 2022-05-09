@@ -11,9 +11,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
+@Slf4j
 @Aspect
 @Component
-@Slf4j
 public class ControllerLoggingAop {
 
     private static final Logger logger = LoggerFactory.getLogger(ControllerLoggingAop.class);

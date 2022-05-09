@@ -8,6 +8,8 @@
 리그 오브 레전드의 사용자 Report 기능의 문제를 해결하고자 합니다.
 </p></h4><br/>
 
+## TODO
+- [ ] match info api 관련해서 response 바뀐 부분 대응하기
 
 ## 💁‍♂️ Links
 

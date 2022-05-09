@@ -1,12 +1,12 @@
 package com.rest.api.controller.deathnote;
 
+import com.rest.api.batch.DeathnoteBatch;
 import com.rest.api.model.dto.response.BaseResponseDto;
 import com.rest.api.model.dto.response.ErrorResponseDto;
 import com.rest.api.model.dto.response.rank.TrollerRankerResponseDto;
 import com.rest.api.model.dto.response.search.SummonerKeywordResponseDto;
 import com.rest.api.model.dto.result.SummonerInfoDto;
 import com.rest.api.service.deathnote.DeathnoteService;
-import com.rest.api.batch.DeathnoteBatch;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -39,7 +39,7 @@ public class DeathnoteController {
     @GetMapping(value = "/summoner")
     public ResponseEntity<BaseResponseDto> getSummonerInfo(
         @ApiParam(value = "소환사 이름", required = true) @RequestParam String name,
-        @ApiParam(value = "갱신 여부", required = true) @RequestParam boolean reload) {
+        @ApiParam(value = "갱신 여부", required = true, defaultValue = "true") @RequestParam boolean reload) {
         SummonerInfoDto summonerInfoDto = deathnoteService.getSummonerInfoDtoWithSummonerName(
             name,
             reload);

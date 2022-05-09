@@ -2,30 +2,37 @@ package com.rest.api.adapter.riot;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rest.api.model.dto.LeagueEntryDto;
-import com.rest.api.model.dto.MatchDto;
-import com.rest.api.model.dto.MatchListDto;
-import com.rest.api.model.dto.SummonerDto;
-import com.rest.api.model.dto.mldata.DataRankDto;
 import com.rest.api.enumerator.QueueType;
 import com.rest.api.exception.summoner.SummonerNotFoundException;
+import com.rest.api.model.dto.LeagueEntryDto;
+import com.rest.api.model.dto.MatchDto;
+import com.rest.api.model.dto.SummonerDto;
+import com.rest.api.model.dto.mldata.DataRankDto;
 import com.rest.api.util.DataRankUtils;
 import java.net.URI;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 
-@RequiredArgsConstructor
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class RiotApiAdapter {
 
     @Value("${riot.API_KEY}")
     private String API_KEY;
+
+    @Value("${lol.current.season}")
+    private int CURRENT_SEASON;
 
     private final RestTemplate restTemplate;
     ObjectMapper objectMapper = new ObjectMapper();
@@ -38,6 +45,8 @@ public class RiotApiAdapter {
                 .queryParam("api_key", API_KEY)
                 .toUriString();
             URI uri = new URI(requestUrl);
+            log.info("get summoner request url : {}", requestUrl);
+
             return objectMapper.readValue(
                 restTemplate.getForEntity(uri, String.class).getBody(),
                 SummonerDto.class);
@@ -46,61 +55,55 @@ public class RiotApiAdapter {
         }
     }
 
-    public MatchListDto getMatchListDtoWithRiotAPIByEncryptedAccountId(String encryptedAccountId) {
-        try {
-            String requestUrl = UriComponentsBuilder
-                .fromUriString("https://kr.api.riotgames.com/lol/match/v4/matchlists/by-account/")
-                .path(encryptedAccountId)
-                .queryParam("api_key", API_KEY)
-                .toUriString();
-            URI uri = new URI(requestUrl);
-            return objectMapper.readValue(
-                restTemplate.getForEntity(uri, String.class).getBody(),
-                MatchListDto.class);
-        } catch (Exception e) {
-            throw new SummonerNotFoundException("무지성으로 가져오는 매치 List 정보가 존재하지 않습니다. ");
-        }
+    public List<String> getMatchListDto(String puuid) {
+        return getMatchListDto(puuid, QueueType.SOLO_RANK_QUEUE, CURRENT_SEASON);
     }
 
-
-    public MatchListDto getMatchListDtoWithRiotAPIByEncryptedAccountIdAndQueueAndSeason(
-        String encryptedAccountId, QueueType queueType, int season) {
+    public List<String> getMatchListDto(
+        String puuid, QueueType queueType, int season) {
         try {
             String requestUrl = UriComponentsBuilder
-                .fromUriString("https://kr.api.riotgames.com/lol/match/v4/matchlists/by-account/")
-                .path(encryptedAccountId)
+                .fromUriString("https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/" + puuid + "/ids")
                 .queryParam("queue", queueType.getQueue())
-                .queryParam("season", season)
+//                .queryParam("season", season)
                 .queryParam("api_key", API_KEY)
+                .queryParam("type", "ranked")
                 .toUriString();
-            System.out.println(requestUrl);
             URI uri = new URI(requestUrl);
-            return objectMapper.readValue(
-                restTemplate.getForEntity(uri, String.class).getBody(),
-                MatchListDto.class);
+            log.info("get match request url : {}", requestUrl);
+
+            ResponseEntity<List<String>> response = restTemplate.exchange(
+                uri,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<String>>() {
+                });
+
+            return response.getBody();
         } catch (Exception e) {
+            log.error("get match ids error : {}", e.getMessage());
             throw new SummonerNotFoundException("매치 List 정보가 존재하지 않습니다.");
         }
     }
 
-
-    public MatchDto getMatchDtoWithRiotAPIByMatchId(long matchId) {
+    public MatchDto getMatchDtoWithRiotAPIByMatchId(String matchId) {
         try {
             String requestUrl = UriComponentsBuilder
-                .fromUriString("https://kr.api.riotgames.com/lol/match/v4/matches/")
-                .path(String.valueOf(matchId))
+                .fromUriString("https://asia.api.riotgames.com/lol/match/v5/matches/")
+                .path(matchId)
                 .queryParam("api_key", API_KEY)
                 .toUriString();
-
             URI uri = new URI(requestUrl);
+            log.info("get match by match id request url : {}, match id : {}", requestUrl, matchId);
+
             return objectMapper.readValue(
                 restTemplate.getForEntity(uri, String.class).getBody(),
                 MatchDto.class);
         } catch (Exception e) {
+            log.error("get match by match id error : {}", e.getMessage());
             throw new SummonerNotFoundException("매치 정보가 존재하지 않습니다.");
         }
     }
-
 
     public LeagueEntryDto getLeagueEntryDtoWithRiotAPIByEncryptedId(String encryptedId) {
         try {
@@ -119,9 +122,9 @@ public class RiotApiAdapter {
         }
     }
 
-    public List<DataRankDto> getDataRankDtosMLWithRiotAPIByMatchId(String MatchId) {
+    public List<DataRankDto> getDataRankDtosMLWithRiotAPIByMatchId(String matchId) {
         try {
-            MatchDto matchDto = getMatchDtoWithRiotAPIByMatchId(Long.parseLong(MatchId));
+            MatchDto matchDto = getMatchDtoWithRiotAPIByMatchId(matchId);
             DataRankUtils dataRankUtils = new DataRankUtils();
             return dataRankUtils.getDataRank(matchDto);
         } catch (Exception e) {

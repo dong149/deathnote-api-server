@@ -21,8 +21,5 @@ import lombok.ToString;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MatchListDto {
 
-    private int startIndex;
-    private int totalGames;
-    private int endIndex;
-    private List<MatchReferenceDto> matches;
+    private List<String> matches;
 }
