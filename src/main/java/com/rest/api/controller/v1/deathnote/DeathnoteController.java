@@ -1,8 +1,7 @@
-package com.rest.api.controller.deathnote;
+package com.rest.api.controller.v1.deathnote;
 
 import com.rest.api.batch.DeathnoteBatch;
 import com.rest.api.model.dto.response.BaseResponseDto;
-import com.rest.api.model.dto.response.ErrorResponseDto;
 import com.rest.api.model.dto.response.rank.TrollerRankerResponseDto;
 import com.rest.api.model.dto.response.search.SummonerKeywordResponseDto;
 import com.rest.api.model.dto.result.SummonerInfoDto;
@@ -10,8 +9,6 @@ import com.rest.api.service.deathnote.DeathnoteService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,28 +28,20 @@ public class DeathnoteController {
     private final DeathnoteBatch deathnoteBatch;
 
     @ApiOperation(value = "summonerInfo", notes = "summonerInfo 조회")
-    @ApiResponses({
-        @ApiResponse(code = 200, message = "조회 성공", response = ResponseEntity.class),
-        @ApiResponse(code = 404, message = "존재하지 않는 summoner 접근", response = ErrorResponseDto.class),
-        @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponseDto.class),
-    })
     @GetMapping(value = "/summoner")
     public ResponseEntity<BaseResponseDto> getSummonerInfo(
         @ApiParam(value = "소환사 이름", required = true) @RequestParam String name,
         @ApiParam(value = "갱신 여부", required = true, defaultValue = "true") @RequestParam boolean reload) {
-        SummonerInfoDto summonerInfoDto = deathnoteService.getSummonerInfoDtoWithSummonerName(
-            name,
-            reload);
+
+        SummonerInfoDto summonerInfoDto = deathnoteService.getSummonerInfoDtoWithSummonerName(name, reload);
 
         return new ResponseEntity<>(
             new BaseResponseDto(HttpStatus.OK.value(), "데이터 조회 성공", summonerInfoDto),
             HttpStatus.OK);
     }
 
-
     @GetMapping(value = "/summoner/keyword")
-    public ResponseEntity<BaseResponseDto> getSummonerNameWithKeyword(
-        @RequestParam String keyword) {
+    public ResponseEntity<BaseResponseDto> getSummonerNameWithKeyword(@RequestParam String keyword) {
         SummonerKeywordResponseDto summonerKeywordResponseDto = null;
         try {
             summonerKeywordResponseDto = deathnoteService.getSummonerNameWithKeyword(keyword);

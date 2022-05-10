@@ -4,7 +4,7 @@ package com.rest.api.task;
 import com.opencsv.CSVWriter;
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
-import com.rest.api.controller.riot.RiotAPIController;
+import com.rest.api.controller.v1.riot.RiotAPIController;
 import com.rest.api.model.dto.mldata.DataRankDto;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;

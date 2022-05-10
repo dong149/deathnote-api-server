@@ -1,4 +1,4 @@
-package com.rest.api.controller.riot;
+package com.rest.api.controller.v1.riot;
 
 import com.rest.api.adapter.riot.RiotApiAdapter;
 import com.rest.api.model.dto.LeagueEntryDto;
