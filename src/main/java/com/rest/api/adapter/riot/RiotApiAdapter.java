@@ -35,7 +35,7 @@ public class RiotApiAdapter {
     private int CURRENT_SEASON;
 
     private final RestTemplate restTemplate;
-    ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper;
 
     public SummonerDto getSummonerDtoWithRiotAPIBySummonerName(String summonerName) {
         try {
@@ -65,9 +65,10 @@ public class RiotApiAdapter {
             String requestUrl = UriComponentsBuilder
                 .fromUriString("https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/" + puuid + "/ids")
                 .queryParam("queue", queueType.getQueue())
-//                .queryParam("season", season)
                 .queryParam("api_key", API_KEY)
                 .queryParam("type", "ranked")
+                .queryParam("start", 0)
+                .queryParam("count", 10)
                 .toUriString();
             URI uri = new URI(requestUrl);
             log.info("get match request url : {}", requestUrl);
@@ -86,6 +87,25 @@ public class RiotApiAdapter {
         }
     }
 
+    public MatchDto getTestDto(String matchId) {
+        try {
+            String requestUrl = UriComponentsBuilder
+                .fromUriString("https://asia.api.riotgames.com/lol/match/v5/matches/")
+                .path(matchId)
+                .queryParam("api_key", API_KEY)
+                .toUriString();
+            URI uri = new URI(requestUrl);
+            log.info("get match by match id request url : {}, match id : {}", requestUrl, matchId);
+
+            return restTemplate.getForObject(uri, MatchDto.class);
+        } catch (Exception e) {
+            log.error(e.toString());
+            log.error(e.getLocalizedMessage());
+            log.error("get match by match id error : {}", e.getMessage());
+            throw new SummonerNotFoundException("매치 정보가 존재하지 않습니다.");
+        }
+    }
+
     public MatchDto getMatchDtoWithRiotAPIByMatchId(String matchId) {
         try {
             String requestUrl = UriComponentsBuilder
@@ -96,10 +116,15 @@ public class RiotApiAdapter {
             URI uri = new URI(requestUrl);
             log.info("get match by match id request url : {}, match id : {}", requestUrl, matchId);
 
+            String data = restTemplate.getForEntity(uri, String.class).getBody();
+            log.info(data);
+
             return objectMapper.readValue(
                 restTemplate.getForEntity(uri, String.class).getBody(),
                 MatchDto.class);
         } catch (Exception e) {
+            log.error(e.toString());
+            log.error(e.getLocalizedMessage());
             log.error("get match by match id error : {}", e.getMessage());
             throw new SummonerNotFoundException("매치 정보가 존재하지 않습니다.");
         }
