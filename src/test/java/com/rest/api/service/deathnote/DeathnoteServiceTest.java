@@ -1,5 +1,6 @@
 package com.rest.api.service.deathnote;
 
+import com.rest.api.service.v1.deathnote.DeathnoteService;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
