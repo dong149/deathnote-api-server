@@ -1,4 +1,4 @@
-package com.rest.api.service.deathnote;
+package com.rest.api.service.v1.deathnote;
 
 import com.rest.api.adapter.riot.RiotApiAdapter;
 import com.rest.api.enumerator.QueueType;

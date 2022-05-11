@@ -3,7 +3,7 @@ package com.rest.api.batch;
 
 import com.rest.api.model.entity.summoner.Summoner;
 import com.rest.api.repository.SummonerJpaRepo;
-import com.rest.api.service.deathnote.DeathnoteService;
+import com.rest.api.service.v1.deathnote.DeathnoteService;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;

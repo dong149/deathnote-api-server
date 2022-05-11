@@ -1,4 +1,4 @@
-package com.rest.api.controller.report;
+package com.rest.api.controller.v1.report;
 
 
 import com.rest.api.model.dto.request.report.ReportRequestDto;
@@ -6,7 +6,7 @@ import com.rest.api.model.dto.request.report.ReportUpdateRequestDto;
 import com.rest.api.model.dto.response.BaseResponseDto;
 import com.rest.api.model.dto.response.ErrorResponseDto;
 import com.rest.api.model.dto.response.report.ReportListResponseDto;
-import com.rest.api.service.report.ReportService;
+import com.rest.api.service.v1.report.ReportService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

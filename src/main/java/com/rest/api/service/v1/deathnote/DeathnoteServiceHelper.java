@@ -1,4 +1,4 @@
-package com.rest.api.service.deathnote;
+package com.rest.api.service.v1.deathnote;
 
 import com.rest.api.model.dto.MatchDto;
 import com.rest.api.model.dto.ParticipantIdentityDto;

@@ -1,4 +1,4 @@
-package com.rest.api.controller.riot;
+package com.rest.api.controller.v1.riot;
 
 import com.rest.api.adapter.riot.RiotApiAdapter;
 import com.rest.api.model.dto.LeagueEntryDto;
@@ -57,7 +57,6 @@ public class RiotAPIController {
         return matchDto;
     }
 
-
     @ApiOperation(value = "소환사 정보", notes = "id 를 이용하여, 리그 정보를 알아냅니다.")
     @GetMapping(value = "/league")
     public LeagueEntryDto getLeagueInfo(
@@ -83,7 +82,6 @@ public class RiotAPIController {
         }
         return dataRankDtoList;
     }
-
 
     @ApiOperation(value = "소환자 정보", notes = "summonerName을 통해 솔로 랭크 게임 리스트를 가져옵니디")
     @GetMapping(value = "/matchlist/solo")

@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.rest.api.controller.v1.note.NoteController;
 import com.rest.api.model.entity.summoner.Summoner;
 import com.rest.api.repository.SummonerJpaRepo;
 import org.junit.jupiter.api.BeforeAll;

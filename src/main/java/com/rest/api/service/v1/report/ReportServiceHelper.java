@@ -1,4 +1,4 @@
-package com.rest.api.service.report;
+package com.rest.api.service.v1.report;
 
 import com.rest.api.model.entity.report.Report;
 import com.rest.api.repository.ReportJpaRepo;

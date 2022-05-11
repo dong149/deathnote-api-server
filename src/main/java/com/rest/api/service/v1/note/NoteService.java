@@ -1,4 +1,4 @@
-package com.rest.api.service.note;
+package com.rest.api.service.v1.note;
 
 import com.rest.api.exception.summoner.SummonerNotFoundException;
 import com.rest.api.model.dto.request.note.NoteRequestDto;

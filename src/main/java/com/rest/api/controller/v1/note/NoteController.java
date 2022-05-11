@@ -1,10 +1,10 @@
-package com.rest.api.controller.note;
+package com.rest.api.controller.v1.note;
 
 import com.rest.api.model.dto.request.note.NoteRequestDto;
 import com.rest.api.model.dto.response.BaseResponseDto;
 import com.rest.api.model.dto.response.note.NoteListResponseDto;
 import com.rest.api.model.dto.response.note.NoteResponseDto;
-import com.rest.api.service.note.NoteService;
+import com.rest.api.service.v1.note.NoteService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

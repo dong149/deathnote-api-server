@@ -1,4 +1,4 @@
-package com.rest.api.service.report;
+package com.rest.api.service.v1.report;
 
 
 import com.rest.api.model.dto.request.report.ReportRequestDto;
