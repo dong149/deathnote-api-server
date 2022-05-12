@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="summoners")
+@Table(name = "summoners")
 public class Summoner extends BaseEntity {
 
     @Id
@@ -38,12 +38,15 @@ public class Summoner extends BaseEntity {
     private int matchWinningRate;
     private String summonerTier;
     private String summonerRank;
+    
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "matchAccountId")
     private List<Match> matches;
+    
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "reportAccountId")
     private List<Report> reports;
+    
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "noteAccountId")
     private List<Note> notes;

@@ -27,7 +27,7 @@ public class RiotAPIController {
     @ApiOperation(value = "소환자 정보", notes = "이름을 통해 소환사 정보를 return한다.")
     @GetMapping(value = "/summoner")
     public SummonerDto getSummoner(@ApiParam(value = "소환사 이름", required = true) @RequestParam String name) {
-        return riotApiAdapter.getSummonerDtoWithRiotAPIBySummonerName(name);
+        return riotApiAdapter.getSummonerDtoBySummonerName(name);
     }
 
     @ApiOperation(value = "소환자 정보", notes = "puuid를 통해 소환사 정보를 return한다.")
@@ -50,7 +50,7 @@ public class RiotAPIController {
 
         MatchDto matchDto = null;
         try {
-            matchDto = riotApiAdapter.getMatchDtoWithRiotAPIByMatchId(matchId);
+            matchDto = riotApiAdapter.getMatchDtoByMatchId(matchId);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -64,7 +64,7 @@ public class RiotAPIController {
 
         LeagueEntryDto leagueEntryDto = null;
         try {
-            leagueEntryDto = riotApiAdapter.getLeagueEntryDtoWithRiotAPIByEncryptedId(encryptedId);
+            leagueEntryDto = riotApiAdapter.getLeagueEntryDtoByEncryptedId(encryptedId);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -76,7 +76,7 @@ public class RiotAPIController {
     public List<DataRankDto> getMatchInfoForML(String MatchId) {
         List<DataRankDto> dataRankDtoList = null;
         try {
-            dataRankDtoList = riotApiAdapter.getDataRankDtosMLWithRiotAPIByMatchId(MatchId);
+            dataRankDtoList = riotApiAdapter.getDateRankDtoByMatchId(MatchId);
         } catch (Exception e) {
             e.printStackTrace();
         }

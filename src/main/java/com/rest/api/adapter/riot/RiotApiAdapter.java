@@ -37,13 +37,14 @@ public class RiotApiAdapter {
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
 
-    public SummonerDto getSummonerDtoWithRiotAPIBySummonerName(String summonerName) {
+    public SummonerDto getSummonerDtoBySummonerName(String summonerName) {
         try {
-            String requestUrl = UriComponentsBuilder
-                .fromUriString("https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/")
-                .path(summonerName.replaceAll(" ", ""))
-                .queryParam("api_key", API_KEY)
-                .toUriString();
+            String requestUrl = UriComponentsBuilder.fromUriString(
+                                                        "https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/")
+                                                    .path(
+                                                        summonerName.replaceAll(" ", ""))
+                                                    .queryParam("api_key", API_KEY)
+                                                    .toUriString();
             URI uri = new URI(requestUrl);
             log.info("get summoner request url : {}", requestUrl);
 
@@ -63,7 +64,8 @@ public class RiotApiAdapter {
         String puuid, QueueType queueType, int season) {
         try {
             String requestUrl = UriComponentsBuilder
-                .fromUriString("https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/" + puuid + "/ids")
+                .fromUriString("https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/" + puuid
+                                   + "/ids")
                 .queryParam("queue", queueType.getQueue())
                 .queryParam("api_key", API_KEY)
                 .queryParam("type", "ranked")
@@ -87,7 +89,7 @@ public class RiotApiAdapter {
         }
     }
 
-    public MatchDto getMatchDtoWithRiotAPIByMatchId(String matchId) {
+    public MatchDto getMatchDtoByMatchId(String matchId) {
         try {
             String requestUrl = UriComponentsBuilder
                 .fromUriString("https://asia.api.riotgames.com/lol/match/v5/matches/")
@@ -104,7 +106,7 @@ public class RiotApiAdapter {
         }
     }
 
-    public LeagueEntryDto getLeagueEntryDtoWithRiotAPIByEncryptedId(String encryptedId) {
+    public LeagueEntryDto getLeagueEntryDtoByEncryptedId(String encryptedId) {
         try {
             String requestUrl = UriComponentsBuilder
                 .fromUriString("https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/")
@@ -114,16 +116,17 @@ public class RiotApiAdapter {
             URI uri = new URI(requestUrl);
             return objectMapper
                 .readValue(
-                    Objects.requireNonNull(restTemplate.getForEntity(uri, String.class).getBody())
+                    Objects.requireNonNull(
+                               restTemplate.getForEntity(uri, String.class).getBody())
                            .replace("[", "").replace("]", ""), LeagueEntryDto.class);
         } catch (Exception e) {
             throw new SummonerNotFoundException("리그 정보가 존재하지 않습니다.");
         }
     }
 
-    public List<DataRankDto> getDataRankDtosMLWithRiotAPIByMatchId(String matchId) {
+    public List<DataRankDto> getDateRankDtoByMatchId(String matchId) {
         try {
-            MatchDto matchDto = getMatchDtoWithRiotAPIByMatchId(matchId);
+            MatchDto matchDto = getMatchDtoByMatchId(matchId);
             DataRankUtils dataRankUtils = new DataRankUtils();
             return dataRankUtils.getDataRank(matchDto);
         } catch (Exception e) {

@@ -3,6 +3,7 @@ package com.rest.api.model.dto.result;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.rest.api.model.entity.summoner.Summoner;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -35,4 +36,25 @@ public class SummonerInfoDto {
     private String summonerRank;
     private List<SummonerMatchDto> summonerMatch;
     private LocalDateTime updatedAt;
+
+    public static SummonerInfoDto of(
+        Summoner summoner,
+        List<SummonerMatchDto> summonerMatchDtos) {
+
+        return SummonerInfoDto.builder()
+                              .summonerName(summoner.getSummonerName())
+                              .accountId(summoner.getAccountId())
+                              .trollerScore(summoner.getTrollerScore())
+                              .summonerTier(summoner.getSummonerTier())
+                              .summonerRank(summoner.getSummonerRank())
+                              .summonerMatch(summonerMatchDtos)
+                              .summonerLevel(summoner.getSummonerLevel())
+                              .summonerIcon(summoner.getProfileIconId())
+                              .matchWinningRate(summoner.getMatchWinningRate())
+                              .matchLose(summoner.getMatchLose())
+                              .matchWin(summoner.getMatchWin())
+                              .matchCount(summoner.getMatchCount())
+                              .updatedAt(summoner.getUpdatedAt())
+                              .build();
+    }
 }
